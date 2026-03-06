@@ -280,8 +280,12 @@ _{Explain here how the data archiving feature will be implemented}_
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**:
 
+- Productivity: Enable Travelers to quickly record and retrieve travel experiences in a fast, distraction-free CLI. Record and search trips without switching apps or dealing with cluttered interfaces.
+- Organization: Tag and jot quick notes about the destinations. Organize entries with tags for easy filtering and retrieval later.
+- Simplicity: Lightweight solution and bypass slow, feature-heavy mobile travel apps. No installation of heavy software; runs directly in the terminal with minimal setup.
+- Privacy: Fully local application with no cloud communication. No risk of data leakage or slow network latency.
 
 ### User stories
 
