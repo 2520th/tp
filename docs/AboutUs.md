@@ -38,7 +38,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/lyx-888.md)]
 
 * Role: Developer
-* Responsibilies: UI
+* Responsibilies: Parser
 
 ### Ong Jin Hui
 
@@ -68,4 +68,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/2520th.md)]
 
 * Role: Developer
-* Responsibilities: Logic/Command Parsing
+* Responsibilities: Logic
