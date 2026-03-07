@@ -40,6 +40,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data
 
+### Leong Yi Xuan
+
+<img src="images/lyx-888.png" width="200px">
+
+[[github](http://github.com/lyx-888)]
+[[portfolio](team/lyx-888.md)]
+
+* Role: Developer
+
 ### Ong Jin Hui
 
 <img src="images/poise3.png" width="200px">
