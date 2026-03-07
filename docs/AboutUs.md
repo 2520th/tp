@@ -11,15 +11,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Toh Hong Shen
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/ths1959.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](https://github.com/ths1959)]
+[[portfolio](team/ths1959.md)]
 
-* Role: Project Advisor
+* **Role**: Team Lead
+* **Responsibilities**: Overall project coordination, In charge of Storage
 
 ### Jane Doe
 
