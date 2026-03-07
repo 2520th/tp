@@ -62,7 +62,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Zhou Guangyi
 
-<img src="images/guangyi.png" width="200px">
+<img src="images/2520th.png" width="200px">
 
 [[github](http://github.com/2520th)]
 [[portfolio](team/2520th.md)]
