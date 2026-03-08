@@ -27,10 +27,6 @@ public class TripCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label startDate;
-    @FXML
-    private Label endDate;
-    @FXML
     private Label phone;
     @FXML
     private Label address;
