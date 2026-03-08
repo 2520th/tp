@@ -24,8 +24,6 @@ class JsonAdaptedTrip {
     private final String phone;
     private final String email;
     private final String address;
-    private final String startDate;
-    private final String endDate;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String startDate;
     private final String endDate;
