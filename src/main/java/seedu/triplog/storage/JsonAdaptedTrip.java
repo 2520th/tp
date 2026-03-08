@@ -1,16 +1,22 @@
 package seedu.triplog.storage;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.triplog.commons.exceptions.IllegalValueException;
-import seedu.triplog.logic.parser.ParserUtil;
-import seedu.triplog.model.person.*;
+import seedu.triplog.model.person.Address;
+import seedu.triplog.model.person.Email;
+import seedu.triplog.model.person.Name;
+import seedu.triplog.model.person.Phone;
+import seedu.triplog.model.person.Trip;
+import seedu.triplog.model.person.TripDate;
 import seedu.triplog.model.tag.Tag;
 
 /**
@@ -19,7 +25,8 @@ import seedu.triplog.model.tag.Tag;
 class JsonAdaptedTrip {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Trip's %s field is missing!";
-
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+    
     private final String name;
     private final String phone;
     private final String email;
@@ -27,7 +34,6 @@ class JsonAdaptedTrip {
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String startDate;
     private final String endDate;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
     /**
      * Constructs a {@code JsonAdaptedTrip} with the given trip details.
@@ -75,7 +81,8 @@ class JsonAdaptedTrip {
         }
 
         if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                          Name.class.getSimpleName()));
         }
         if (!Name.isValidName(name)) {
             throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
@@ -85,7 +92,8 @@ class JsonAdaptedTrip {
         final Phone modelPhone;
         if (phone == null) {
             modelPhone = null;
-            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
+            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                            Phone.class.getSimpleName()));
         } else if (!Phone.isValidPhone(phone)) {
             throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
         } else {
@@ -95,7 +103,8 @@ class JsonAdaptedTrip {
         final Email modelEmail;
         if (email == null) {
             modelEmail = null;
-            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
+            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                            Email.class.getSimpleName()));
         } else if (!Email.isValidEmail(email)) {
             throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
         } else {
@@ -105,7 +114,8 @@ class JsonAdaptedTrip {
         final Address modelAddress;
         if (address == null) {
             modelAddress = null;
-            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
+            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                            Address.class.getSimpleName()));
         } else if (!Address.isValidAddress(address)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         } else {
@@ -115,7 +125,8 @@ class JsonAdaptedTrip {
         final TripDate modelStartDate;
         if (startDate == null) {
             modelStartDate = null;
-            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, TripDate.class.getSimpleName()));
+            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                            TripDate.class.getSimpleName()));
         } else if (!TripDate.isValidDate(startDate)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         } else {
@@ -125,7 +136,8 @@ class JsonAdaptedTrip {
         final TripDate modelEndDate;
         if (endDate == null) {
             modelEndDate = null;
-            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, TripDate.class.getSimpleName()));
+            //throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                                                            TripDate.class.getSimpleName()));
         } else if (!TripDate.isValidDate(endDate)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         } else {
@@ -133,7 +145,8 @@ class JsonAdaptedTrip {
         }
 
         final Set<Tag> modelTags = new HashSet<>(tripTags);
-        return new Trip(modelName, modelPhone, modelEmail, modelAddress, modelTags, modelStartDate, modelEndDate);
+        return new Trip(modelName, modelPhone, modelEmail, modelAddress, modelTags,
+                        modelStartDate, modelEndDate);
     }
 
 }
