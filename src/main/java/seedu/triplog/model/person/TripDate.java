@@ -7,6 +7,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a trip date in the TripLog.
+ * Guarantees: immutable; is valid as declared in {@link #isValidDate(String)}.
+ */
 public class TripDate {
     public static final String MESSAGE_CONSTRAINTS =
             "Dates should be in YYYY-MM-DD format";
