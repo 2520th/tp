@@ -9,11 +9,12 @@ import java.util.Set;
 import seedu.triplog.commons.core.index.Index;
 import seedu.triplog.commons.util.StringUtil;
 import seedu.triplog.logic.parser.exceptions.ParseException;
+import seedu.triplog.model.tag.Tag;
 import seedu.triplog.model.trip.Address;
 import seedu.triplog.model.trip.Email;
 import seedu.triplog.model.trip.Name;
 import seedu.triplog.model.trip.Phone;
-import seedu.triplog.model.tag.Tag;
+
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.

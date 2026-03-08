@@ -21,12 +21,12 @@ import seedu.triplog.commons.util.ToStringBuilder;
 import seedu.triplog.logic.Messages;
 import seedu.triplog.logic.commands.exceptions.CommandException;
 import seedu.triplog.model.Model;
+import seedu.triplog.model.tag.Tag;
 import seedu.triplog.model.trip.Address;
 import seedu.triplog.model.trip.Email;
 import seedu.triplog.model.trip.Name;
 import seedu.triplog.model.trip.Phone;
 import seedu.triplog.model.trip.Trip;
-import seedu.triplog.model.tag.Tag;
 
 /**
  * Edits the details of an existing trip in the trip log.
