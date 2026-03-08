@@ -96,7 +96,7 @@ public class Trip {
         if (other == this) return true;
         if (!(other instanceof Trip)) return false;
         Trip otherTrip = (Trip) other;
-    
+
         return name.equals(otherTrip.name)
                 && Objects.equals(phone, otherTrip.phone)
                 && Objects.equals(email, otherTrip.email)
