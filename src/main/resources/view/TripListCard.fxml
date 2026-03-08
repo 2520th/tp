@@ -8,26 +8,30 @@
 <?import javafx.scene.layout.VBox?>
 
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <padding>
-    <Insets top="5" right="15" bottom="5" left="15" />
-  </padding>
-  <HBox spacing="10" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-    <Label fx:id="id" styleClass="cell_big_label" prefWidth="30">
-      <minWidth><Region fx:constant="USE_PREF_SIZE" /></minWidth>
-    </Label>
+<padding>
+  <Insets top="5" right="15" bottom="5" left="15" />
+</padding>
+<HBox spacing="10" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+  <Label fx:id="id" styleClass="cell_big_label" prefWidth="30">
+    <minWidth><Region fx:constant="USE_PREF_SIZE" /></minWidth>
+  </Label>
 
-    <Label fx:id="name" text="\$first" styleClass="cell_big_label" prefWidth="200" />
+  <Label fx:id="name" text="\$first" styleClass="cell_big_label" prefWidth="200" />
 
-    <Label fx:id="startDate" styleClass="cell_small_label" text="\$start" prefWidth="100" />
+  <Label fx:id="startDate" styleClass="cell_small_label" text="\$start" prefWidth="100" />
 
-    <Label fx:id="endDate" styleClass="cell_small_label" text="\$end" prefWidth="100" />
+  <Label fx:id="endDate" styleClass="cell_small_label" text="\$end" prefWidth="100" />
 
-    <FlowPane fx:id="tags" prefWidth="200" hgap="5" />
+  <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" prefWidth="100"/>
 
-    <VBox visible="false" managed="false">
-      <Label fx:id="phone" />
-      <Label fx:id="address" />
-      <Label fx:id="email" />
-    </VBox>
-  </HBox>
+  <Label fx:id="address" styleClass="cell_small_label" text="\$address" prefWidth="100" />
+
+  <FlowPane fx:id="tags" prefWidth="200" hgap="5" />
+
+  <VBox visible="false" managed="false">
+    <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
+    <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
+    <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+  </VBox>
+</HBox>
 </HBox>

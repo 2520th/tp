@@ -1,6 +1,7 @@
 package seedu.triplog.ui;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,10 +26,6 @@ public class TripCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label startDate;
-    @FXML
-    private Label endDate;
-    @FXML
     private Label phone;
     @FXML
     private Label address;
@@ -36,6 +33,10 @@ public class TripCard extends UiPart<Region> {
     private Label email;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label startDate;
+    @FXML
+    private Label endDate;
 
     /**
      * Creates a {@code TripCard} with the given {@code Trip} and index to display.
@@ -45,11 +46,37 @@ public class TripCard extends UiPart<Region> {
         this.trip = trip;
         id.setText(displayedIndex + ". ");
         name.setText(trip.getName().fullName);
-        startDate.setText(trip.getStartDate().toString());
-        endDate.setText(trip.getEndDate().toString());
-        phone.setText(trip.getPhone().value);
-        address.setText(trip.getAddress().value);
-        email.setText(trip.getEmail().value);
+
+        if (!Objects.isNull(trip.getPhone())) {
+            phone.setText(trip.getPhone().value);
+        } else {
+            phone.setManaged(false);
+        }
+
+        if (!Objects.isNull(trip.getAddress())) {
+            address.setText(trip.getAddress().value);
+        } else {
+            address.setManaged(false);
+        }
+
+        if (!Objects.isNull(trip.getEmail())) {
+            email.setText(trip.getEmail().value);
+        } else {
+            email.setManaged(false);
+        }
+
+        if (!Objects.isNull(trip.getStartDate())) {
+            startDate.setText(trip.getStartDate().toString());
+        } else {
+            startDate.setManaged(false);
+        }
+
+        if (!Objects.isNull(trip.getEndDate())) {
+            endDate.setText(trip.getEndDate().toString());
+        } else {
+            endDate.setManaged(false);
+        }
+
         trip.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));

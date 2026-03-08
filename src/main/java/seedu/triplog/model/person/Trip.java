@@ -1,10 +1,7 @@
 package seedu.triplog.model.person;
 
 import static seedu.triplog.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.triplog.logic.parser.AddCommandParser.DEFAULT_END_DATE;
-import static seedu.triplog.logic.parser.AddCommandParser.DEFAULT_START_DATE;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,22 +23,23 @@ public class Trip {
 
     // Data fields
     private final Address address;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
     private final Set<Tag> tags = new HashSet<>();
+    private final TripDate startDate;
+    private final TripDate endDate;
 
     /**
      * Every field must be present and not null.
      */
-    public Trip(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Trip(Name name, Phone phone, Email email, Address address, Set<Tag> tags,
+                TripDate startDate, TripDate endDate) {
+        requireAllNonNull(name, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.startDate = LocalDate.parse(DEFAULT_START_DATE);
-        this.endDate = LocalDate.parse(DEFAULT_END_DATE);
         this.tags.addAll(tags);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Name getName() {
@@ -60,20 +58,20 @@ public class Trip {
         return address;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public TripDate getStartDate() {
+        return startDate;
+    }
+
+    public TripDate getEndDate() {
+        return endDate;
     }
 
     /**
@@ -98,19 +96,17 @@ public class Trip {
         if (other == this) {
             return true;
         }
-
-        // instanceof handles nulls
         if (!(other instanceof Trip)) {
             return false;
         }
-
         Trip otherTrip = (Trip) other;
+
         return name.equals(otherTrip.name)
-                && phone.equals(otherTrip.phone)
-                && email.equals(otherTrip.email)
-                && address.equals(otherTrip.address)
-                && startDate.equals(otherTrip.startDate)
-                && endDate.equals(otherTrip.endDate)
+                && Objects.equals(phone, otherTrip.phone)
+                && Objects.equals(email, otherTrip.email)
+                && Objects.equals(address, otherTrip.address)
+                && Objects.equals(startDate, otherTrip.startDate)
+                && Objects.equals(endDate, otherTrip.endDate)
                 && tags.equals(otherTrip.tags);
     }
 

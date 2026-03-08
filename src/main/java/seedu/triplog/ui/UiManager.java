@@ -21,7 +21,7 @@ public class UiManager implements Ui {
 
     private static final Logger logger = LogsCenter.getLogger(UiManager.class);
     // Updated icon path to reflect triplog branding if applicable
-    private static final String ICON_APPLICATION = "/images/triplog_32.png";
+    //private static final String ICON_APPLICATION = "/images/triplog_32.png";
 
     private Logic logic;
     private MainWindow mainWindow;
@@ -38,7 +38,7 @@ public class UiManager implements Ui {
         logger.info("Starting UI...");
 
         //Set the application icon.
-        primaryStage.getIcons().add(getImage(ICON_APPLICATION));
+        //primaryStage.getIcons().add(getImage(ICON_APPLICATION));
 
         try {
             mainWindow = new MainWindow(primaryStage, logic);
