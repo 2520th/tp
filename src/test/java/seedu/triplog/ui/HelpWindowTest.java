@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
@@ -98,5 +99,29 @@ public class HelpWindowTest {
     @Test
     public void exitNote_mentionsEscapeKey() {
         assertTrue(HelpWindow.EXIT_NOTE.contains("ESCAPE"));
+    }
+
+    @Test
+    public void keyPress_qKey_hidesWindow(FxRobot robot) {
+        robot.interact(() -> helpWindow.show());
+        assertTrue(helpWindow.isShowing());
+        robot.press(KeyCode.Q).release(KeyCode.Q);
+        assertFalse(helpWindow.isShowing());
+    }
+
+    @Test
+    public void keyPress_escapeKey_hidesWindow(FxRobot robot) {
+        robot.interact(() -> helpWindow.show());
+        assertTrue(helpWindow.isShowing());
+        robot.press(KeyCode.ESCAPE).release(KeyCode.ESCAPE);
+        assertFalse(helpWindow.isShowing());
+    }
+
+    @Test
+    public void keyPress_otherKey_doesNotHideWindow(FxRobot robot) {
+        robot.interact(() -> helpWindow.show());
+        assertTrue(helpWindow.isShowing());
+        robot.press(KeyCode.A).release(KeyCode.A);
+        assertTrue(helpWindow.isShowing());
     }
 }
