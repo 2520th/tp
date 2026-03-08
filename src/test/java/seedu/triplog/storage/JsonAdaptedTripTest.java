@@ -109,6 +109,17 @@ public class JsonAdaptedTripTest {
     }
 
     @Test
+    public void toModelType_nullDates_throwsIllegalValueException() {
+        JsonAdaptedTrip personNullStart = new JsonAdaptedTrip(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                VALID_ADDRESS, null, VALID_END_DATE, VALID_TAGS);
+        assertThrows(IllegalValueException.class, personNullStart::toModelType);
+
+        JsonAdaptedTrip personNullEnd = new JsonAdaptedTrip(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                VALID_ADDRESS, VALID_START_DATE, null, VALID_TAGS);
+        assertThrows(IllegalValueException.class, personNullEnd::toModelType);
+    }
+
+    @Test
     public void toModelType_invalidTags_throwsIllegalValueException() {
         List<JsonAdaptedTag> invalidTags = new ArrayList<>(VALID_TAGS);
         invalidTags.add(new JsonAdaptedTag(INVALID_TAG));

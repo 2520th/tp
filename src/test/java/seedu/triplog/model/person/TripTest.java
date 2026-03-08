@@ -85,9 +85,23 @@ public class TripTest {
         editedAlice = new TripBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
+        // different startDate -> returns false
+        editedAlice = new TripBuilder(ALICE).withStartDate("2020-01-01").build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // different endDate -> returns false
+        editedAlice = new TripBuilder(ALICE).withEndDate("2020-12-31").build();
+        assertFalse(ALICE.equals(editedAlice));
+
         // different tags -> returns false
         editedAlice = new TripBuilder(ALICE).withTags(VALID_TAG_HUSBAND).build();
         assertFalse(ALICE.equals(editedAlice));
+    }
+
+    @Test
+    public void getters_workCorrectly() {
+        assertEquals(ALICE.getStartDate(), new TripBuilder(ALICE).build().getStartDate());
+        assertEquals(ALICE.getEndDate(), new TripBuilder(ALICE).build().getEndDate());
     }
 
     @Test
