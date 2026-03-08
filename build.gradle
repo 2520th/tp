@@ -28,6 +28,8 @@ test {
         systemProperty 'monocle.platform', 'Headless'
         systemProperty 'prism.order', 'sw'
         systemProperty 'prism.text', 't2k'
+        systemProperty 'testfx.robot', 'glass'
+        systemProperty 'testfx.headless', 'true'
     }
 }
 
@@ -67,6 +69,8 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.7.4'
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
+    testImplementation group: 'org.testfx', name: 'testfx-core', version: '4.0.18'
+    testImplementation group: 'org.testfx', name: 'testfx-junit5', version: '4.0.18'
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
 }
