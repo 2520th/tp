@@ -4,9 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_PHONE;
-import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_START_DATE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_TAG;
 
