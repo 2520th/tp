@@ -38,7 +38,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/lyx-888.md)]
 
 * Role: Developer
-* Responsibilies: Parser
+* Responsibilies: Dev Ops + Threading
 
 ### Ong Jin Hui
 
@@ -48,7 +48,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/poise3.md)]
 
 * Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Responsibilities: Implementing feature requests
 
 ### Derrick Low
 
