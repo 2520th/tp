@@ -98,6 +98,22 @@ public class TripBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code TripDate} of the {@code Trip} that we are building.
+     */
+    public TripBuilder withStart(String date) {
+        this.startDate = new TripDate(date);
+        return this;
+    }
+
+    /**
+     * Sets the {@code TripDate} of the {@code Trip} that we are building.
+     */
+    public TripBuilder withEnd(String date) {
+        this.endDate = new TripDate(date);
+        return this;
+    }
+
     public Trip build() {
         return new Trip(name, phone, email, address, tags, startDate, endDate);
     }
