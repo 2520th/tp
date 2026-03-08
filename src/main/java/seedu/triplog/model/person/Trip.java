@@ -26,8 +26,6 @@ public class Trip {
 
     // Data fields
     private final Address address;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
     private final Set<Tag> tags = new HashSet<>();
     private final TripDate startDate;
     private final TripDate endDate;
