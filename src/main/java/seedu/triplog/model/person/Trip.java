@@ -44,6 +44,21 @@ public class Trip {
         this.tags.addAll(tags);
     }
 
+    /**
+     * New constructor for adding of single tag
+     * **/
+    public Trip(Trip trip, Tag tag) {
+        requireAllNonNull(trip, tag);
+        this.name = trip.name;
+        this.phone = trip.phone;
+        this.email = trip.email;
+        this.address = trip.address;
+        this.startDate = LocalDate.parse(DEFAULT_START_DATE);
+        this.endDate = LocalDate.parse(DEFAULT_END_DATE);
+        this.tags.addAll(trip.tags);
+        this.tags.add(tag);
+    }
+
     public Name getName() {
         return name;
     }
