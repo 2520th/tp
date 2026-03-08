@@ -93,8 +93,12 @@ public class Trip {
      */
     @Override
     public boolean equals(Object other) {
-        if (other == this) return true;
-        if (!(other instanceof Trip)) return false;
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Trip)) {
+            return false;
+        } 
         Trip otherTrip = (Trip) other;
 
         return name.equals(otherTrip.name)
