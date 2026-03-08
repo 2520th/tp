@@ -25,7 +25,6 @@ test {
     finalizedBy jacocoTestReport
     jvmArgs '--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED',
             '--add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED'
-}
     if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
         systemProperty 'glass.platform', 'Monocle'
         systemProperty 'monocle.platform', 'Headless'
