@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,8 @@ import javafx.scene.input.KeyCode;
 
 public class HelpWindowTest {
 
+    private static boolean isHeadless = false;
+
     @BeforeAll
     static void initToolkit() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
@@ -22,6 +25,9 @@ public class HelpWindowTest {
             Platform.startup(latch::countDown);
         } catch (IllegalStateException e) {
             latch.countDown();
+        } catch (UnsupportedOperationException e) {
+            isHeadless = true;
+            return;
         }
         assertTrue(latch.await(10, TimeUnit.SECONDS), "JavaFX toolkit did not start");
     }
@@ -51,6 +57,7 @@ public class HelpWindowTest {
 
     @Test
     public void constructor_createsHelpWindow() throws Exception {
+        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
         runOnFxThreadAndWait(() -> {
             HelpWindow hw = new HelpWindow();
             assertNotNull(hw);
@@ -60,6 +67,7 @@ public class HelpWindowTest {
 
     @Test
     public void showHideFocus_lifecycle() throws Exception {
+        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
         runOnFxThreadAndWait(() -> {
             HelpWindow hw = new HelpWindow();
             hw.show();
