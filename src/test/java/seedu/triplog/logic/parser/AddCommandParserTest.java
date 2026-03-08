@@ -49,14 +49,14 @@ public class AddCommandParserTest {
     public void parse_allFieldsPresent_success() {
         Trip expectedTrip = new TripBuilder(BOB)
                 .withTags(VALID_TAG_FRIEND)
-                .withStartDate(VALID_START_DATE_BOB) 
+                .withStartDate(VALID_START_DATE_BOB)
                 .withEndDate(VALID_END_DATE_BOB)
                 .build();
 
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + START_DATE_DESC_BOB + END_DATE_DESC_BOB + TAG_DESC_FRIEND, 
                 new AddCommand(expectedTrip));
-    
+
         Trip expectedTripMultipleTags = new TripBuilder(BOB)
                 .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .withStartDate(VALID_START_DATE_BOB)
@@ -64,8 +64,8 @@ public class AddCommandParserTest {
                 .build();
 
         assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB 
-                + START_DATE_DESC_BOB + END_DATE_DESC_BOB 
+                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + START_DATE_DESC_BOB + END_DATE_DESC_BOB
                 + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 new AddCommand(expectedTripMultipleTags));
     }
