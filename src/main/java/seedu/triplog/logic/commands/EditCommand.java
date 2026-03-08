@@ -28,7 +28,7 @@ import seedu.triplog.model.tag.Tag;
  * Edits the details of an existing trip in the trip log.
  */
 public class EditCommand extends Command {
-    // Logic remains unchanged...
+
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the trip identified "

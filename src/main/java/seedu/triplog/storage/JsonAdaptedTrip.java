@@ -24,6 +24,8 @@ class JsonAdaptedTrip {
     private final String phone;
     private final String email;
     private final String address;
+    private final String startDate;
+    private final String endDate;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String startDate;
     private final String endDate;
@@ -41,6 +43,8 @@ class JsonAdaptedTrip {
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.startDate = startDate;
+        this.endDate = endDate;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -69,9 +73,9 @@ class JsonAdaptedTrip {
      * @throws IllegalValueException if there were any data constraints violated in the adapted trip.
      */
     public Trip toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
+        final List<Tag> tripTags = new ArrayList<>();
         for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+            tripTags.add(tag.toModelType());
         }
 
         if (name == null) {

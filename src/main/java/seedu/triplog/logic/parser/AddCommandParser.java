@@ -23,6 +23,9 @@ import seedu.triplog.model.tag.Tag;
  */
 public class AddCommandParser implements Parser<AddCommand> {
 
+    public static final String DEFAULT_START_DATE = "2026-01-01";
+    public static final String DEFAULT_END_DATE = "2026-01-10";
+
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
@@ -69,5 +72,4 @@ public class AddCommandParser implements Parser<AddCommand> {
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
-
 }
