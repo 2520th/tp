@@ -4,130 +4,77 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
+import org.testfx.framework.junit5.Stop;
 
-import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+@ExtendWith(ApplicationExtension.class)
 public class HelpWindowTest {
 
-    private static boolean isHeadless = false;
+    private HelpWindow helpWindow;
 
-    @BeforeAll
-    static void initToolkit() throws Exception {
-        CountDownLatch latch = new CountDownLatch(1);
-        try {
-            Platform.startup(latch::countDown);
-        } catch (IllegalStateException e) {
-            latch.countDown();
-        } catch (UnsupportedOperationException | NullPointerException e) {
-            isHeadless = true;
-            return;
-        }
-        assertTrue(latch.await(10, TimeUnit.SECONDS), "JavaFX toolkit did not start");
-        Platform.setImplicitExit(false);
+    @Start
+    public void start(Stage stage) {
+        helpWindow = new HelpWindow(stage);
     }
 
-    /**
-     * Runs the given task on the JavaFX Application Thread and waits for it to complete.
-     * @throws InterruptedException if the current thread is interrupted while waiting
-     * @throws Exception if the task fails
-     */
-    public void runOnFxThreadAndWait(Runnable task) throws Exception {
-        if (Platform.isFxApplicationThread()) {
-            task.run();
-            return;
-        }
-        CountDownLatch latch = new CountDownLatch(1);
-        Platform.runLater(() -> {
-            try {
-                task.run();
-            } finally {
-                latch.countDown();
-            }
-        });
-        if (!latch.await(10, TimeUnit.SECONDS)) {
-            throw new RuntimeException("Timeout waiting for task to complete");
-        }
-    }
-
-    /**
-     * Tests that the HelpWindow can be shown without throwing exceptions, and that it can be hidden
-     */
-    @Test
-    public void constructor_createsHelpWindow() throws Exception {
-        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
-        runOnFxThreadAndWait(() -> {
-            HelpWindow hw = new HelpWindow();
-            assertNotNull(hw);
-            hw.hide();
-        });
+    @Stop
+    public void stop() {
+        helpWindow.hide();
     }
 
     @Test
-    public void showHideFocus_lifecycle() throws Exception {
-        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
-        runOnFxThreadAndWait(() -> {
-            HelpWindow hw = new HelpWindow();
-            hw.show();
-            assertTrue(hw.isShowing());
-            hw.focus();
-            hw.hide();
-            assertFalse(hw.isShowing());
-        });
+    public void constructor_createsHelpWindow() {
+        assertNotNull(helpWindow);
     }
 
     @Test
-    public void keyFilter_closeKey_hidesWindow() throws Exception {
-        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
-        runOnFxThreadAndWait(() -> {
-            HelpWindow hw = new HelpWindow();
-            hw.show();
-            assertTrue(hw.isShowing());
-            Stage root = hw.getRoot();
-            KeyEvent event = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.Q,
-                    false, false, false, false);
-            root.fireEvent(event);
-            assertFalse(hw.isShowing());
-        });
+    public void showHideFocus_lifecycle(FxRobot robot) {
+        robot.interact(() -> helpWindow.show());
+        assertTrue(helpWindow.isShowing());
+        robot.interact(() -> helpWindow.focus());
+        robot.interact(() -> helpWindow.hide());
+        assertFalse(helpWindow.isShowing());
     }
 
     @Test
-    public void keyFilter_escapeKey_hidesWindow() throws Exception {
-        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
-        runOnFxThreadAndWait(() -> {
-            HelpWindow hw = new HelpWindow();
-            hw.show();
-            assertTrue(hw.isShowing());
-            Stage root = hw.getRoot();
-            KeyEvent event = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE,
-                    false, false, false, false);
-            root.fireEvent(event);
-            assertFalse(hw.isShowing());
+    public void keyFilter_qKey_hidesWindow(FxRobot robot) {
+        robot.interact(() -> {
+            helpWindow.show();
+            helpWindow.getRoot().fireEvent(new KeyEvent(
+                    KeyEvent.KEY_PRESSED, "", "", KeyCode.Q,
+                    false, false, false, false));
         });
+        assertFalse(helpWindow.isShowing());
     }
 
     @Test
-    public void keyFilter_nonCloseKey_doesNotHideWindow() throws Exception {
-        Assumptions.assumeFalse(isHeadless, "Skipping UI test in headless environment");
-        runOnFxThreadAndWait(() -> {
-            HelpWindow hw = new HelpWindow();
-            hw.show();
-            assertTrue(hw.isShowing());
-            Stage root = hw.getRoot();
-            KeyEvent event = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.A,
-                    false, false, false, false);
-            root.fireEvent(event);
-            assertTrue(hw.isShowing());
-            hw.hide();
+    public void keyFilter_escapeKey_hidesWindow(FxRobot robot) {
+        robot.interact(() -> {
+            helpWindow.show();
+            helpWindow.getRoot().fireEvent(new KeyEvent(
+                    KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE,
+                    false, false, false, false));
         });
+        assertFalse(helpWindow.isShowing());
+    }
+
+    @Test
+    public void keyFilter_otherKey_doesNotHideWindow(FxRobot robot) {
+        robot.interact(() -> {
+            helpWindow.show();
+            helpWindow.getRoot().fireEvent(new KeyEvent(
+                    KeyEvent.KEY_PRESSED, "", "", KeyCode.A,
+                    false, false, false, false));
+        });
+        assertTrue(helpWindow.isShowing());
     }
 
     @Test
@@ -198,4 +145,3 @@ public class HelpWindowTest {
         assertTrue(HelpWindow.EXIT_NOTE.contains("ESCAPE"));
     }
 }
-
