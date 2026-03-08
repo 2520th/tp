@@ -1,13 +1,12 @@
 package seedu.triplog.logic.parser;
 
-import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
-
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.triplog.commons.core.LogsCenter;
+import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import seedu.triplog.logic.commands.AddCommand;
 import seedu.triplog.logic.commands.ClearCommand;
 import seedu.triplog.logic.commands.Command;
