@@ -16,9 +16,6 @@ public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
 
-    private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
-    private static final String FXML = "HelpWindow.fxml";
-
     public static final String PREFIX_NOTE =
         "Options use the /key:value format — the / must be followed immediately by the option name and a colon.\n"
         + "e.g.  /start:2024-03-01   /end:2024-03-10\n"
@@ -48,6 +45,9 @@ public class HelpWindow extends UiPart<Stage> {
 
     public static final String EXIT_NOTE =
         "To exit the help window, press Q or ESCAPE, or click the close button.";
+
+    private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
+    private static final String FXML = "HelpWindow.fxml";
 
     @FXML
     private Label prefixNote;
