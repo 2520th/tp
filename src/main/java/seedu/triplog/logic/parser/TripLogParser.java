@@ -14,6 +14,7 @@ import seedu.triplog.logic.commands.Command;
 import seedu.triplog.logic.commands.DeleteCommand;
 import seedu.triplog.logic.commands.EditCommand;
 import seedu.triplog.logic.commands.ExitCommand;
+import seedu.triplog.logic.commands.FilterCommand;
 import seedu.triplog.logic.commands.FindCommand;
 import seedu.triplog.logic.commands.HelpCommand;
 import seedu.triplog.logic.commands.ListCommand;
@@ -80,6 +81,9 @@ public class TripLogParser {
 
         case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
+
+        case FilterCommand.COMMAND_WORD:
+            return new FilterCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);
