@@ -1,8 +1,8 @@
 package seedu.triplog.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.triplog.logic.parser.CliSyntax.PREFIX_START_DATE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_START_DATE;
 
 import seedu.triplog.commons.util.ToStringBuilder;
 import seedu.triplog.logic.commands.exceptions.CommandException;
@@ -27,9 +27,10 @@ public class FilterCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "Found the following trips:";
     public static final String MESSAGE_NO_TRIPS_FOUND = "No trips found with the given date range.";
-    public static final String MESSAGE_ERR_START_AFTER_END = "Start date should not be after end date.";
+    public static final String MESSAGE_START_AFTER_END = "Start date should not be after end date.";
 
-    private final TripDate startDate, endDate;
+    private final TripDate startDate;
+    private final TripDate endDate;
 
     /**
      * Creates an FilterCommand to add the specified {@code Trip}
@@ -43,7 +44,7 @@ public class FilterCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         if (startDate.value.isAfter(endDate.value)) {
-            return new CommandResult(MESSAGE_ERR_START_AFTER_END);
+            return new CommandResult(MESSAGE_START_AFTER_END);
         }
         model.updateFilteredTripList(trip -> trip.getStartDate().value.isAfter(startDate.value.minusDays(1))
                 && trip.getEndDate().value.isBefore(endDate.value.plusDays(1)));
@@ -61,8 +62,8 @@ public class FilterCommand extends Command {
             return false;
         }
 
-        return ((FilterCommand)other).startDate.equals(startDate)
-                && ((FilterCommand)other).endDate.equals(endDate);
+        return ((FilterCommand) other).startDate.equals(startDate)
+                && ((FilterCommand) other).endDate.equals(endDate);
     }
 
     @Override
