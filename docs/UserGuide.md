@@ -93,9 +93,12 @@ Examples:
 
 ### Listing all trips : `list`
 
-Shows a list of all trips in the address book.
+Shows a list of all trips sorted by start date in ascending order (earliest first). Trips with no start date are shown last.
 
 Format: `list`
+
+Example:
+* `list` — displays all trips ordered from earliest to latest start date
 
 ### Editing a trip : `edit`
 
