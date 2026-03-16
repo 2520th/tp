@@ -36,10 +36,15 @@ public class FilterCommandTest {
         // null -> returns false
         assertTrue(!filterFirstCommand.equals(null));
 
-        // different dates -> returns false
-        FilterCommand differentCommand = new FilterCommand(
-                new TripDate("2025-01-01"), new TripDate("2025-02-01"));
-        assertTrue(!filterFirstCommand.equals(differentCommand));
+        // different start date -> returns false
+        FilterCommand differentStartCommand =
+                new FilterCommand(new TripDate("2025-01-01"), endDate);
+        assertTrue(!filterFirstCommand.equals(differentStartCommand));
+
+        // different end date -> returns false
+        FilterCommand differentEndCommand =
+                new FilterCommand(startDate, new TripDate("2026-04-01"));
+        assertTrue(!filterFirstCommand.equals(differentEndCommand));
     }
 
     @Test
@@ -85,6 +90,20 @@ public class FilterCommandTest {
         CommandResult result = command.execute(model);
 
         assertEquals(FilterCommand.MESSAGE_START_AFTER_END, result.getFeedbackToUser());
+    }
+
+    @Test
+    public void execute_tripWithNullDates_ignored() throws CommandException {
+        Model model = new ModelManager(new TripLog(), new UserPrefs());
+
+        TripDate start = new TripDate("2026-01-01");
+        TripDate end = new TripDate("2026-03-01");
+
+        FilterCommand command = new FilterCommand(start, end);
+
+        CommandResult result = command.execute(model);
+
+        assertEquals(FilterCommand.MESSAGE_NO_TRIPS_FOUND, result.getFeedbackToUser());
     }
 
     @Test
