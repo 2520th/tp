@@ -22,9 +22,10 @@ public class HelpWindow extends UiPart<Stage> {
                     + "e.g.  /start:2026-03-01   /end:2026-03-10";
 
     public static final String ADD_USAGE =
-            "add /name:<destination> [/start:<start-date>] [/end:<end-date>]\n"
-                    + "  Records a new trip. Dates must be YYYY-MM-DD.\n"
-                    + "  e.g.  add /name:\"Tokyo, Japan\" /start:2026-03-01 /end:2026-03-10";
+            "add /name:<destination> [/phone:<phone>] [/email:<email>] [/addr:<address>] "
+                    + "[/start:<start-date>] [/end:<end-date>] [/tag:<tag>]...\n"
+                    + "  Records a new trip. Items in [square brackets] are optional. Dates must be YYYY-MM-DD.\n"
+                    + "  e.g. add /name:\"Tokyo, Japan\" /start:2026-03-01 /tag:food";
 
     public static final String DELETE_USAGE =
             "delete <INDEX>\n"
