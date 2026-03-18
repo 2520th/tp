@@ -66,8 +66,8 @@ public class HelpWindowTest {
 
     @Test
     public void addUsage_containsDateOptions() {
-        assertTrue(HelpWindow.ADD_USAGE.contains("/start:"));
-        assertTrue(HelpWindow.ADD_USAGE.contains("/end:"));
+        assertTrue(HelpWindow.ADD_USAGE.contains("sd/"));
+        assertTrue(HelpWindow.ADD_USAGE.contains("ed/"));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class HelpWindowTest {
 
     @Test
     public void prefixNote_containsPrefixFormat() {
-        assertTrue(HelpWindow.PREFIX_NOTE.contains("/key:value"));
+        assertTrue(HelpWindow.PREFIX_NOTE.contains("prefix/"));
     }
 
     @Test

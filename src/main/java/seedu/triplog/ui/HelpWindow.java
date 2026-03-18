@@ -17,15 +17,15 @@ public class HelpWindow extends UiPart<Stage> {
     public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
 
     public static final String PREFIX_NOTE =
-            "Options use the /key:value format — the / must be followed immediately by the key and a colon.\n"
-                    + "Fields with spaces must be wrapped in double quotes (e.g., \"New York\").\n"
-                    + "e.g.  /start:2026-03-01   /end:2026-03-10";
+            "Options use the prefix/ format — a short prefix followed immediately by a slash.\n"
+                    + "Values with spaces do not need quotes (e.g., n/New York is valid).\n"
+                    + "e.g.  sd/2026-03-01   ed/2026-03-10";
 
     public static final String ADD_USAGE =
-            "add /name:<destination> [/phone:<phone>] [/email:<email>] [/addr:<address>] "
-                    + "[/start:<start-date>] [/end:<end-date>] [/tag:<tag>]...\n"
+            "add n/<destination> [p/<phone>] [e/<email>] [a/<address>] "
+                    + "[sd/<start-date>] [ed/<end-date>] [t/<tag>]...\n"
                     + "  Records a new trip. Items in [square brackets] are optional. Dates must be YYYY-MM-DD.\n"
-                    + "  e.g. add /name:\"Tokyo, Japan\" /start:2026-03-01 /tag:food";
+                    + "  e.g. add n/Tokyo sd/2026-03-01 t/food";
 
     public static final String DELETE_USAGE =
             "delete <INDEX>\n"
@@ -34,10 +34,10 @@ public class HelpWindow extends UiPart<Stage> {
                     + "  e.g.  delete 2";
 
     public static final String TAG_USAGE =
-            "tag <index> /tag:<tag-name>\n"
+            "tag <index> <tag-name>\n"
                     + "  Adds a keyword tag to an existing trip.\n"
-                    + "  tag-name must be alphanumeric. Use quotes for tags with spaces.\n"
-                    + "  e.g.  tag 1 /tag:adventure    or    tag 1 /tag:\"night market\"";
+                    + "  tag-name must be alphanumeric.\n"
+                    + "  e.g.  tag 1 adventure    or    tag 1 night market";
 
     public static final String LIST_USAGE =
             "list\n"

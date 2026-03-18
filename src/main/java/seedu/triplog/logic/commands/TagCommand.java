@@ -15,13 +15,13 @@ import seedu.triplog.model.trip.Trip;
 
 
 /**
- * Tags a Place in the address book.
+ * Adds a tag to a trip in the trip log.
  */
 public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a tag to a place in the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a tag to a trip in the trip log. "
             + "Parameters: INDEX (must be a positive integer) "
             + "KEYWORD\n"
             + "Example: " + COMMAND_WORD + " 3 leisure";
