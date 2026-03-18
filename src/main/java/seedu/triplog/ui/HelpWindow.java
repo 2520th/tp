@@ -17,15 +17,15 @@ public class HelpWindow extends UiPart<Stage> {
     public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
 
     public static final String PREFIX_NOTE =
-            "Options use the key:value format — the key must be followed immediately by a colon.\n"
-                    + "Values with spaces do not need quotes (e.g., name:New York is valid).\n"
-                    + "e.g.  start:2026-03-01   end:2026-03-10";
+            "Options use the prefix/ format — a short prefix followed immediately by a slash.\n"
+                    + "Values with spaces do not need quotes (e.g., n/New York is valid).\n"
+                    + "e.g.  sd/2026-03-01   ed/2026-03-10";
 
     public static final String ADD_USAGE =
-            "add name:<destination> [phone:<phone>] [email:<email>] [addr:<address>] "
-                    + "[start:<start-date>] [end:<end-date>] [tag:<tag>]...\n"
+            "add n/<destination> [p/<phone>] [e/<email>] [a/<address>] "
+                    + "[sd/<start-date>] [ed/<end-date>] [t/<tag>]...\n"
                     + "  Records a new trip. Items in [square brackets] are optional. Dates must be YYYY-MM-DD.\n"
-                    + "  e.g. add name:Tokyo start:2026-03-01 tag:food";
+                    + "  e.g. add n/Tokyo sd/2026-03-01 t/food";
 
     public static final String DELETE_USAGE =
             "delete <INDEX>\n"
