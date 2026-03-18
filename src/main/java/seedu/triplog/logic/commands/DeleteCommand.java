@@ -98,14 +98,14 @@ public class DeleteCommand extends Command {
         List<Trip> lastShownList = model.getFilteredTripList();
 
         switch (mode) {
-            case SINGLE:
-                return executeSingleDelete(model, lastShownList);
-            case RANGE:
-                return executeRangeDelete(model, lastShownList);
-            case FILTER:
-                return executeFilterDelete(model, lastShownList);
-            default:
-                throw new AssertionError("Unknown delete mode");
+        case SINGLE:
+            return executeSingleDelete(model, lastShownList);
+        case RANGE:
+            return executeRangeDelete(model, lastShownList);
+        case FILTER:
+            return executeFilterDelete(model, lastShownList);
+        default:
+            throw new AssertionError("Unknown delete mode");
         }
     }
 
