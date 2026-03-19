@@ -8,9 +8,7 @@ import seedu.triplog.model.ReadOnlyTripLog;
 import seedu.triplog.model.TripLog;
 import seedu.triplog.model.tag.Tag;
 import seedu.triplog.model.trip.Address;
-import seedu.triplog.model.trip.Email;
 import seedu.triplog.model.trip.Name;
-import seedu.triplog.model.trip.Phone;
 import seedu.triplog.model.trip.Trip;
 import seedu.triplog.model.trip.TripDate;
 
@@ -33,9 +31,10 @@ public class SampleDataUtil {
                     new Address("80 Mandai Lake Rd, 729826"),
                     getTagSet("zoo"), new TripDate("2026-03-01"),
                     new TripDate("2026-03-05")),
-            new Trip(new Name("Serangoon Gardens"), null,null,
+            new Trip(new Name("Serangoon Gardens"), null, null,
                     new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                    getTagSet("garden"), new TripDate("2026-03-01"),
+                    getTagSet("garden"),
+                    new TripDate("2026-03-01"),
                     new TripDate("2026-03-05")),
             new Trip(new Name("Gardens By The Bay"), null, null,
                     new Address("Marina Gardens Drive Supertree Grove, Singapore 018953"),
