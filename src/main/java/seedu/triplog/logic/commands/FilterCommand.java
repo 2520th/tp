@@ -49,8 +49,9 @@ public class FilterCommand extends Command {
         }
         model.updateFilteredTripList(trip -> trip.getStartDate() != null
                 && trip.getStartDate().value.isAfter(startDate.value.minusDays(1))
-                && (trip.getEndDate() == null
-                || trip.getEndDate().value.isBefore(endDate.value.plusDays(1))));
+                && (trip.getEndDate() == null 
+                ? trip.getStartDate().value.isBefore(endDate.value.plusDays(1))
+                : trip.getEndDate().value.isBefore(endDate.value.plusDays(1))));
 
         return new CommandResult(model.getFilteredTripList().isEmpty() ? MESSAGE_NO_TRIPS_FOUND : MESSAGE_SUCCESS);
     }
