@@ -135,6 +135,12 @@ public class HelpWindow extends UiPart<Stage> {
         logger.fine("Initializing help page about the application.");
     }
 
+    /**
+     * Ensures that the root stage is not null before passing it to the superclass constructor
+     * @param root The root stage to check.
+     * @return The non-null root stage.
+     * @throws IllegalArgumentException if the root stage is null.
+     */
     private static Stage requireNonNullRoot(Stage root) {
         if (root == null) {
             throw new IllegalArgumentException("Root stage cannot be null");
