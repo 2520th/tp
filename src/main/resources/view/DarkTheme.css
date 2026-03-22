@@ -1,3 +1,54 @@
+/* ============================================================
+ * Design Tokens
+ * All colour values for the application are defined here as
+ * JavaFX looked-up colors.  Reference these tokens throughout
+ * this file and in Extensions.css / HelpWindow.css instead of
+ * repeating raw hex literals.
+ *
+ * NOTE: JavaFX CSS does not support string-type variables, so
+ * font-family names cannot be tokenised.  The families in use
+ * are documented below for reference:
+ *   regular  → "Segoe UI"
+ *   semibold → "Segoe UI Semibold"
+ *   light    → "Segoe UI Light"
+ * ============================================================ */
+.root {
+    /* ── Accent / Brand ───────────────────────────────────── */
+    -tl-accent:            #FF8C00;   /* orange — buttons, tags, borders */
+    -tl-accent-hover:      #E07800;   /* darker orange for hover state   */
+    -tl-accent-pressed:    #040303;   /* darkest orange for press state  */
+
+    /* ── Backgrounds ──────────────────────────────────────── */
+    /* The app window displays a scenic background image set   */
+    /* programmatically; these tokens style the overlay panels */
+    /* that sit on top of it.                                  */
+    -tl-bg-panel:          rgba(173, 216, 234, 0.72); /* semi-transparent light-blue content panels */
+    -tl-bg-input:          #FFFFFF;   /* command input field             */
+    -tl-bg-list-even:      rgba(255, 255, 255, 0.0);  /* transparent     */
+    -tl-bg-list-odd:       rgba(255, 255, 255, 0.0);  /* transparent     */
+    -tl-bg-list-selected:  rgba(255, 140, 0, 0.15);   /* tinted row      */
+    -tl-bg-hover:          rgba(255, 140, 0, 0.10);   /* hover highlight */
+    -tl-bg-menu:           rgba(173, 216, 234, 0.72); /* menu bar area   */
+    -tl-bg-help:           rgba(173, 216, 234, 0.90); /* help window     */
+
+    /* ── Borders ──────────────────────────────────────────── */
+    -tl-border-input:      #FF8C00;   /* input focus ring — matches accent */
+    -tl-border-separator:  #2C2C2C;   /* horizontal list dividers          */
+    -tl-border-button:     #FF8C00;   /* metro-button border               */
+    -tl-border-panel:      rgba(100, 160, 190, 0.40); /* panel edge        */
+
+    /* ── Text ─────────────────────────────────────────────── */
+    /* -tl-text-body      is dark text rendered on light panels (≥7:1).    */
+    /* -tl-text-on-accent is white text rendered on orange surfaces (≥4.5:1). */
+    -tl-text-body:         #1A1A1A;   /* primary body text on light bg   */
+    -tl-text-on-accent:    #FFFFFF;   /* text/icons on orange surfaces   */
+    -tl-text-placeholder:  #888888;   /* placeholder / muted text        */
+    -tl-text-error:        #d06651;   /* error / warning messages        */
+    -tl-text-cmd-type:     #f70d1a;   /* command-type label              */
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+
 .background {
     -fx-background-color: derive(#1d1d1d, 20%);
     background-color: #383838; /* Used in the default.html file */
