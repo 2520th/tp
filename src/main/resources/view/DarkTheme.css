@@ -50,28 +50,30 @@
 /* ── Base ─────────────────────────────────────────────────── */
 
 .background {
-    -fx-background-color: derive(#1d1d1d, 20%);
-    background-color: #383838; /* Used in the default.html file */
+    -fx-background-color: -tl-bg-panel;
+    background-color: -tl-bg-input; /* Used in the default.html file */
 }
+
+/* ── Labels ───────────────────────────────────────────────── */
 
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #555555;
+    -fx-text-fill: -tl-text-placeholder;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
+    -fx-text-fill: -tl-text-body;
     -fx-opacity: 1;
 }
 
 .label-header {
     -fx-font-size: 32pt;
     -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-text-fill: -tl-text-body;
     -fx-opacity: 1;
 }
 
