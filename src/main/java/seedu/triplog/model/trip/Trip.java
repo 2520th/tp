@@ -123,6 +123,26 @@ public class Trip {
         return endDate;
     }
 
+    public String getPhoneDisplay() {
+        return phone == null ? null : phone.value;
+    }
+
+    public String getEmailDisplay() {
+        return email == null ? null : email.value;
+    }
+
+    public String getAddressDisplay() {
+        return address == null ? null : address.value;
+    }
+
+    public String getStartDateDisplay() {
+        return startDate == null ? null : startDate.toString();
+    }
+
+    public String getEndDateDisplay() {
+        return endDate == null ? null : endDate.toString();
+    }
+
     /**
      * Returns true if both trips have the same name.
      * This defines a weaker notion of equality between two trips.
