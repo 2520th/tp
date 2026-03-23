@@ -51,24 +51,24 @@ public class TripDateTest {
 
     @Test
     public void equals() {
-        TripDate date1 = new TripDate("2026-01-01");
-        TripDate date2 = new TripDate("2026-01-01");
-        TripDate date3 = new TripDate("2026-12-31");
+        TripDate sameDate = new TripDate("2026-01-01");
+        TripDate sameDate2 = new TripDate("2026-01-01");
+        TripDate diffDate = new TripDate("2026-12-31");
 
         // same object
-        assertEquals(date1, date1);
+        assertEquals(sameDate, sameDate);
 
         // same values
-        assertEquals(date1, date2);
+        assertEquals(sameDate, sameDate2);
 
         // different values
-        assertNotEquals(date1, date3);
+        assertNotEquals(sameDate, diffDate);
 
         // null
-        assertNotEquals(null, date1);
+        assertNotEquals(null, sameDate);
 
         // different type
-        assertNotEquals(5, date1);
+        assertNotEquals(5, sameDate);
     }
 
     @Test
