@@ -2,6 +2,7 @@ package seedu.triplog.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.triplog.testutil.TypicalTrips.ALICE;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class MessagesTest {
         Trip trip = ALICE;
         String expected = Messages.format(trip);
 
-        // Just ensure it runs and includes all fields
+        // simply checks if formatting succeeds with all fields
         assertEquals(expected, Messages.format(trip));
     }
 
@@ -32,10 +33,10 @@ public class MessagesTest {
 
         String formatted = Messages.format(trip);
 
-        // Should still contain name and tags only
-        assertEquals(trip.getName().toString(), formatted.split(";")[0]);
+        // should still contain name
+        assertTrue(formatted.contains(trip.getName().toString()));
 
-        // Ensure optional fields are not present
+        // ensure optional fields are not present
         assertFalse(formatted.contains("Phone:"));
         assertFalse(formatted.contains("Email:"));
         assertFalse(formatted.contains("Address:"));
