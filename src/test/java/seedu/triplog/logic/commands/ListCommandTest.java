@@ -7,6 +7,7 @@ import static seedu.triplog.testutil.TypicalIndexes.INDEX_FIRST_TRIP;
 import static seedu.triplog.testutil.TypicalTrips.getTypicalTripLog;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ public class ListCommandTest {
     @Test
     public void execute_listIsNotFiltered_showsSameListWithSummary() {
         String expectedSummary = TripSummaryUtil.calculateSummary(expectedModel.getFilteredTripList());
+        // Updated to expect default "start date" description
         String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", expectedSummary);
 
         assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
@@ -45,6 +47,7 @@ public class ListCommandTest {
         showTripAtIndex(model, INDEX_FIRST_TRIP);
 
         String expectedSummary = TripSummaryUtil.calculateSummary(expectedModel.getFilteredTripList());
+        // Updated to expect default "start date" description
         String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", expectedSummary);
 
         assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
@@ -80,6 +83,7 @@ public class ListCommandTest {
         Model expectedModel = new ModelManager(tripLog, new UserPrefs());
 
         String expectedSummary = "Summary: 1 Upcoming, 1 Ongoing, 1 Completed, 1 Planning";
+        // Updated to expect default "start date" description
         String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", expectedSummary);
 
         assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
@@ -103,5 +107,24 @@ public class ListCommandTest {
     @Test
     public void execute_invalidSortKey_throwsCommandException() {
         assertCommandFailure(new ListCommand("price"), model, ListCommand.MESSAGE_INVALID_SORT_KEY);
+    }
+
+    @Test
+    public void execute_persistenceCheck_sortOrderMaintained() {
+        Comparator<Trip> nameComparator = Comparator.comparing(trip -> trip.getName().fullName.toLowerCase());
+        String nameDescription = "name (alphabetical)";
+
+        // Setup initial sort state
+        model.updateSortedTripList(nameComparator);
+        model.setLastSortDescription(nameDescription);
+
+        expectedModel.updateSortedTripList(nameComparator);
+        expectedModel.setLastSortDescription(nameDescription);
+
+        String expectedSummary = TripSummaryUtil.calculateSummary(model.getFilteredTripList());
+        // Verify that it specifically remembers the "name (alphabetical)" description
+        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, nameDescription, expectedSummary);
+
+        assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
     }
 }
