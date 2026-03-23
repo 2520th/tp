@@ -34,6 +34,7 @@ public class ParserUtilTest {
     private static final String VALID_EMAIL = "rachel@example.com";
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_DATE = "2026-01-01";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -208,13 +209,13 @@ public class ParserUtilTest {
 
     @Test
     public void parseTripDate_validDateWithSpaces_success() throws Exception {
-        TripDate expected = new TripDate("2026-01-01");
-        assertEquals(expected, ParserUtil.parseTripDate("  2026-01-01  "));
+        TripDate expected = new TripDate(VALID_DATE);
+        assertEquals(expected, ParserUtil.parseTripDate("  " + VALID_DATE + " "));
     }
 
     @Test
     public void parseTripDate_validDate_success() throws Exception {
-        TripDate expected = new TripDate("2026-01-01");
-        assertEquals(expected, ParserUtil.parseTripDate("2026-01-01"));
+        TripDate expected = new TripDate(VALID_DATE);
+        assertEquals(expected, ParserUtil.parseTripDate(VALID_DATE));
     }
 }
