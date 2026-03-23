@@ -30,6 +30,10 @@
     -tl-bg-hover:          rgba(255, 140, 0, 0.10);   /* hover highlight */
     -tl-bg-menu:           rgba(173, 216, 234, 0.72); /* menu bar area   */
     -tl-bg-help:           rgba(173, 216, 234, 0.90); /* help window     */
+    -tl-bg-help-container: #1d1d1d;                  /* help message bg */
+    -tl-bg-copy-btn:       dimgray;                  /* copy button     */
+    -tl-bg-copy-btn-hover: gray;                     /* copy btn hover  */
+    -tl-bg-copy-btn-armed: darkgray;                 /* copy btn press  */
 
     /* ── Borders ──────────────────────────────────────────── */
     -tl-border-input:      #FF8C00;   /* input focus ring — matches accent */
@@ -401,7 +405,7 @@
 }
 
 #commandTextField {
-    -fx-background-color: transparent -tl-bg-input transparent -tl-bg-input;
+    -fx-background-color: -tl-bg-input;
     -fx-background-insets: 0;
     -fx-border-color: -tl-border-input -tl-border-input -tl-border-input -tl-border-input;
     -fx-border-insets: 0;
