@@ -79,14 +79,14 @@ public class ListCommand extends Command {
     private Comparator<Trip> getComparator(String key) throws CommandException {
         switch (key) {
         case "name":
-            return Comparator.comparing((Trip trip) -> trip.getName().fullName.toLowerCase());
+            return Comparator.comparing(trip -> trip.getName().fullName.toLowerCase());
         case "end":
-            return Comparator.comparing((Trip trip) -> trip.getEndDate() == null ? null : trip.getEndDate().value,
+            return Comparator.comparing(Trip::getEndDateDisplay,
                     Comparator.nullsLast(Comparator.naturalOrder()));
         case "len":
             return (t1, t2) -> Long.compare(calculateDuration(t2), calculateDuration(t1));
         case "start":
-            return Comparator.comparing((Trip trip) -> trip.getStartDate() == null ? null : trip.getStartDate().value,
+            return Comparator.comparing(Trip::getStartDateDisplay,
                     Comparator.nullsLast(Comparator.naturalOrder()));
         default:
             throw new CommandException(MESSAGE_INVALID_SORT_KEY);
