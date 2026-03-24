@@ -20,6 +20,7 @@ import seedu.triplog.logic.commands.HelpCommand;
 import seedu.triplog.logic.commands.ListCommand;
 import seedu.triplog.logic.commands.TagCommand;
 import seedu.triplog.logic.parser.exceptions.ParseException;
+import seedu.triplog.logic.commands.PreviewDeleteCommand;
 
 /**
  * Parses user input.
@@ -63,6 +64,9 @@ public class TripLogParser {
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
+
+        case PreviewDeleteCommand.COMMAND_WORD:
+            return new PreviewDeleteCommand(arguments);
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();

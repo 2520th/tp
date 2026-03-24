@@ -43,6 +43,10 @@ public class DeleteCommand extends Command {
             "Range is out of range of the currently displayed trip list.";
     public static final String MESSAGE_NO_MATCHING_TRIPS =
             "No trips in the currently displayed list matched the given delete criteria.";
+    public static final String MESSAGE_PREVIEW_DELETE_TRIP = "Preview: 1 trip will be deleted.\n";
+    public static final String MESSAGE_PREVIEW_DELETE_TRIPS = "Preview: %1$d trips will be deleted.\n";
+    public static final String MESSAGE_PREVIEW_FOOTER =
+            "\nPress Enter again to confirm deletion, or edit the command to cancel.";
 
     private enum DeleteMode {
         SINGLE,
@@ -117,6 +121,64 @@ public class DeleteCommand extends Command {
         default:
             throw new AssertionError("Unknown delete mode");
         }
+    }
+
+    public List<Trip> getTripsToDelete(Model model) throws CommandException {
+        requireNonNull(model);
+        List<Trip> lastShownList = model.getFilteredTripList();
+
+        switch (mode) {
+        case SINGLE:
+            if (targetIndex.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(MESSAGE_INDEX_OUT_OF_RANGE);
+            }
+            return List.of(lastShownList.get(targetIndex.getZeroBased()));
+
+        case RANGE:
+            if (startIndex.getZeroBased() >= lastShownList.size()
+                    || endIndex.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(MESSAGE_RANGE_OUT_OF_RANGE);
+            }
+            return new ArrayList<>(
+                    lastShownList.subList(startIndex.getZeroBased(), endIndex.getZeroBased() + 1));
+
+        case FILTER:
+            List<Trip> tripsToDelete = lastShownList.stream()
+                    .filter(predicate)
+                    .toList();
+
+            if (tripsToDelete.isEmpty()) {
+                throw new CommandException(MESSAGE_NO_MATCHING_TRIPS);
+            }
+            return tripsToDelete;
+
+        default:
+            throw new AssertionError("Unknown delete mode");
+        }
+    }
+
+    public String buildPreviewMessage(List<Trip> tripsToDelete) {
+        StringBuilder sb = new StringBuilder();
+
+        if (tripsToDelete.size() == 1) {
+            sb.append(MESSAGE_PREVIEW_DELETE_TRIP);
+        } else {
+            sb.append(String.format(MESSAGE_PREVIEW_DELETE_TRIPS, tripsToDelete.size()));
+        }
+
+        for (int i = 0; i < tripsToDelete.size(); i++) {
+            Trip trip = tripsToDelete.get(i);
+            sb.append(i + 1).append(". ")
+                    .append(trip.getName())
+                    .append(" (")
+                    .append(trip.getStartDate())
+                    .append(" to ")
+                    .append(trip.getEndDate())
+                    .append(")\n");
+        }
+
+        sb.append(MESSAGE_PREVIEW_FOOTER);
+        return sb.toString().trim();
     }
 
     private CommandResult executeSingleDelete(Model model, List<Trip> lastShownList) throws CommandException {
