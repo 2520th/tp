@@ -10,10 +10,10 @@ public class HelpCommand extends Command {
     public static final String COMMAND_WORD = "help";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-          + ": Opens the TripLog command syntax guide, or shows usage for a specific command.\n"
-          + "Format: " + COMMAND_WORD + " [COMMAND]\n"
-          + "Example: " + COMMAND_WORD + "\n"
-          + "Example: " + COMMAND_WORD + " add";
+            + ": Opens the TripLog command syntax guide, or shows usage for a specific command.\n"
+            + "Format: " + COMMAND_WORD + " [COMMAND]\n"
+            + "Example: " + COMMAND_WORD + "\n"
+            + "Example: " + COMMAND_WORD + " add";
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
     public static final String MESSAGE_UNKNOWN_HELP_COMMAND =
             "Unknown command: '%s'. Type 'help' to open the full command guide.";
@@ -42,7 +42,7 @@ public class HelpCommand extends Command {
                     + "        delete t/family";
 
     public static final String TAG_USAGE =
-            "tag <index> <tag-name>\n"
+            "tag <INDEX> <tag-name>\n"
                     + "  Adds a keyword tag to an existing trip.\n"
                     + "  tag-name must be alphanumeric and may contain spaces.\n"
                     + "  e.g.  tag 1 adventure    or    tag 1 night market";
@@ -58,9 +58,10 @@ public class HelpCommand extends Command {
                     + "  e.g. filter sd/2026-01-01 ed/2026-03-31";
 
     public static final String LIST_USAGE =
-            "list\n"
-                    + "  Displays all trip entries.\n"
-                    + "  e.g.  list";
+            "list [sort/KEY]\n"
+                    + "  Displays all trips with a summary (Upcoming, Ongoing, Completed, Planning).\n"
+                    + "  Optional sort keys: name, start, end, len.\n"
+                    + "  e.g. list, list sort/name, list sort/len";
 
     private final String argument;
 
@@ -82,6 +83,8 @@ public class HelpCommand extends Command {
 
     private static String getUsageForCommand(String commandWord) {
         switch (commandWord) {
+        case COMMAND_WORD:
+            return MESSAGE_USAGE;
         case AddCommand.COMMAND_WORD:
             return ADD_USAGE;
         case EditCommand.COMMAND_WORD:

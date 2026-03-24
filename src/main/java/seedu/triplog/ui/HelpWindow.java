@@ -15,8 +15,6 @@ import seedu.triplog.logic.commands.HelpCommand;
  */
 public class HelpWindow extends UiPart<Stage> {
 
-    public static final String USERGUIDE_URL = "https://ay2526s2-cs2103-f13-2.github.io/tp/UserGuide.html";
-
     public static final String PREFIX_NOTE =
             "Options use the prefix/ format — a short prefix followed immediately by a slash.\n"
                     + "Values with spaces do not need quotes (e.g., n/New York is valid).\n"
@@ -53,9 +51,6 @@ public class HelpWindow extends UiPart<Stage> {
     private Label listUsage;
 
     @FXML
-    private Label helpMessage;
-
-    @FXML
     private Label exitNote;
 
     /**
@@ -74,7 +69,6 @@ public class HelpWindow extends UiPart<Stage> {
         findUsage.setText(HelpCommand.FIND_USAGE);
         filterUsage.setText(HelpCommand.FILTER_USAGE);
         listUsage.setText(HelpCommand.LIST_USAGE);
-        helpMessage.setText("");
         exitNote.setText(EXIT_NOTE);
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (isCloseKey(event.getCode())) {

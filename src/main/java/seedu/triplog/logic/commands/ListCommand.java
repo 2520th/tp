@@ -79,18 +79,38 @@ public class ListCommand extends Command {
     private Comparator<Trip> getComparator(String key) throws CommandException {
         switch (key) {
         case "name":
-            return Comparator.comparing(trip -> trip.getName().fullName.toLowerCase());
+            return getNameComparator();
         case "end":
-            return Comparator.comparing(Trip::getEndDateDisplay,
-                    Comparator.nullsLast(Comparator.naturalOrder()));
+            return getEndDateComparator();
         case "len":
-            return (t1, t2) -> Long.compare(calculateDuration(t2), calculateDuration(t1));
+            return getDurationComparator();
         case "start":
-            return Comparator.comparing(Trip::getStartDateDisplay,
-                    Comparator.nullsLast(Comparator.naturalOrder()));
+            return getStartDateComparator();
         default:
             throw new CommandException(MESSAGE_INVALID_SORT_KEY);
         }
+    }
+
+    private Comparator<Trip> getNameComparator() {
+        return Comparator.comparing(Trip::getNameLowerCase);
+    }
+
+    private Comparator<Trip> getStartDateComparator() {
+        return Comparator.comparing(Trip::getStartDateDisplay,
+                        Comparator.nullsLast(Comparator.naturalOrder()))
+                .thenComparing(getNameComparator());
+    }
+
+    private Comparator<Trip> getEndDateComparator() {
+        return Comparator.comparing(Trip::getEndDateDisplay,
+                        Comparator.nullsLast(Comparator.naturalOrder()))
+                .thenComparing(getNameComparator());
+    }
+
+    private Comparator<Trip> getDurationComparator() {
+        Comparator<Trip> lenComparator = (t1, t2) -> Long.compare(calculateDuration(t2),
+                calculateDuration(t1));
+        return lenComparator.thenComparing(getNameComparator());
     }
 
     /**
