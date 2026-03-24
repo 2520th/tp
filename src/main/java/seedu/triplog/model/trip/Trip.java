@@ -28,7 +28,7 @@ public class Trip {
      */
     public static final Comparator<Trip> CHRONOLOGICAL_COMPARATOR = (trip1, trip2) -> {
         if (trip1.getStartDate() == null && trip2.getStartDate() == null) {
-            return trip1.getName().toString().compareToIgnoreCase(trip2.getName().toString());
+            return trip1.getNameLowerCase().compareTo(trip2.getNameLowerCase());
         }
         if (trip1.getStartDate() == null) {
             return 1;
@@ -39,7 +39,7 @@ public class Trip {
         int dateComparison = trip1.getStartDate().toString().compareTo(trip2.getStartDate().toString());
 
         if (dateComparison == 0) {
-            return trip1.getName().toString().compareToIgnoreCase(trip2.getName().toString());
+            return trip1.getNameLowerCase().compareTo(trip2.getNameLowerCase());
         }
 
         return dateComparison;
@@ -93,6 +93,14 @@ public class Trip {
 
     public Name getName() {
         return name;
+    }
+
+    /**
+     * Returns the full name in lower case.
+     * Used for case-insensitive sorting and satisfying Law of Demeter.
+     */
+    public String getNameLowerCase() {
+        return name.fullName.toLowerCase();
     }
 
     public Phone getPhone() {

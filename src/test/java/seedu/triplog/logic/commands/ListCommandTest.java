@@ -117,7 +117,7 @@ public class ListCommandTest {
 
     @Test
     public void execute_persistenceCheck_sortOrderMaintained() {
-        Comparator<Trip> nameComparator = Comparator.comparing(trip -> trip.getName().fullName.toLowerCase());
+        Comparator<Trip> nameComparator = Comparator.comparing(Trip::getNameLowerCase);
         String nameDescription = "name (alphabetical)";
 
         model.updateSortedTripList(nameComparator);
@@ -164,6 +164,37 @@ public class ListCommandTest {
                 "duration (longest first)", expectedSummary);
         expectedModel.setLastSortDescription("duration (longest first)");
         assertCommandSuccess(new ListCommand("len"), model, expectedMessageLen, expectedModel);
+    }
+
+    @Test
+    public void execute_sortTieBreaker_alphabeticalFallBack() {
+        TripLog tripLog = new TripLog();
+        // Both start on the same day, A should come before Z.
+        Trip zebraTrip = new TripBuilder().withName("Zebra").withStart("2026-06-01")
+                .withEnd("2026-06-10").build();
+        Trip appleTrip = new TripBuilder().withName("Apple").withStart("2026-06-01")
+                .withEnd("2026-06-10").build();
+
+        tripLog.addTrip(zebraTrip);
+        tripLog.addTrip(appleTrip);
+
+        Model model = new ModelManager(tripLog, new UserPrefs());
+        Model expectedModel = new ModelManager(tripLog, new UserPrefs());
+
+        // Setup expected model sort manually to verify tie-breaker logic
+        Comparator<Trip> nameTieBreaker = Comparator.comparing(Trip::getNameLowerCase);
+        Comparator<Trip> startComparator = Comparator.comparing(Trip::getStartDateDisplay,
+                Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(nameTieBreaker);
+
+        expectedModel.updateSortedTripList(startComparator);
+
+        String summary = TripSummaryUtil.calculateSummary(tripLog.getTripList());
+        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", summary);
+
+        assertCommandSuccess(new ListCommand("start"), model, expectedMessage, expectedModel);
+
+        // Final check: first element in model should be Apple
+        assertTrue(model.getFilteredTripList().get(0).getName().equals(appleTrip.getName()));
     }
 
     @Test
