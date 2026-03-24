@@ -162,27 +162,32 @@ Classes used by multiple components are in the `seedu.triplog.commons` package.
 
 The `ListCommand` has been enhanced to provide analytical feedback and dynamic reordering of the trip log. This implementation bridges the `Logic` and `Model` layers to transform a simple list view into a temporal dashboard.
 
-**Sorting Mechanism:**
+**Sorting Mechanism & Tie-Breaking:**
 The sorting is implemented using a **Comparator Factory** pattern within `ListCommand`. The application supports dynamic reordering based on four primary sort keys: `name`, `start`, `end`, and `len`.
 
-1. **`ListCommandParser`**: Intercepts the `list` command and identifies the `sort/` prefix. If no prefix is present, it defaults to chronological sorting.
-2. **Persistent Sorting**: The sort order is maintained in the `ModelManager` via a `SortedList` wrapper. Any subsequent operations (adding or editing trips) automatically re-apply the last used comparator to maintain order.
-3. **Null Handling**: All date-based comparators utilize `Comparator.nullsLast()` to ensure trips in the "Planning" stage (missing dates) do not clutter the top of the timeline.
+To ensure a stable and deterministic user experience, a **Multi-Level Tie-Breaker** is implemented:
+1. **Primary Key**: The user-selected key (e.g., `start date`).
+2. **Secondary Key (Tie-breaker)**: A case-insensitive alphabetical sort by trip name.
+   This ensures that trips with identical start dates or durations always appear in a consistent, predictable order.
+
+**Technical Workflow:**
+1. **`ListCommandParser`**: Intercepts the `list` command and identifies the `sort/` prefix.
+2. **`getComparator(key)`**: In `ListCommand`, this method chains the primary comparator with a `nameTieBreaker` using Java’s `.thenComparing()` method.
+3. **Persistent Sorting**: The sort order is maintained in the `ModelManager` via a `SortedList` wrapper. Any subsequent operations (adding or editing trips) automatically re-apply the last used comparator.
+4. **Null Handling**: All date-based comparators utilize `Comparator.nullsLast()` to ensure trips in the "Planning" stage (missing dates) appear at the bottom.
 
 **Temporal Dashboard:**
 The trip statistics dashboard provides a temporal analysis of trips relative to `LocalDate.now()`. To ensure the dashboard remains accurate after data-modifying operations, the calculation logic is centralized:
 
 * **Centralized Logic**: The calculation logic is centralized in `TripSummaryUtil#calculateSummary(ObservableList<Trip>)`.
 * **Live Updates**: Data-modifying commands (`AddCommand`, `EditCommand`, and `DeleteCommand`) invoke this utility during their execution.
-* **Feedback Mechanism**: The resulting summary counts are appended to the `CommandResult` feedback string. This ensures that any change to a trip's dates or the addition/removal of trips is immediately reflected in the user's result display.
+* **Feedback Mechanism**: The resulting summary counts are appended to the `CommandResult` feedback string.
 
 **Status Determination Logic:**
 1. **Planning**: `startDate == null`
 2. **Upcoming**: `today < startDate`
 3. **Completed**: `today > endDate`
 4. **Ongoing**: `startDate <= today <= endDate` (Inclusive of boundaries)
-
-The result is a `CommandResult` message displaying the current sort order and a tally of statuses.
 
 ### Help command
 
@@ -210,12 +215,12 @@ The `TripLogParser` routes `help` to `HelpCommand`:
 **Aspect: Where to display per-command help**
 
 * **Alternative 1 (current choice):** Display inline in the existing `ResultDisplay`.
-  * Pros: No extra window; fast to access; keyboard-friendly.
-  * Cons: Long usage text may get truncated if the result area is small.
+    * Pros: No extra window; fast to access; keyboard-friendly.
+    * Cons: Long usage text may get truncated if the result area is small.
 
 * **Alternative 2:** Always open a `HelpWindow`, filtered to the requested command.
-  * Pros: Consistent UI; more space for content.
-  * Cons: More disruptive; requires an extra window management step.
+    * Pros: Consistent UI; more space for content.
+    * Cons: More disruptive; requires an extra window management step.
 
 --------------------------------------------------------------------------------------------------------------------
 
