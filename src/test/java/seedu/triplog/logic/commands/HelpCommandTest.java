@@ -76,6 +76,13 @@ public class HelpCommandTest {
     }
 
     @Test
+    public void execute_helpArgument_showsInlineUsage() {
+        CommandResult result = new HelpCommand("help").execute(model);
+        assertTrue(result.getFeedbackToUser().contains("help"));
+        assertFalse(result.isShowHelp());
+    }
+
+    @Test
     public void execute_unknownArgument_showsErrorMessage() {
         CommandResult result = new HelpCommand("foobar").execute(model);
         assertTrue(result.getFeedbackToUser().contains("foobar"));
@@ -86,5 +93,22 @@ public class HelpCommandTest {
     public void execute_argumentWithWhitespace_trims() {
         CommandResult result = new HelpCommand("  add  ").execute(model);
         assertTrue(result.getFeedbackToUser().startsWith("add "));
+    }
+
+    @Test
+    public void addUsage_containsDateOptions() {
+        assertTrue(HelpCommand.ADD_USAGE.contains("sd/"));
+        assertTrue(HelpCommand.ADD_USAGE.contains("ed/"));
+    }
+
+    @Test
+    public void deleteUsage_containsIndexPlaceholder() {
+        assertTrue(HelpCommand.DELETE_USAGE.contains("<INDEX>"));
+    }
+
+    @Test
+    public void tagUsage_containsIndexAndTagNamePlaceholders() {
+        assertTrue(HelpCommand.TAG_USAGE.contains("<INDEX>"));
+        assertTrue(HelpCommand.TAG_USAGE.contains("<tag-name>"));
     }
 }
