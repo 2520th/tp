@@ -32,7 +32,7 @@ public class PreviewDeleteCommand extends Command {
         requireNonNull(model);
 
         try {
-            DeleteCommand deleteCommand = (DeleteCommand) new DeleteCommandParser().parse(deleteArguments);
+            DeleteCommand deleteCommand = new DeleteCommandParser().parse(deleteArguments);
             List<Trip> tripsToDelete = deleteCommand.getTripsToDelete(model);
             return new CommandResult(deleteCommand.buildPreviewMessage(tripsToDelete));
         } catch (ParseException e) {

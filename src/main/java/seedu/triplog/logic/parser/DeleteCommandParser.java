@@ -33,6 +33,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
     private static final Pattern RANGE_PATTERN = Pattern.compile("\\s*(\\d+)\\s*-\\s*(\\d+)\\s*");
     private static final String MESSAGE_INVALID_DATE_RANGE =
             "Start date cannot be after end date.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
      * and returns a DeleteCommand object for execution.
