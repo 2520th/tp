@@ -2,10 +2,13 @@ package seedu.triplog.ui;
 
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -30,6 +33,7 @@ public class MainWindow extends UiPart<Stage> {
     private TripListPanel tripListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private CommandBox commandBox;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -67,8 +71,9 @@ public class MainWindow extends UiPart<Stage> {
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getTripLogFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(this::executeCommand);
+        commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+        Platform.runLater(() -> commandBox.requestFocus());
     }
 
     private void setWindowDefaultSize(GuiSettings guiSettings) {
@@ -82,6 +87,13 @@ public class MainWindow extends UiPart<Stage> {
 
     private void setAccelerators() {
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
+        getRoot().getScene().getAccelerators().put(
+                new KeyCodeCombination(KeyCode.L, KeyCombination.CONTROL_DOWN), () -> {
+                    if (commandBox != null) {
+                        commandBox.requestFocus();
+                    }
+                }
+        );
     }
 
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {

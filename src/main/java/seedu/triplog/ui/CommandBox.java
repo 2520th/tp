@@ -144,4 +144,11 @@ public class CommandBox extends UiPart<Region> {
          */
         CommandResult execute(String commandText) throws CommandException, ParseException;
     }
+
+    /**
+     * Requests focus on the command box.
+     */
+    public void requestFocus() {
+        commandTextField.requestFocus();
+    }
 }
