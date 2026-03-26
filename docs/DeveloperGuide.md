@@ -167,6 +167,12 @@ The following sequence diagram illustrates the process of tagging a trip:
 
 <puml src="diagrams/TagSequenceDiagram.puml" alt="Tag Command Sequence Diagram" />
 
+### Filtering Trips by Date: Filter Command
+
+The following sequence diagram illustrates the process of filtering a trip:
+
+<puml src="diagrams/FilterSequenceDiagram.puml" alt="Filter Command Sequence Diagram" />
+
 ### Trip Statistics and Multi-Key Sorting
 
 #### Implementation
