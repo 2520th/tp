@@ -2,69 +2,89 @@
 !include style.puml
 skinparam ArrowFontStyle plain
 
+box UI UI_COLOR_T1
+participant ":CommandBox" as CommandBox UI_COLOR
+end box
+
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":TripLogParser" as TripLogParser LOGIC_COLOR
 participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
+participant "p:PreviewDeleteCommand" as PreviewDeleteCommand LOGIC_COLOR
 participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
-participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("delete 1")
+== First Enter: preview ==
+
+[-> CommandBox : enter "delete 1-3"
+activate CommandBox
+
+CommandBox -> LogicManager : execute("deletepreview 1-3")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("delete 1")
-activate AddressBookParser
+LogicManager -> TripLogParser : parseCommand("deletepreview 1-3")
+activate TripLogParser
+TripLogParser --> LogicManager : p:PreviewDeleteCommand
+deactivate TripLogParser
 
-create DeleteCommandParser
-AddressBookParser -> DeleteCommandParser
+LogicManager -> PreviewDeleteCommand : execute(m)
+activate PreviewDeleteCommand
+
+PreviewDeleteCommand -> DeleteCommandParser : parse("1-3")
 activate DeleteCommandParser
-
-DeleteCommandParser --> AddressBookParser
+DeleteCommandParser --> PreviewDeleteCommand : d:DeleteCommand
 deactivate DeleteCommandParser
 
-AddressBookParser -> DeleteCommandParser : parse("1")
-activate DeleteCommandParser
-
-create DeleteCommand
-DeleteCommandParser -> DeleteCommand
+PreviewDeleteCommand -> DeleteCommand : getTripsToDelete(m)
 activate DeleteCommand
-
-DeleteCommand --> DeleteCommandParser :
+DeleteCommand -> Model : retrieve matching trips
+activate Model
+Model --> DeleteCommand : tripsToDelete
+deactivate Model
+DeleteCommand --> PreviewDeleteCommand : tripsToDelete
 deactivate DeleteCommand
 
-DeleteCommandParser --> AddressBookParser : d
-deactivate DeleteCommandParser
-'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> AddressBookParser
-destroy DeleteCommandParser
+PreviewDeleteCommand --> LogicManager : preview message
+deactivate PreviewDeleteCommand
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
+LogicManager --> CommandBox : show preview
+deactivate LogicManager
+deactivate CommandBox
+
+== Second Enter: confirm deletion ==
+
+[-> CommandBox : press Enter again
+activate CommandBox
+
+CommandBox -> LogicManager : execute("delete 1-3")
+activate LogicManager
+
+LogicManager -> TripLogParser : parseCommand("delete 1-3")
+activate TripLogParser
+TripLogParser --> LogicManager : d:DeleteCommand
+deactivate TripLogParser
 
 LogicManager -> DeleteCommand : execute(m)
 activate DeleteCommand
 
-DeleteCommand -> Model : deletePerson(1)
+DeleteCommand -> Model : delete matching trips
 activate Model
-
 Model --> DeleteCommand
 deactivate Model
 
-create CommandResult
-DeleteCommand -> CommandResult
-activate CommandResult
-
-CommandResult --> DeleteCommand
-deactivate CommandResult
-
-DeleteCommand --> LogicManager : r
+DeleteCommand --> LogicManager : success message
 deactivate DeleteCommand
 
-[<--LogicManager
+LogicManager --> CommandBox : show result
 deactivate LogicManager
+deactivate CommandBox
+
+note over CommandBox
+First Enter previews the trips to be deleted.
+Second Enter of the unchanged command confirms the deletion.
+end note
 @enduml
