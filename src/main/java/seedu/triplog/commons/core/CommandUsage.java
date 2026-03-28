@@ -54,4 +54,14 @@ public class CommandUsage {
                     + "  Optional sort keys: name, start, end, len.\n"
                     + "  e.g. list, list sort/name, list sort/len";
 
+    public static final String CLEAR_USAGE =
+            "clear\n"
+                    + "  Deletes all trips from TripLog.\n"
+                    + "  e.g. clear";
+
+    public static final String EXIT_USAGE =
+            "exit\n"
+                    + "  Exits the application.\n"
+                    + "  e.g. exit";
+
 }

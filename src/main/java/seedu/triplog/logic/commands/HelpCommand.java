@@ -56,6 +56,10 @@ public class HelpCommand extends Command {
             return CommandUsage.FILTER_USAGE;
         case ListCommand.COMMAND_WORD:
             return CommandUsage.LIST_USAGE;
+        case ClearCommand.COMMAND_WORD:
+            return CommandUsage.CLEAR_USAGE;
+        case ExitCommand.COMMAND_WORD:
+            return CommandUsage.EXIT_USAGE;
         default:
             throw new CommandException(String.format(MESSAGE_UNKNOWN_HELP_COMMAND, commandWord));
         }

@@ -4,12 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
+
+import seedu.triplog.commons.core.CommandUsage;
 
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -78,6 +79,19 @@ public class HelpWindowTest {
     @Test
     public void isShowing_initiallyFalse() {
         assertFalse(helpWindow.isShowing());
+    }
+
+    @Test
+    public void commandUsage_allStrings_containCommandKeyword() {
+        assertTrue(CommandUsage.ADD_USAGE.contains("add"));
+        assertTrue(CommandUsage.EDIT_USAGE.contains("edit"));
+        assertTrue(CommandUsage.DELETE_USAGE.contains("delete"));
+        assertTrue(CommandUsage.TAG_USAGE.contains("tag"));
+        assertTrue(CommandUsage.FIND_USAGE.contains("find"));
+        assertTrue(CommandUsage.FILTER_USAGE.contains("filter"));
+        assertTrue(CommandUsage.LIST_USAGE.contains("list"));
+        assertTrue(CommandUsage.CLEAR_USAGE.contains("clear"));
+        assertTrue(CommandUsage.EXIT_USAGE.contains("exit"));
     }
 
 }

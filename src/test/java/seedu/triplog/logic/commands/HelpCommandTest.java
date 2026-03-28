@@ -86,6 +86,20 @@ public class HelpCommandTest {
     }
 
     @Test
+    public void execute_clearArgument_showsInlineUsage() throws CommandException {
+        CommandResult result = new HelpCommand("clear").execute(model);
+        assertTrue(result.getFeedbackToUser().startsWith("clear"));
+        assertFalse(result.isShowHelp());
+    }
+
+    @Test
+    public void execute_exitArgument_showsInlineUsage() throws CommandException {
+        CommandResult result = new HelpCommand("exit").execute(model);
+        assertTrue(result.getFeedbackToUser().startsWith("exit"));
+        assertFalse(result.isShowHelp());
+    }
+
+    @Test
     public void execute_unknownArgument_showsErrorMessage() {
         assertThrows(CommandException.class, () -> new HelpCommand("foobar").execute(model));
     }
