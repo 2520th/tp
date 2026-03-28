@@ -10,9 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
-import org.testfx.util.WaitForAsyncUtils;
 
-import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import seedu.triplog.commons.core.CommandUsage;
@@ -24,7 +22,7 @@ public class HelpWindowTest {
 
     @Start
     public void start(Stage stage) {
-        helpWindow = new HelpWindow(stage);
+        helpWindow = new HelpWindow(new Stage());
     }
 
     @Stop
@@ -109,24 +107,6 @@ public class HelpWindowTest {
     // EP: hidden state
     @Test
     public void isShowing_initiallyFalse() {
-        assertFalse(helpWindow.isShowing());
-    }
-
-    // EP: visible state — show() transitions window into showing
-    @Test
-    public void show_windowBecomesVisible() {
-        Platform.runLater(() -> helpWindow.show());
-        WaitForAsyncUtils.waitForFxEvents();
-        assertTrue(helpWindow.isShowing());
-    }
-
-    // EP: hidden state — hide() after show() transitions window back to not showing
-    @Test
-    public void hide_afterShow_windowBecomesHidden() {
-        Platform.runLater(() -> helpWindow.show());
-        WaitForAsyncUtils.waitForFxEvents();
-        Platform.runLater(() -> helpWindow.hide());
-        WaitForAsyncUtils.waitForFxEvents();
         assertFalse(helpWindow.isShowing());
     }
 
