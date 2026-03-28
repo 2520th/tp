@@ -24,7 +24,7 @@ public class HelpWindowTest {
 
     @Start
     public void start(Stage stage) {
-        helpWindow = new HelpWindow(new Stage());
+        helpWindow = new HelpWindow(stage);
     }
 
     @Stop
