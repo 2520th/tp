@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -29,37 +30,37 @@ public class HelpWindowTest {
         helpWindow.hide();
     }
 
-    // EP: valid Stage 
+    // EP: valid Stage
     @Test
     public void constructor_createsHelpWindow() {
         assertNotNull(helpWindow);
     }
 
-    // EP: null Stage is an invalid input 
+    // EP: null Stage is an invalid input
     @Test
     public void constructor_nullRoot_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new HelpWindow(null));
     }
 
-    // EP: null key code is an invalid input 
+    // EP: null key code is an invalid input
     @Test
     public void isCloseKey_nullCode_throwsAssertionError() {
         assertThrows(AssertionError.class, () -> HelpWindow.isCloseKey(null));
     }
 
-    // EP: Q is in the close-key partition 
+    // EP: Q is in the close-key partition
     @Test
     public void isCloseKey_qKey_returnsTrue() {
         assertTrue(HelpWindow.isCloseKey(KeyCode.Q));
     }
 
-    // EP: ESCAPE is in the close-key partition 
+    // EP: ESCAPE is in the close-key partition
     @Test
     public void isCloseKey_escapeKey_returnsTrue() {
         assertTrue(HelpWindow.isCloseKey(KeyCode.ESCAPE));
     }
 
-    // EP: alphabetic non-Q keys and non-alphabetic keys are not close keys 
+    // EP: alphabetic non-Q keys and non-alphabetic keys are not close keys
     @Test
     public void isCloseKey_otherKey_returnsFalse() {
         assertFalse(HelpWindow.isCloseKey(KeyCode.A));
@@ -95,7 +96,7 @@ public class HelpWindowTest {
         assertFalse(HelpWindow.isCloseKey(KeyCode.DIGIT9));
     }
 
-    // EP: navigation and whitespace keys form a distinct non-close-key partition 
+    // EP: navigation and whitespace keys form a distinct non-close-key partition
     @Test
     public void isCloseKey_navigationAndSpaceKeys_returnsFalse() {
         assertFalse(HelpWindow.isCloseKey(KeyCode.SPACE));
@@ -103,7 +104,7 @@ public class HelpWindowTest {
         assertFalse(HelpWindow.isCloseKey(KeyCode.DOWN));
     }
 
-    // EP: hidden state 
+    // EP: hidden state
     @Test
     public void isShowing_initiallyFalse() {
         assertFalse(helpWindow.isShowing());
