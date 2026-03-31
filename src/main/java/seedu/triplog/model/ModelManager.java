@@ -25,7 +25,6 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Trip> filteredTrips;
     private final SortedList<Trip> sortedTrips;
-    private String lastSortDescription = "start date";
 
     /**
      * Initializes a ModelManager with the given tripLog and userPrefs.
@@ -40,7 +39,7 @@ public class ModelManager implements Model {
         filteredTrips = new FilteredList<>(this.tripLog.getTripList());
         sortedTrips = new SortedList<>(filteredTrips);
 
-        sortedTrips.setComparator(Trip.CHRONOLOGICAL_COMPARATOR);
+        setInitialComparator(this.userPrefs.getLastSortDescription());
     }
 
     public ModelManager() {
@@ -147,13 +146,42 @@ public class ModelManager implements Model {
 
     @Override
     public String getLastSortDescription() {
-        return lastSortDescription;
+        return userPrefs.getLastSortDescription();
     }
 
     @Override
     public void setLastSortDescription(String description) {
         requireNonNull(description);
-        this.lastSortDescription = description;
+        userPrefs.setLastSortDescription(description);
+    }
+
+    /**
+     * Sets the sorted list comparator based on the persisted description string.
+     */
+    private void setInitialComparator(String description) {
+        if (description == null) {
+            sortedTrips.setComparator(Trip.CHRONOLOGICAL_COMPARATOR);
+            return;
+        }
+
+        switch (description) {
+        case "name (alphabetical)":
+            sortedTrips.setComparator(Comparator.comparing(Trip::getNameLowerCase));
+            break;
+        case "end date":
+            sortedTrips.setComparator(Comparator.comparing(Trip::getEndDateDisplay,
+                            Comparator.nullsLast(Comparator.naturalOrder()))
+                    .thenComparing(Trip::getNameLowerCase));
+            break;
+        case "duration (longest first)":
+            sortedTrips.setComparator((t1, t2) -> Long.compare(t2.getDurationInDays(),
+                    t1.getDurationInDays()));
+            break;
+        case "start date":
+        default:
+            sortedTrips.setComparator(Trip.CHRONOLOGICAL_COMPARATOR);
+            break;
+        }
     }
 
     @Override
