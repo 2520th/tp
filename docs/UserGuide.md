@@ -87,6 +87,14 @@ Examples:
 
 Adds a trip to the log.
 
+<box type="info" seamless>
+
+**Duplicate detection:** A trip is considered a duplicate if it has the same name and
+overlapping dates as an existing trip. Trips with the same name but non-overlapping date
+ranges are allowed. For example, you can have two trips named "Tokyo", one from
+2026-01-01 to 2026-01-10 and another from 2026-03-01 to 2026-03-10.
+</box>
+
 Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
 
 <box type="tip" seamless>
@@ -130,6 +138,12 @@ Examples:
 ### Editing a trip : `edit`
 
 Edits an existing trip in the trip log.
+
+<box type="info" seamless>
+
+**Duplicate detection:** Editing a trip will be rejected if it violates the duplicate logic as mentioned 
+in `Adding a trip` (same name and overlapping dates as another existing trip).
+</box>
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​`
 
