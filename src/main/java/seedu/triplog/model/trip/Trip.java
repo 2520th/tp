@@ -227,7 +227,8 @@ public class Trip {
             return false;
         }
 
-        boolean sameName = this.getNameLowerCase().equals(otherTrip.getNameLowerCase());        boolean overlappingDates = datesOverlap(this.startDate, this.endDate,
+        boolean sameName = this.getNameLowerCase().equals(otherTrip.getNameLowerCase());
+        boolean overlappingDates = datesOverlap(this.startDate, this.endDate,
                                                 otherTrip.startDate, otherTrip.endDate);
 
         return sameName && overlappingDates;
