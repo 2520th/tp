@@ -78,7 +78,8 @@ public class LogicManagerTest {
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
         String expectedSummary = TripSummaryUtil.calculateSummary(model.getFilteredTripList());
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", expectedSummary);
+        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, ListCommand.SORT_DESC_START,
+                expectedSummary);
         assertCommandSuccess(listCommand, expectedMessage, model);
     }
 
@@ -119,7 +120,8 @@ public class LogicManagerTest {
     @Test
     public void getSummary_initialState_returnsCorrectSummary() {
         String expectedSummary = TripSummaryUtil.calculateSummary(model.getFilteredTripList());
-        String expectedMessage = String.format("Listed all trips sorted by %s.\n%s", "start date", expectedSummary);
+        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, ListCommand.SORT_DESC_START,
+                expectedSummary);
         assertEquals(expectedMessage, logic.getSummary());
     }
 
@@ -136,8 +138,8 @@ public class LogicManagerTest {
         Logic logicWithNullSort = new LogicManager(modelStub, storage);
         String summary = logicWithNullSort.getSummary();
 
-        // This triggers the 'if (sortDescription == null)' branch in LogicManager
-        assertTrue(summary.contains("sorted by start date"));
+        // Verifies fallback to constant start date description
+        assertTrue(summary.contains("sorted by " + ListCommand.SORT_DESC_START));
     }
 
     private void assertCommandSuccess(String inputCommand, String expectedMessage,

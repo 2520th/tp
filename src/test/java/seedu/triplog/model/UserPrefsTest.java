@@ -7,6 +7,8 @@ import static seedu.triplog.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.triplog.logic.commands.ListCommand;
+
 /**
  * Contains unit tests for UserPrefs.
  */
@@ -27,11 +29,11 @@ public class UserPrefsTest {
     @Test
     public void equals() {
         UserPrefs userPrefs = new UserPrefs();
-        userPrefs.setLastSortDescription("name");
+        userPrefs.setLastSortDescription(ListCommand.SORT_DESC_NAME);
 
         // same values -> returns true
         UserPrefs cb = new UserPrefs();
-        cb.setLastSortDescription("name");
+        cb.setLastSortDescription(ListCommand.SORT_DESC_NAME);
         assertTrue(userPrefs.equals(cb));
 
         // same object -> returns true
@@ -45,7 +47,7 @@ public class UserPrefsTest {
 
         // different lastSortDescription -> returns false
         UserPrefs differentSort = new UserPrefs();
-        differentSort.setLastSortDescription("end");
+        differentSort.setLastSortDescription(ListCommand.SORT_DESC_END);
         assertFalse(userPrefs.equals(differentSort));
     }
 

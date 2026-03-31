@@ -16,6 +16,7 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import seedu.triplog.commons.core.GuiSettings;
+import seedu.triplog.logic.commands.ListCommand;
 import seedu.triplog.model.trip.Name;
 import seedu.triplog.model.trip.NameContainsKeywordsPredicate;
 import seedu.triplog.model.trip.Trip;
@@ -37,30 +38,9 @@ public class ModelManagerTest {
 
     @Test
     public void constructor_initializesCorrectComparator() {
-        // Test 'name (alphabetical)' branch
         UserPrefs namePrefs = new UserPrefs();
-        namePrefs.setLastSortDescription("name (alphabetical)");
-        ModelManager nameModel = new ModelManager(new TripLog(), namePrefs);
-        assertEquals("name (alphabetical)", nameModel.getLastSortDescription());
-
-        // Test 'end date' branch
-        UserPrefs endPrefs = new UserPrefs();
-        endPrefs.setLastSortDescription("end date");
-        new ModelManager(new TripLog(), endPrefs);
-
-        // Test 'duration (longest first)' branch
-        UserPrefs lenPrefs = new UserPrefs();
-        lenPrefs.setLastSortDescription("duration (longest first)");
-        new ModelManager(new TripLog(), lenPrefs);
-
-        // Test 'invalid/default' branch (triggers default case in switch)
-        UserPrefs invalidPrefs = new UserPrefs();
-        invalidPrefs.setLastSortDescription("invalid_key");
-        new ModelManager(new TripLog(), invalidPrefs);
-
-        // Test 'null' branch via default behavior
-        UserPrefs defaultPrefs = new UserPrefs();
-        new ModelManager(new TripLog(), defaultPrefs);
+        ModelManager model = new ModelManager(new TripLog(), namePrefs, Trip.CHRONOLOGICAL_COMPARATOR);
+        assertEquals(new UserPrefs(), model.getUserPrefs());
     }
 
     @Test
@@ -180,7 +160,7 @@ public class ModelManagerTest {
 
         // different lastSortDescription -> returns false
         UserPrefs diffSortPrefs = new UserPrefs();
-        diffSortPrefs.setLastSortDescription("name (alphabetical)");
+        diffSortPrefs.setLastSortDescription(ListCommand.SORT_DESC_NAME);
         assertFalse(modelManager.equals(new ModelManager(tripLog, diffSortPrefs)));
     }
 }
