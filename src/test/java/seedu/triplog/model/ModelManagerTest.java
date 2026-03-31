@@ -21,6 +21,9 @@ import seedu.triplog.model.trip.NameContainsKeywordsPredicate;
 import seedu.triplog.model.trip.Trip;
 import seedu.triplog.model.trip.TripDate;
 
+/**
+ * Contains unit tests for ModelManager.
+ */
 public class ModelManagerTest {
 
     private ModelManager modelManager = new ModelManager();
@@ -30,6 +33,29 @@ public class ModelManagerTest {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
         assertEquals(new TripLog(), new TripLog(modelManager.getTripLog()));
+    }
+
+    @Test
+    public void constructor_initializesCorrectComparator() {
+        // Test 'name (alphabetical)' branch
+        UserPrefs namePrefs = new UserPrefs();
+        namePrefs.setLastSortDescription("name (alphabetical)");
+        ModelManager nameModel = new ModelManager(new TripLog(), namePrefs);
+        assertEquals("name (alphabetical)", nameModel.getLastSortDescription());
+
+        // Test 'end date' branch
+        UserPrefs endPrefs = new UserPrefs();
+        endPrefs.setLastSortDescription("end date");
+        new ModelManager(new TripLog(), endPrefs);
+
+        // Test 'duration (longest first)' branch
+        UserPrefs lenPrefs = new UserPrefs();
+        lenPrefs.setLastSortDescription("duration (longest first)");
+        new ModelManager(new TripLog(), lenPrefs);
+
+        // Test 'null' branch via default behavior
+        UserPrefs defaultPrefs = new UserPrefs();
+        new ModelManager(new TripLog(), defaultPrefs);
     }
 
     @Test
@@ -146,5 +172,10 @@ public class ModelManagerTest {
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setTripLogFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(tripLog, differentUserPrefs)));
+
+        // different lastSortDescription -> returns false
+        UserPrefs diffSortPrefs = new UserPrefs();
+        diffSortPrefs.setLastSortDescription("name (alphabetical)");
+        assertFalse(modelManager.equals(new ModelManager(tripLog, diffSortPrefs)));
     }
 }

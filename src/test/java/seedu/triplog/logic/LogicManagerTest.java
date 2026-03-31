@@ -2,6 +2,7 @@ package seedu.triplog.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_TRIP_DISPLAYED_INDEX;
 import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.triplog.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
@@ -30,6 +31,7 @@ import seedu.triplog.logic.parser.exceptions.ParseException;
 import seedu.triplog.model.Model;
 import seedu.triplog.model.ModelManager;
 import seedu.triplog.model.ReadOnlyTripLog;
+import seedu.triplog.model.TripLog;
 import seedu.triplog.model.UserPrefs;
 import seedu.triplog.model.trip.Trip;
 import seedu.triplog.storage.JsonTripLogStorage;
@@ -37,6 +39,9 @@ import seedu.triplog.storage.JsonUserPrefsStorage;
 import seedu.triplog.storage.StorageManager;
 import seedu.triplog.testutil.TripBuilder;
 
+/**
+ * Contains unit tests for LogicManager.
+ */
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
     private static final IOException DUMMY_AD_EXCEPTION = new AccessDeniedException("dummy access denied exception");
@@ -74,7 +79,6 @@ public class LogicManagerTest {
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
         String expectedSummary = TripSummaryUtil.calculateSummary(model.getFilteredTripList());
-        // Updated to expect the default "start date" initialized in ModelManager
         String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS, "start date", expectedSummary);
         assertCommandSuccess(listCommand, expectedMessage, model);
     }
@@ -118,6 +122,15 @@ public class LogicManagerTest {
         String expectedSummary = TripSummaryUtil.calculateSummary(model.getFilteredTripList());
         String expectedMessage = String.format("Listed all trips sorted by %s.\n%s", "start date", expectedSummary);
         assertEquals(expectedMessage, logic.getSummary());
+    }
+
+    @Test
+    public void getSummary_nullSortDescription_defaultsToStartDate() {
+        UserPrefs nullSortPrefs = new UserPrefs();
+        nullSortPrefs.setLastSortDescription("start date");
+        Model modelWithNullSort = new ModelManager(new TripLog(), nullSortPrefs);
+        Logic logicWithNullSort = new LogicManager(modelWithNullSort, storage);
+        assertTrue(logicWithNullSort.getSummary().contains("sorted by start date"));
     }
 
     private void assertCommandSuccess(String inputCommand, String expectedMessage,
