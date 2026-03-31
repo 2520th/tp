@@ -100,7 +100,8 @@ public class ResultDisplay extends UiPart<Region> {
     private boolean isError(String message) {
         String lower = message.toLowerCase();
         return Stream.of("invalid", "unknown", "error", "cannot", "failed", "exception",
-                        "must", "no such", "not allowed", "insufficient", "duplicate")
+                        "must", "no such", "not allowed", "insufficient", "duplicate", "should not",
+                        "should be", "out of range", "less than or equal", "accepts exactly one")
                 .anyMatch(lower::contains);
     }
 }
