@@ -81,7 +81,7 @@ public class EditCommand extends Command {
         Trip tripToEdit = lastShownList.get(index.getZeroBased());
         Trip editedTrip = createEditedTrip(tripToEdit, editTripDescriptor);
 
-        if (!tripToEdit.isSameTrip(editedTrip) && model.hasTrip(editedTrip)) {
+        if (model.hasTripExcluding(editedTrip, tripToEdit)) {
             throw new CommandException(MESSAGE_DUPLICATE_TRIP);
         }
 

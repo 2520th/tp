@@ -74,6 +74,35 @@ public class UniqueTripListTest {
     }
 
     @Test
+    public void add_sameNameNonOverlappingDates_success() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-02-01").withEnd("2026-02-10").build();
+        uniqueTripList.add(trip1);
+        uniqueTripList.add(trip2);
+        assertEquals(2, uniqueTripList.asUnmodifiableObservableList().size());
+    }
+
+    @Test
+    public void add_sameNameOverlappingDates_throwsDuplicateTripException() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-05").withEnd("2026-01-15").build();
+        uniqueTripList.add(trip1);
+        assertThrows(DuplicateTripException.class, () -> uniqueTripList.add(trip2));
+    }
+
+    @Test
+    public void setTrip_editedTripOverlapsWithOtherTrip_throwsDuplicateTripException() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-02-01").withEnd("2026-02-10").build();
+        uniqueTripList.add(trip1);
+        uniqueTripList.add(trip2);
+
+        // Edit trip2's dates to overlap with trip1
+        Trip editedTrip2 = new TripBuilder().withName("Trip").withStart("2026-01-05").withEnd("2026-01-15").build();
+        assertThrows(DuplicateTripException.class, () -> uniqueTripList.setTrip(trip2, editedTrip2));
+    }
+
+    @Test
     public void setTrip_editedTripIsSameTrip_success() {
         uniqueTripList.add(ALICE);
         uniqueTripList.setTrip(ALICE, ALICE);

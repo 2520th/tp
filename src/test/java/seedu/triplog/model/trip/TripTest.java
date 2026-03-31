@@ -36,7 +36,7 @@ public class TripTest {
         // null -> returns false
         assertFalse(ALICE.isSameTrip(null));
 
-        // same name, all other attributes different -> returns true
+        // same name, same dates, other attributes different -> returns true
         Trip editedAlice = new TripBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB)
                 .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
         assertTrue(ALICE.isSameTrip(editedAlice));
@@ -53,6 +53,122 @@ public class TripTest {
         String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
         editedBob = new TripBuilder(BOB).withName(nameWithTrailingSpaces).build();
         assertFalse(BOB.isSameTrip(editedBob));
+
+        // same name, non-overlapping dates -> returns false
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-02-01").withEnd("2026-02-10").build();
+        assertFalse(trip1.isSameTrip(trip2));
+
+        // same name, overlapping dates -> returns true
+        trip2 = new TripBuilder().withName("Trip").withStart("2026-01-05").withEnd("2026-01-15").build();
+        assertTrue(trip1.isSameTrip(trip2));
+
+        // same name, one range contains the other -> returns true
+        trip2 = new TripBuilder().withName("Trip").withStart("2026-01-03").withEnd("2026-01-07").build();
+        assertTrue(trip1.isSameTrip(trip2));
+
+        // same name, touching at boundary (end1 == start2) -> returns true
+        trip2 = new TripBuilder().withName("Trip").withStart("2026-01-10").withEnd("2026-01-20").build();
+        assertTrue(trip1.isSameTrip(trip2));
+
+        // same name, identical dates -> returns true
+        trip2 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        assertTrue(trip1.isSameTrip(trip2));
+
+        // different name, overlapping dates -> returns false
+        trip2 = new TripBuilder().withName("Other Trip").withStart("2026-01-05").withEnd("2026-01-15").build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_bothOnlyStartDatesSame_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-03-01").withEnd(null).build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-03-01").withEnd(null).build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_bothOnlyStartDatesDifferent_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-03-01").withEnd(null).build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-04-01").withEnd(null).build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_bothOnlyEndDatesSame_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-03-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-03-10").build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_bothOnlyEndDatesDifferent_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-03-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-04-10").build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_startOnlyWithinFullRange_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-05").withEnd(null).build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_startOnlyOutsideFullRange_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-02-01").withEnd(null).build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_endOnlyWithinFullRange_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-01-05").build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_endOnlyOutsideFullRange_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-02-01").build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_startOnlyAgainstOtherFullRange_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-01-05").withEnd(null).build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_startOnlyOutsideOtherFullRange_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart("2026-02-01").withEnd(null).build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_endOnlyAgainstOtherFullRange_returnsTrue() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-01-05").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        assertTrue(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_endOnlyOutsideOtherFullRange_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart(null).withEnd("2026-02-01").build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart("2026-01-01").withEnd("2026-01-10").build();
+        assertFalse(trip1.isSameTrip(trip2));
+    }
+
+    @Test
+    public void isSameTrip_bothNullDates_returnsFalse() {
+        Trip trip1 = new TripBuilder().withName("Trip").withStart(null).withEnd(null).build();
+        Trip trip2 = new TripBuilder().withName("Trip").withStart(null).withEnd(null).build();
+        assertFalse(trip1.isSameTrip(trip2));
     }
 
     @Test
