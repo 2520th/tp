@@ -114,6 +114,28 @@ public class ResultDisplayTest {
     }
 
     @Test
+    public void setFeedbackToUser_helpCommandVariations_showsSuccessIcon() {
+        Platform.runLater(() -> {
+            // Test 'Parameters:' branch
+            resultDisplay.setFeedbackToUser("Parameters: n/NAME");
+            assertTrue(resultTextArea.getText().contains("[OK]"));
+
+            // Test 'Example:' branch
+            resultDisplay.setFeedbackToUser("Example: add n/Tokyo");
+            assertTrue(resultTextArea.getText().contains("[OK]"));
+
+            // Test 'e.g.' branch
+            resultDisplay.setFeedbackToUser("e.g. add n/Tokyo");
+            assertTrue(resultTextArea.getText().contains("[OK]"));
+
+            // Test 'Usage:' branch
+            resultDisplay.setFeedbackToUser("Usage: list sort/KEY");
+            assertTrue(resultTextArea.getText().contains("[OK]"));
+        });
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
+    @Test
     public void setFeedbackToUser_helpCommand_showsSuccessIcon() {
         Platform.runLater(() -> {
             String helpFeedback = "add: Adds a trip.\nParameters: n/NAME\nExample: add n/Tokyo";
