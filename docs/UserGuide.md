@@ -160,7 +160,7 @@ Examples:
 
 ### Tagging a trip : `tag`
 
-Tags an existing trip in the address book with the given keyword.
+Tags an existing trip in the TripLog with the given keyword.
 
 Format: `tag INDEX TAG`
 
