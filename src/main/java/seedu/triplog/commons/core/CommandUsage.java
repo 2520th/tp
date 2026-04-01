@@ -5,6 +5,11 @@ package seedu.triplog.commons.core;
  */
 public class CommandUsage {
 
+    public static final String HELP_USAGE =
+            "help [COMMAND]\n"
+                    + "  Opens the command syntax guide, or shows usage for a specific command.\n"
+                    + "  e.g. help, help add, help delete";
+
     public static final String ADD_USAGE =
             "add n/<destination> [p/<phone>] [e/<email>] [a/<address>] "
                     + "[sd/<start-date>] [ed/<end-date>] [t/<tag>]...\n"

@@ -11,11 +11,7 @@ public class HelpCommand extends Command {
 
     public static final String COMMAND_WORD = "help";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Opens the TripLog command syntax guide, or shows usage for a specific command.\n"
-            + "Format: " + COMMAND_WORD + " [COMMAND]\n"
-            + "Example: " + COMMAND_WORD + "\n"
-            + "Example: " + COMMAND_WORD + " add";
+    public static final String MESSAGE_USAGE = CommandUsage.HELP_USAGE;
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
     public static final String MESSAGE_UNKNOWN_HELP_COMMAND =
             "Unknown command: '%s'. Type 'help' to open the full command guide.";

@@ -36,6 +36,8 @@
 
             <Separator />
 
+            <Label fx:id="helpUsage"   wrapText="true" />
+            <Separator />
             <Label fx:id="addUsage"    wrapText="true" />
             <Separator />
             <Label fx:id="editUsage"   wrapText="true" />

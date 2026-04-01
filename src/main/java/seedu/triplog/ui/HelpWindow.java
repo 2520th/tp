@@ -30,6 +30,9 @@ public class HelpWindow extends UiPart<Stage> {
     private Label prefixNote;
 
     @FXML
+    private Label helpUsage;
+
+    @FXML
     private Label addUsage;
 
     @FXML
@@ -68,6 +71,7 @@ public class HelpWindow extends UiPart<Stage> {
         super(FXML, requireNonNullRoot(root));
         logger.fine("Creating a new HelpWindow with provided root stage.");
         prefixNote.setText(PREFIX_NOTE);
+        helpUsage.setText(CommandUsage.HELP_USAGE);
         addUsage.setText(CommandUsage.ADD_USAGE);
         editUsage.setText(CommandUsage.EDIT_USAGE);
         deleteUsage.setText(CommandUsage.DELETE_USAGE);
