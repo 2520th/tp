@@ -114,6 +114,8 @@ Examples:
 
 Shows a list of all trips currently in the log and displays a **Summary Dashboard** in the result box. The list can be optionally sorted by a specific key.
 
+![Summary Dashboard](images/listSummary.png)
+
 The **Summary Dashboard** categorizes your trips based on the current date:
 * **Upcoming**: Trips starting after today.
 * **Ongoing**: Trips currently in progress (today is between start and end).
