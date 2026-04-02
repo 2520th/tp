@@ -97,6 +97,9 @@ ranges are allowed. For example, you can have two trips named "Tokyo", one from
 
 Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
 
+- Dates must be in `YYYY-MM-DD` format.
+- `START_DATE` must be earlier than or equal to `END_DATE`.
+
 <box type="tip" seamless>
 
 **Tip:** A trip can have any number of tags (including 0).
@@ -141,7 +144,7 @@ Edits an existing trip in the trip log.
 
 <box type="info" seamless>
 
-**Duplicate detection:** Editing a trip will be rejected if it violates the duplicate logic as mentioned 
+**Duplicate detection:** Editing a trip will be rejected if it violates the duplicate logic as mentioned
 in `Adding a trip` (same name and overlapping dates as another existing trip).
 </box>
 
@@ -330,7 +333,8 @@ _Details coming soon ..._
 
 ## Known issues
 
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
+1. **Launching the application**: On some systems, double-clicking the `.jar` file may fail to launch the application. If this occurs, please open a command terminal and use the `java -jar triplog.jar` command to run the application.
+2. **Write-protected folders**: TripLog requires write permissions to save your data and preferences. Avoid placing the application in system-protected folders (e.g., `C:\Program Files`) if you do not have administrative privileges.
 
 ---
 
