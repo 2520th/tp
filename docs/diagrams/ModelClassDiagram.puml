@@ -37,13 +37,13 @@ ModelManager -right-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 TripLog *--> "1" UniqueTripList
-UniqueTripList --> "~* all" Trip
-Trip *--> Name
-Trip *--> Phone
-Trip *--> Email
-Trip *--> Address
+UniqueTripList --> "*" Trip
+Trip *--> "1" Name
+Trip *--> "0..1" Phone
+Trip *--> "0..1" Email
+Trip *--> "0..1" Address
 Trip *--> "*" Tag
-Trip *--> "2" TripDate
+Trip *--> "0..2" TripDate
 
 Trip : + getNameLowerCase() : String
 
