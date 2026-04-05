@@ -281,7 +281,15 @@ Examples:
 
 #### Preview before deletion
 
+![Delete Preview](images/delete_preview.png)
+
 Before deleting, TripLog will display a preview of the trips that match the command.
+
+#### After confirmation
+
+![Delete Result](images/delete_result.png)
+
+After confirming the command, the selected trips are deleted from the list and the updated list is displayed.
 
 ### Filtering by date range : `filter`
 
