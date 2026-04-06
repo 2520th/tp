@@ -410,6 +410,38 @@ testers are expected to do more *exploratory* testing.
     4. Test case: `EXIT`
        Expected: Application shuts down.
 
+### Adding a trip
+
+1. Adding a trip with only the required field
+    1. Test case: `add n/Tokyo`
+       Expected: Trip with name "Tokyo" is added. All other fields show as blank/absent.
+
+2. Adding a trip with all fields
+    1. Test case: `add n/Osaka p/91234567 e/trip@mail.com a/Dotonbori sd/2026-06-01 ed/2026-06-10 t/food t/travel`
+       Expected: Trip is added with all fields populated and both tags shown.
+
+3. Adding a trip with optional fields omitted
+    1. Test case: `add n/Kyoto sd/2026-07-01 ed/2026-07-10`
+       Expected: Trip is added. Phone, email, and address are absent.
+
+4. Invalid date order
+    1. Test case: `add n/Seoul sd/2026-12-31 ed/2026-01-01`
+       Expected: Error message indicating start date cannot be after end date. No trip is added.
+
+5. Duplicate trip (same name, overlapping dates)
+    1. Prerequisites: A trip named "Tokyo" with dates 2026-06-01 to 2026-06-10 already exists.
+    2. Test case: `add n/Tokyo sd/2026-06-05 ed/2026-06-15`
+       Expected: Error message indicating duplicate trip. No trip is added.
+
+6. Same name, non-overlapping dates (allowed)
+    1. Prerequisites: A trip named "Tokyo" with dates 2026-06-01 to 2026-06-10 already exists.
+    2. Test case: `add n/Tokyo sd/2026-09-01 ed/2026-09-10`
+       Expected: Trip is added successfully. Both "Tokyo" trips coexist.
+
+7. Missing name
+    1. Test case: `add sd/2026-06-01 ed/2026-06-10`
+       Expected: Error message indicating invalid command format. No trip is added.
+   
 ### Listing, Sorting, and Statistics
 
 1. Initial setup (Assume Today is 2026-04-02)
