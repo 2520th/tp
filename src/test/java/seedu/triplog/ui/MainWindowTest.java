@@ -21,9 +21,13 @@ import seedu.triplog.logic.commands.CommandResult;
 import seedu.triplog.model.ReadOnlyTripLog;
 import seedu.triplog.model.trip.Trip;
 
+/**
+ * UI tests for MainWindow focusing on component initialization and error handling.
+ */
 @ExtendWith(ApplicationExtension.class)
 public class MainWindowTest {
 
+    private static final String ERROR_ICON = "[!!]";
     private MainWindow mainWindow;
     private Stage stage;
     private final String error = "Data file error: Corrupted entry detected. Starting fresh.";
@@ -85,6 +89,9 @@ public class MainWindowTest {
         this.stage = stage;
     }
 
+    /**
+     * Verifies that the ResultDisplay correctly reflects initial data load errors with the error icon.
+     */
     @Test
     public void fillInnerParts_withError_updatesResultDisplay(FxRobot robot) {
         robot.interact(() -> {
@@ -101,7 +108,9 @@ public class MainWindowTest {
             textAreaField.setAccessible(true);
             TextArea textArea = (TextArea) textAreaField.get(rd);
 
-            assertTrue(textArea.getText().contains(error), "Result display should contain the load error.");
+            String displayedText = textArea.getText();
+            assertTrue(displayedText.contains(error), "Result display should contain the load error.");
+            assertTrue(displayedText.contains(ERROR_ICON), "Result display should show error icon for load errors.");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new AssertionError("Reflection failed to access UI components", e);
         }
