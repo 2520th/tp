@@ -29,7 +29,9 @@ import seedu.triplog.model.trip.Trip;
 @ExtendWith(ApplicationExtension.class)
 public class MainWindowTest {
 
-    private static final String ERROR_ICON = "[!!]";
+    /** Matches the ERROR_ICON prefix defined in ResultDisplay */
+    private static final String ERROR_ICON_PREFIX = "[!!]";
+
     private MainWindow mainWindow;
     private Stage stage;
     private final String error = "Data file error: Corrupted entry detected. Starting fresh.";
@@ -110,7 +112,7 @@ public class MainWindowTest {
         });
 
         assertResultDisplayContains(error);
-        assertResultDisplayContains(ERROR_ICON);
+        assertResultDisplayContains(ERROR_ICON_PREFIX);
     }
 
     /**
@@ -138,7 +140,7 @@ public class MainWindowTest {
         });
 
         assertResultDisplayContains("Unknown command");
-        assertResultDisplayContains(ERROR_ICON);
+        assertResultDisplayContains(ERROR_ICON_PREFIX);
     }
 
     /**
