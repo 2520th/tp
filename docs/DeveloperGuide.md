@@ -162,6 +162,20 @@ The following sequence diagram shows how the `add` command is parsed and execute
 
 <puml src="diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
 
+### Trip Editing: Edit Command
+The `edit` command allows for partial updates to an existing trip. The trip to be edited is identified by its index in the current filtered list.
+
+**Mechanism:**
+1. **`EditCommandParser`**: Tokenizes the input and stores the changes in an `EditTripDescriptor`. This descriptor is a temporary container that holds only the fields the user intends to change.
+2. **`EditCommand`**:
+    * Retrieves the original trip from the model using the provided index.
+    * Creates an `editedTrip` by merging the original trip's data with the non-empty fields in the `EditTripDescriptor`.
+    * **Validation**: It checks that the `editedTrip` is not a duplicate of another trip (excluding the one being edited) and that the new date range is logically valid.
+3. **Model Update**: If valid, the model replaces the original trip with the `editedTrip`.
+
+**Duplicate Detection during Edit:**
+The `edit` command utilizes `Model#hasTripExcluding(Trip, Trip)`. This ensures that if a user changes a trip's name to match another entry, the command is only rejected if the dates also overlap with that other entry.
+
 ### Trip Deletion: Delete Command
 The `delete` command supports multiple deletion modes, including:
 - deletion by index,
@@ -442,6 +456,37 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `add sd/2026-06-01 ed/2026-06-10`
        Expected: Error message indicating invalid command format. No trip is added.
 
+### Editing a trip
+
+1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
+
+2. Editing a single field
+    1. Test case: `edit 1 n/New Destination Name`
+       Expected: Only the name of the first trip is updated. All other fields remain unchanged.
+
+3. Editing dates (valid range)
+    1. Prerequisites: Trip 1 has dates 2026-01-01 to 2026-01-10.
+    2. Test case: `edit 1 sd/2026-01-05`
+       Expected: Start date updated to Jan 5th. End date remains Jan 10th.
+
+4. Editing dates (invalid range)
+    1. Prerequisites: Trip 1 has start date 2026-01-01.
+    2. Test case: `edit 1 ed/2025-12-31`
+       Expected: Error message indicating start date cannot be after end date. No changes made.
+
+5. Creating a duplicate via edit
+    1. Prerequisites: Trip 1 is "Tokyo" (2026-01-01 to 2026-01-10). Trip 2 is "Osaka" (same dates).
+    2. Test case: `edit 2 n/Tokyo`
+       Expected: Error message indicating the trip already exists (duplicate). No changes made.
+
+6. Clearing tags
+    1. Test case: `edit 1 t/`
+       Expected: All tags are removed from the first trip.
+
+7. No fields provided
+    1. Test case: `edit 1`
+       Expected: Error message indicating at least one field must be provided.
+
 ### Listing, Sorting, and Statistics
 
 1. Initial setup (Assume Today is 2026-04-02)
@@ -474,7 +519,7 @@ testers are expected to do more *exploratory* testing.
 
 1. Tagging a trip using index
     1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
-   
+
     2. Test case: `tag 1 scenic beauty`
        Expected: First trip is tagged with `scenic beauty`. Details of the tagged trip shown in the status message.
 
