@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import seedu.triplog.commons.core.CommandUsage;
 import seedu.triplog.commons.core.index.Index;
 import seedu.triplog.commons.util.ToStringBuilder;
 import seedu.triplog.logic.Messages;
@@ -20,10 +21,7 @@ public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a tag to a trip in the trip log. "
-            + "Parameters: INDEX (must be a positive integer) "
-            + "KEYWORD\n"
-            + "Example: " + COMMAND_WORD + " 3 leisure";
+    public static final String MESSAGE_USAGE = CommandUsage.TAG_USAGE;
 
     public static final String MESSAGE_TAG_TRIP_SUCCESS = "New tag %1$s added to trip: %2$s";
     public static final String MESSAGE_DUPLICATE_TAG = "Tag %1$s already exists for trip: %2$s";
