@@ -15,6 +15,7 @@ public class HelpCommand extends Command {
 
     public static final String MESSAGE_USAGE = CommandUsage.HELP_USAGE;
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
+    public static final String FOCUSING_HELP_MESSAGE = "Help window is already open.";
     public static final String MESSAGE_UNKNOWN_HELP_COMMAND =
             "Unknown command: '%s'. Type 'help' to open the full command guide.";
 
