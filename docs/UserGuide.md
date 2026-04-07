@@ -150,22 +150,23 @@ Edits an existing trip in the trip log.
 
 <box type="info" seamless>
 
-**Duplicate detection:** Editing a trip will be rejected if it violates the duplicate logic as mentioned
-in `Adding a trip` (same name and overlapping dates as another existing trip).
+**Duplicate detection:** Editing a trip will be rejected if the changes would result in a trip that has the same name and overlapping dates as another existing trip in the log.
 </box>
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
 
 - Edits the trip at the specified `INDEX`. The index refers to the index number shown in the displayed trip list. The index **must be a positive integer** 1, 2, 3, …​
 - At least one of the optional fields must be provided.
 - Existing values will be updated to the input values.
-- When editing tags, the existing tags of the trip will be removed i.e adding of tags is not cumulative.
+- **Dates:** If you edit only the `sd/START_DATE` or `ed/END_DATE`, TripLog ensures the new date range remains valid (start date $\le$ end date).
+- **Tags:** When editing tags, the existing tags of the trip will be removed (i.e., replacement, not addition).
 - You can remove all the trip’s tags by typing `t/` without specifying any tags after it.
 
 Examples:
 
-- `edit 1 p/91234567 e/johndoe@example.com` Edits the phone and email of the 1st trip.
-- `edit 2 n/Betsy Crower t/` Edits the name of the 2nd trip and clears all tags.
+- `edit 1 p/91234567 e/johndoe@example.com` — Edits the phone and email of the 1st trip.
+- `edit 2 n/Tokyo Adventure sd/2026-05-01` — Edits the name and start date of the 2nd trip.
+- `edit 3 t/` — Clears all tags from the 3rd trip.
 
 ### Tagging a trip : `tag`
 
