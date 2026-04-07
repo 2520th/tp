@@ -1,11 +1,10 @@
 package seedu.triplog.ui;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -19,6 +18,7 @@ import javafx.stage.Stage;
 import seedu.triplog.commons.core.GuiSettings;
 import seedu.triplog.logic.Logic;
 import seedu.triplog.logic.commands.CommandResult;
+import seedu.triplog.logic.commands.HelpCommand;
 import seedu.triplog.logic.parser.exceptions.ParseException;
 import seedu.triplog.model.ReadOnlyTripLog;
 import seedu.triplog.model.trip.Trip;
@@ -48,12 +48,19 @@ public class MainWindowTest {
             this.shouldThrowException = shouldThrowException;
         }
 
+        LogicStub(boolean shouldThrowException, boolean shouldShowHelp) {
+            this.shouldThrowException = shouldThrowException;
+            this.shouldShowHelp = shouldShowHelp;
+        }
+
+        private boolean shouldShowHelp = false;
+
         @Override
         public CommandResult execute(String cmd) throws ParseException {
             if (shouldThrowException) {
                 throw new ParseException("Unknown command");
             }
-            return new CommandResult("Success");
+            return new CommandResult("Success", shouldShowHelp, false);
         }
 
         @Override
@@ -162,5 +169,46 @@ public class MainWindowTest {
         } catch (Exception e) {
             throw new AssertionError("Reflection failed to access UI components", e);
         }
+    }
+
+    /**
+     * Verifies that handleHelp opens the window when not showing,
+     * then focuses it on a second call.
+     */
+    @Test
+    public void handleHelp_helpAlreadyShowing_focusesWindow(FxRobot robot) {
+        robot.interact(() -> {
+            mainWindow = new MainWindow(stage, new LogicStub((String) null));
+            mainWindow.fillInnerParts();
+            mainWindow.handleHelp(); // open 
+            mainWindow.handleHelp(); // focus 
+        });
+    }
+
+    /**
+     * Verifies that executeCommand shows FOCUSING_HELP_MESSAGE when isShowHelp=true
+     * and the help window is already open.
+     */
+    @Test
+    public void executeCommand_showHelp_helpAlreadyShowing_showsFocusMessage(FxRobot robot) throws Exception {
+        LogicStub logicStub = new LogicStub(false, true);
+        robot.interact(() -> {
+            mainWindow = new MainWindow(stage, logicStub);
+            mainWindow.fillInnerParts();
+            mainWindow.handleHelp(); // pre-open help window
+        });
+
+        Method executeCommandMethod = MainWindow.class.getDeclaredMethod("executeCommand", String.class);
+        executeCommandMethod.setAccessible(true);
+
+        robot.interact(() -> {
+            try {
+                executeCommandMethod.invoke(mainWindow, "help");
+            } catch (Exception e) {
+                throw new AssertionError("Unexpected exception during executeCommand", e);
+            }
+        });
+
+        assertResultDisplayContains(HelpCommand.FOCUSING_HELP_MESSAGE);
     }
 }
