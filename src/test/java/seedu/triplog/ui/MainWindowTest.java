@@ -1,10 +1,11 @@
 package seedu.triplog.ui;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -39,6 +40,7 @@ public class MainWindowTest {
     private class LogicStub implements Logic {
         private String errorToReturn;
         private boolean shouldThrowException = false;
+        private boolean shouldShowHelp = false;
 
         LogicStub(String errorToReturn) {
             this.errorToReturn = errorToReturn;
@@ -52,8 +54,6 @@ public class MainWindowTest {
             this.shouldThrowException = shouldThrowException;
             this.shouldShowHelp = shouldShowHelp;
         }
-
-        private boolean shouldShowHelp = false;
 
         @Override
         public CommandResult execute(String cmd) throws ParseException {
@@ -180,8 +180,8 @@ public class MainWindowTest {
         robot.interact(() -> {
             mainWindow = new MainWindow(stage, new LogicStub((String) null));
             mainWindow.fillInnerParts();
-            mainWindow.handleHelp(); // open 
-            mainWindow.handleHelp(); // focus 
+            mainWindow.handleHelp(); // open
+            mainWindow.handleHelp(); // focus
         });
     }
 
@@ -190,7 +190,7 @@ public class MainWindowTest {
      * and the help window is already open.
      */
     @Test
-    public void executeCommand_showHelp_helpAlreadyShowing_showsFocusMessage(FxRobot robot) throws Exception {
+    public void executeCommand_helpAlreadyShowing_showsFocusMessage(FxRobot robot) throws Exception {
         LogicStub logicStub = new LogicStub(false, true);
         robot.interact(() -> {
             mainWindow = new MainWindow(stage, logicStub);
