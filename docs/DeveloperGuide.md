@@ -245,7 +245,7 @@ The `help` command supports two modes:
 
 The mode is determined in `HelpCommand#execute()`:
 
-* If no argument is given, a `CommandResult` with `showHelp = true` is returned. `MainWindow` detects this flag in `executeCommand()`: if the `HelpWindow` is already showing, the result display is updated with `FOCUSING_HELP_MESSAGE` ("Help window is already open."); then `handleHelp()` is called, which either shows the window (if hidden) or focuses it (if already visible).
+* If no argument is given, a `CommandResult` with `showHelp = true` is returned. `MainWindow` detects this flag in `executeCommand()` and calls `handleHelp()`, which shows the window (if hidden) or focuses it (if already visible). The result display shows `SHOWING_HELP_MESSAGE` ("Opened help window.") in both cases. The help window can also be opened or focused via **F1** or the Help menu, which calls `handleHelp()` directly without changing the result display.
 * If an argument is given, `getUsageForCommand(argument)` returns the matching usage string, and a regular `CommandResult` is returned. The text is displayed inline in the `ResultDisplay`.
 
 The usage strings (e.g., `ADD_USAGE`, `DELETE_USAGE`) are defined as constants in `CommandUsage` and reused by both `HelpCommand` and `HelpWindow` to keep the content consistent between inline help and the popup window.

@@ -155,9 +155,6 @@ public class MainWindow extends UiPart<Stage> {
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
             if (commandResult.isShowHelp()) {
-                if (helpWindow.isShowing()) {
-                    resultDisplay.setFeedbackToUser(HelpCommand.FOCUSING_HELP_MESSAGE);
-                }
                 handleHelp();
             }
 
