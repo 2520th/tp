@@ -43,17 +43,23 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
     public boolean test(Trip trip) {
         requireNonNull(trip);
 
-        if (name != null && !name.equals(trip.getName())) {
+        if (name != null && !name.fullName.equalsIgnoreCase(trip.getName().fullName)) {
             return false;
         }
         if (phone != null && !Objects.equals(phone, trip.getPhone())) {
             return false;
         }
-        if (email != null && !Objects.equals(email, trip.getEmail())) {
-            return false;
+        if (email != null) {
+            if (trip.getEmail() == null
+                    || !email.value.equalsIgnoreCase(trip.getEmail().value)) {
+                return false;
+            }
         }
-        if (address != null && !Objects.equals(address, trip.getAddress())) {
-            return false;
+        if (address != null) {
+            if (trip.getAddress() == null
+                    || !address.value.equalsIgnoreCase(trip.getAddress().value)) {
+                return false;
+            }
         }
         if (startDate != null && endDate != null) {
             if (trip.getStartDate() == null || trip.getEndDate() == null) {
