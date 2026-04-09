@@ -27,6 +27,14 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Creates a predicate with the given delete criteria.
+     *
+     * @param name The name criterion.
+     * @param phone The phone criterion.
+     * @param email The email criterion.
+     * @param address The address criterion.
+     * @param startDate The start date criterion.
+     * @param endDate The end date criterion.
+     * @param tags The tag criteria.
      */
     public TripMatchesDeletePredicate(Name name, Phone phone, Email email, Address address,
                                       TripDate startDate, TripDate endDate, Set<Tag> tags) {
@@ -39,6 +47,12 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
         this.tags = tags == null ? new HashSet<>() : new HashSet<>(tags);
     }
 
+    /**
+     * Evaluates whether the given {@code Trip} matches the criteria.
+     *
+     * @param trip The trip to test.
+     * @return true if the trip matches all criteria, false otherwise.
+     */
     @Override
     public boolean test(Trip trip) {
         requireNonNull(trip);
@@ -52,6 +66,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the name criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the name matches.
      */
     private boolean matchesName(Trip trip) {
         return name == null || name.fullName.equalsIgnoreCase(trip.getName().fullName);
@@ -59,6 +76,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the phone criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the phone matches.
      */
     private boolean matchesPhone(Trip trip) {
         return phone == null || Objects.equals(phone, trip.getPhone());
@@ -66,6 +86,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the email criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the email matches.
      */
     private boolean matchesEmail(Trip trip) {
         return email == null
@@ -75,6 +98,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the address criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the address matches.
      */
     private boolean matchesAddress(Trip trip) {
         return address == null
@@ -86,6 +112,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
      * Returns true if the trip matches the date criterion.
      * If both startDate and endDate are provided, the trip must fall within the range.
      * Otherwise, individual dates are matched exactly.
+     *
+     * @param trip The trip to check.
+     * @return true if the date criteria match.
      */
     private boolean matchesDateCriteria(Trip trip) {
         if (startDate != null && endDate != null) {
@@ -96,6 +125,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip falls within the specified date range.
+     *
+     * @param trip The trip to check.
+     * @return true if within the date range.
      */
     private boolean matchesDateRange(Trip trip) {
         if (trip.getStartDate() == null || trip.getEndDate() == null) {
@@ -111,6 +143,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the exact start date criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the start date matches.
      */
     private boolean matchesExactStartDate(Trip trip) {
         return startDate == null || Objects.equals(startDate, trip.getStartDate());
@@ -118,6 +153,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the exact end date criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if the end date matches.
      */
     private boolean matchesExactEndDate(Trip trip) {
         return endDate == null || Objects.equals(endDate, trip.getEndDate());
@@ -125,6 +163,9 @@ public class TripMatchesDeletePredicate implements Predicate<Trip> {
 
     /**
      * Returns true if the trip matches the tag criterion.
+     *
+     * @param trip The trip to check.
+     * @return true if any tag matches.
      */
     private boolean matchesTags(Trip trip) {
         return tags.isEmpty() || trip.getTags().stream().anyMatch(tags::contains);
