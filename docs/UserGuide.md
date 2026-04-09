@@ -182,7 +182,7 @@ Format: `tag INDEX TAG`
 Examples:
 * `tag 1 scenic beauty` Tags the 1st trip with `scenic beauty`.
 * `tag 2 hotel` Tags the 2nd trip with `hotel`.
-
+![result for 'tag 2 hotel'.png](images/tag2HotelResult.png)
 
 ### Locating trips by name: `find`
 
