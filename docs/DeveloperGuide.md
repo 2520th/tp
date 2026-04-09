@@ -162,20 +162,42 @@ The following sequence diagram shows how the `add` command is parsed and execute
 
 <puml src="diagrams/AddSequenceDiagram.puml" alt="Add Command Sequence Diagram" />
 
+### Trip Editing: Edit Command
+The `edit` command allows for partial updates to an existing trip. The trip to be edited is identified by its index in the current filtered list.
+
+**Mechanism:**
+1. **`EditCommandParser`**: Tokenizes the input and stores the changes in an `EditTripDescriptor`. This descriptor is a temporary container that holds only the fields the user intends to change.
+2. **`EditCommand`**:
+    * Retrieves the original trip from the model using the provided index.
+    * Creates an `editedTrip` by merging the original trip's data with the non-empty fields in the `EditTripDescriptor`.
+    * **Validation**: It checks that the `editedTrip` is not a duplicate of another trip (excluding the one being edited) and that the new date range is logically valid.
+3. **Model Update**: If valid, the model replaces the original trip with the `editedTrip`.
+
+**Duplicate Detection during Edit:**
+The `edit` command utilizes `Model#hasTripExcluding(Trip, Trip)`. This ensures that if a user changes a trip's name to match another entry, the command is only rejected if the dates also overlap with that other entry.
+
 ### Trip Deletion: Delete Command
-The `delete` command supports multiple deletion modes, including:
-- deletion by index,
-- deletion by index range,
-- deletion by field (e.g. name or tag),
-- deletion by date range.
 
-The parsing of the command is handled by `DeleteCommandParser`, which determines the deletion mode based on the input format and constructs the corresponding `DeleteCommand`.
+The `delete` command removes trip(s) from the currently displayed trip list. It supports three deletion modes:
 
-To prevent accidental data loss, the delete operation follows a **two-step confirmation flow**:
-1. The first execution generates a preview of the trips to be deleted.
-2. The user must confirm the pending deletion by pressing Enter again; otherwise, editing the command cancels the operation.
+* **Single deletion**: deletes a trip at a given index (e.g. `delete 2`)
+* **Range deletion**: deletes trips within an index range (e.g. `delete 1-3`)
+* **Criteria-based deletion**: deletes trips matching a field (e.g. `delete n/Tokyo`, `delete t/family`, `delete sd/2026-01-01 ed/2026-12-31`)
 
-Invalid combinations of delete modes (e.g. mixing index and field deletion) are rejected during parsing.
+The parsing of the command is handled by `DeleteCommandParser`, which determines the deletion mode based on input format and validates that only one mode is used.
+
+Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. For criteria-based deletion, a `TripMatchesDeletePredicate` is used, where:
+* different fields are combined using AND logic
+* tags are matched using OR logic
+* date ranges (`sd/` and `ed/`) match trips within the specified period
+
+To prevent accidental deletion, a **two-step confirmation flow** is implemented in `CommandBox`:
+
+1. The first execution transforms the command into `deletepreview`, which shows the trips that would be deleted.
+2. The second execution of the same command performs the actual deletion.
+3. Editing the command cancels the pending deletion.
+
+The preview is generated using `PreviewDeleteCommand`, which reuses the same parsing and selection logic as `DeleteCommand` to ensure consistency.
 
 The following sequence diagram shows the logic for deleting a trip:
 
@@ -245,7 +267,7 @@ The `help` command supports two modes:
 
 The mode is determined in `HelpCommand#execute()`:
 
-* If no argument is given, a `CommandResult` with `showHelp = true` is returned. `MainWindow` detects this flag and calls `handleHelp()` to show the `HelpWindow`.
+* If no argument is given, a `CommandResult` with `showHelp = true` is returned. `MainWindow` detects this flag in `executeCommand()` and calls `handleHelp()`, which shows the window (if hidden) or focuses it (if already visible). The result display shows `SHOWING_HELP_MESSAGE` ("Opened help window.") in both cases. The help window can also be opened or focused via **F1** or the Help menu, which calls `handleHelp()` directly without changing the result display.
 * If an argument is given, `getUsageForCommand(argument)` returns the matching usage string, and a regular `CommandResult` is returned. The text is displayed inline in the `ResultDisplay`.
 
 The usage strings (e.g., `ADD_USAGE`, `DELETE_USAGE`) are defined as constants in `CommandUsage` and reused by both `HelpCommand` and `HelpWindow` to keep the content consistent between inline help and the popup window.
@@ -254,8 +276,8 @@ The `HelpWindow` is resizable. The `ScrollPane` (which is the scene root) grows 
 
 The `TripLogParser` routes `help` to `HelpCommand`:
 
-* `help` → `new HelpCommand()`
-* `help add` → `new HelpCommand("add")`
+* `help` → `new HelpCommand(arguments)` where `arguments` is `""`, equivalent in behaviour to `new HelpCommand()`
+* `help add` → `new HelpCommand(arguments)` where `arguments` is `" add"`; the leading space is trimmed to `"add"` inside the constructor
 
 #### Design considerations
 
@@ -441,7 +463,42 @@ testers are expected to do more *exploratory* testing.
 7. Missing name
     1. Test case: `add sd/2026-06-01 ed/2026-06-10`
        Expected: Error message indicating invalid command format. No trip is added.
-   
+
+### Editing a trip
+
+1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
+
+2. Editing a single field
+    1. Test case: `edit 1 n/New Destination Name`
+       Expected: Only the name of the first trip is updated. All other fields remain unchanged.
+
+3. Editing dates (valid range)
+    1. Prerequisites: Trip 1 has dates 2026-01-01 to 2026-01-10.
+    2. Test case: `edit 1 sd/2026-01-05`
+       Expected: Start date updated to Jan 5th. End date remains Jan 10th.
+
+4. Editing dates (invalid range)
+    1. Prerequisites: Trip 1 has start date 2026-01-01 and end date 2026-01-10.
+    2. Test case: `edit 1 ed/2025-12-31`
+       Expected: Error message indicating start date cannot be after end date. No changes made.
+
+5. No changes from original values
+    1. Test case: `edit 1 n/Original Name` (where trip 1 already has "Original Name")
+       Expected: Error message indicating edited fields are the same as the original. No changes made.
+
+6. Creating a duplicate via edit
+    1. Prerequisites: Trip 1 is "Tokyo" (2026-01-01 to 2026-01-10). Trip 2 is "Osaka" (same dates).
+    2. Test case: `edit 2 n/Tokyo`
+       Expected: Error message indicating the trip already exists (duplicate). No changes made.
+
+7. Clearing tags
+    1. Test case: `edit 1 t/`
+       Expected: All tags are removed from the first trip.
+
+8. No fields provided
+    1. Test case: `edit 1`
+       Expected: Error message indicating at least one field must be provided.
+
 ### Listing, Sorting, and Statistics
 
 1. Initial setup (Assume Today is 2026-04-02)
@@ -469,6 +526,20 @@ testers are expected to do more *exploratory* testing.
        Expected: The Result Display immediately shows a summary dashboard and the last used sort order without entering any commands.
     3. Test case: Sort the list using `list sort/name`, exit the application, and re-launch.
        Expected: The summary dashboard and the list itself remain sorted by name alphabetically.
+
+### Tagging a trip
+
+1. Tagging a trip using index
+    1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
+
+    2. Test case: `tag 1 scenic beauty`
+       Expected: First trip is tagged with `scenic beauty`. Details of the tagged trip shown in the status message.
+
+2. Duplicate tag (case insensitive)
+    1. Prerequisites: A trip named "Hotel California" with tag "hotel" already exists.
+
+    2. Test case: `tag 1 HOTEL`
+       Expected: Error message indicating duplicate tag. No tag is added.
 
 ### Locating trips by name
 

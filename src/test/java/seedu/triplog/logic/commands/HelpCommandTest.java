@@ -1,9 +1,11 @@
 package seedu.triplog.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.triplog.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.triplog.logic.commands.HelpCommand.FOCUSING_HELP_MESSAGE;
 import static seedu.triplog.logic.commands.HelpCommand.SHOWING_HELP_MESSAGE;
 
 import org.junit.jupiter.api.Test;
@@ -133,5 +135,30 @@ public class HelpCommandTest {
     public void tagUsage_containsIndexAndTagNamePlaceholders() {
         assertTrue(CommandUsage.TAG_USAGE.contains("<INDEX>"));
         assertTrue(CommandUsage.TAG_USAGE.contains("<tag-name>"));
+    }
+
+    // EP: FOCUSING_HELP_MESSAGE is distinct from SHOWING_HELP_MESSAGE
+    @Test
+    public void focusingHelpMessage_distinctFromShowingHelpMessage() {
+        assertNotEquals(FOCUSING_HELP_MESSAGE, SHOWING_HELP_MESSAGE);
+    }
+
+    // EP: FOCUSING_HELP_MESSAGE does not contain error keywords so it renders as a success message
+    @Test
+    public void focusingHelpMessage_doesNotContainErrorKeywords() {
+        String lower = FOCUSING_HELP_MESSAGE.toLowerCase();
+        assertFalse(lower.contains("invalid"));
+        assertFalse(lower.contains("unknown"));
+        assertFalse(lower.contains("error"));
+        assertFalse(lower.contains("failed"));
+        assertFalse(lower.contains("exception"));
+    }
+
+    // EP: case-insensitive argument is treated the same as lowercase
+    @Test
+    public void execute_uppercaseArgument_showsInlineUsage() throws CommandException {
+        CommandResult result = new HelpCommand("ADD").execute(model);
+        assertTrue(result.getFeedbackToUser().startsWith("add "));
+        assertFalse(result.isShowHelp());
     }
 }
