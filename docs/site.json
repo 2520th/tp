@@ -1,8 +1,8 @@
 {
   "baseUrl": "",
   "titlePrefix": "TripLog",
-  "titleSuffix": "v1.1",
-  "faviconPath": "images/SeEduLogo.png",
+  "titleSuffix": "",
+  "faviconPath": "images/triplog_32.png",
   "style": {
     "codeTheme": "light"
   },
