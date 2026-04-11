@@ -60,12 +60,13 @@ public class CommandBox extends UiPart<Region> {
         }
 
         String trimmedCommandText = commandText.trim();
-        boolean isDeleteCommand = trimmedCommandText.equals("delete")
-                || trimmedCommandText.startsWith("delete ");
+        String lowerTrimmedCommandText = trimmedCommandText.toLowerCase();
+        boolean isDeleteCommand = lowerTrimmedCommandText.equals("delete")
+                || lowerTrimmedCommandText.startsWith("delete ");
         try {
             if (isDeleteCommand) {
                 // Second Enter on the exact same delete command -> confirm actual deletion
-                if (deletePendingConfirmation && commandText.equals(lastDeleteCommand)) {
+                if (deletePendingConfirmation && commandText.equalsIgnoreCase(lastDeleteCommand)) {
                     commandExecutor.execute(commandText);
                     commandTextField.setText("");
                     deletePendingConfirmation = false;
