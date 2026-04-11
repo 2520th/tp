@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
@@ -112,19 +113,23 @@ public class HelpWindowTest {
 
     // EP: iconified window is restored when focus() is called
     @Test
-    public void focus_whenIconified_restoresWindow() {
-        helpWindow.show();
-        helpWindow.getRoot().setIconified(true);
-        helpWindow.focus();
-        assertFalse(helpWindow.getRoot().isIconified());
+    public void focus_whenIconified_restoresWindow(FxRobot robot) {
+        robot.interact(() -> {
+            helpWindow.show();
+            helpWindow.getRoot().setIconified(true);
+            helpWindow.focus();
+            assertFalse(helpWindow.getRoot().isIconified());
+        });
     }
 
     // EP: non-iconified window remains non-iconified after focus() is called
     @Test
-    public void focus_whenNotIconified_doesNotIconify() {
-        helpWindow.show();
-        helpWindow.focus();
-        assertFalse(helpWindow.getRoot().isIconified());
+    public void focus_whenNotIconified_doesNotIconify(FxRobot robot) {
+        robot.interact(() -> {
+            helpWindow.show();
+            helpWindow.focus();
+            assertFalse(helpWindow.getRoot().isIconified());
+        });
     }
 
     // EP: PREFIX_NOTE contains the expected prefix/ format
