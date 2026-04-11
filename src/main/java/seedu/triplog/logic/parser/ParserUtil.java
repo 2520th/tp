@@ -119,7 +119,9 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
-            tagSet.add(parseTag(tagName));
+            if (!tagSet.add(parseTag(tagName))) {
+                throw new ParseException("Duplicate tags are not allowed: " + tagName);
+            }
         }
         return tagSet;
     }
