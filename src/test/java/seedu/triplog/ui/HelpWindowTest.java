@@ -110,6 +110,23 @@ public class HelpWindowTest {
         assertFalse(helpWindow.isShowing());
     }
 
+    // EP: iconified window is restored when focus() is called
+    @Test
+    public void focus_whenIconified_restoresWindow() {
+        helpWindow.show();
+        helpWindow.getRoot().setIconified(true);
+        helpWindow.focus();
+        assertFalse(helpWindow.getRoot().isIconified());
+    }
+
+    // EP: non-iconified window remains non-iconified after focus() is called
+    @Test
+    public void focus_whenNotIconified_doesNotIconify() {
+        helpWindow.show();
+        helpWindow.focus();
+        assertFalse(helpWindow.getRoot().isIconified());
+    }
+
     // EP: PREFIX_NOTE contains the expected prefix/ format
     @Test
     public void prefixNote_containsPrefixFormat() {
