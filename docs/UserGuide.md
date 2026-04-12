@@ -131,7 +131,7 @@ The **Summary Dashboard** categorizes your trips based on the current date:
 
 Format: `list [sort/KEY]`
 
-- By default, trips are sorted by **start date** in ascending order (earliest first).
+- By default, trips are sorted by the **last active sort order**. If no sort has been previously used, the **start date** in ascending order is used as a fallback.
 - **Tie-breaker**: If multiple trips share the same date or length, they are automatically sorted alphabetically by name.
 - Trips with no start date are shown last.
 - The sort order is **persistent**: adding or editing trips will maintain the last chosen sort order, **even after restarting the application.**
@@ -143,7 +143,7 @@ Supported `KEY` values:
 - `len`: Sorts by duration of the trip (longest first).
 
 Examples:
-- `list` — Displays all trips ordered by start date and shows a summary (e.g. `Listed all trips sorted by start date. Summary: 1 Upcoming, 1 Ongoing, 5 Completed, 1 Planning`).
+- `list` — Displays all trips using the last active sort order (or start date by default) and shows a summary (e.g. `Listed all trips sorted by start date. Summary: 1 Upcoming, 1 Ongoing, 5 Completed, 1 Planning`).
 - `list sort/name` — Displays all trips in alphabetical order.
 - `list sort/len` — Displays all trips starting with the longest durations.
 
