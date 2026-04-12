@@ -178,13 +178,13 @@ The `edit` command utilizes `Model#hasTripExcluding(Trip, Trip)`. This ensures t
 
 ### Trip Deletion: Delete Command
 
-The `delete` command removes trip(s) from the currently displayed trip list. It supports three deletion modes:
-
+The `delete` command removes trip(s) from the currently displayed trip list. It supports four deletion modes:
 * **Single deletion**: deletes a trip at a given index (e.g. `delete 2`)
 * **Range deletion**: deletes trips within an index range (e.g. `delete 1-3`)
-* **Criteria-based deletion**: deletes trips matching a field (e.g. `delete n/Tokyo`, `delete t/family`, `delete sd/2026-01-01 ed/2026-12-31`)
+* **Field-match deletion**: deletes trips matching a field such as name or tag (e.g. `delete n/Tokyo`, `delete t/family`)
+* **Date-range deletion**: deletes trips within a specified date range (e.g. `delete sd/2026-01-01 ed/2026-12-31`)
 
-The parsing of the command is handled by `DeleteCommandParser`, which determines the deletion mode based on input format and validates that only one mode is used.
+The parsing of the command is handled by `DeleteCommandParser`, which determines which of the four deletion modes is being used based on input format and validates that only one mode is specified per command.
 
 Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. For criteria-based deletion, a `TripMatchesDeletePredicate` is used, where:
 * different fields are combined using AND logic
