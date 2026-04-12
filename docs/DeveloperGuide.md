@@ -186,10 +186,12 @@ The `delete` command removes trip(s) from the currently displayed trip list. It 
 
 The parsing of the command is handled by `DeleteCommandParser`, which determines which of the four deletion modes is being used based on input format and validates that only one mode is specified per command.
 
-Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. For criteria-based deletion, a `TripMatchesDeletePredicate` is used, where:
-* different fields are combined using AND logic
-* tags are matched using OR logic
-* date ranges (`sd/` and `ed/`) match trips within the specified period
+Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. 
+For field-match and date-range deletion, matching is handled by `TripMatchesDeletePredicate`:
+* field-match deletion checks one specified prefix at a time (e.g. `n/`, `p/`, `t/`, `sd/`)
+* date-range deletion (`sd/` and `ed/`) works as follows:
+    * different dates → trip start date must be on/after `sd`, and end date must be on/before `ed`
+    * same date → any trip happening on that day matches
 
 To prevent accidental deletion, a **two-step confirmation flow** is implemented in `CommandBox`:
 

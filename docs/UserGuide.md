@@ -274,8 +274,9 @@ Examples:
 
 #### Delete by date range
 
-- Deletes all trips whose start and end dates match the specified range using both `sd/` and `ed/`.
-- Both `sd/START_DATE` and `ed/END_DATE` must be provided.
+- Deletes trips using both `sd/START_DATE` and `ed/END_DATE`.
+- If different start and end dates are given, a trip is deleted only if its start date is on or after `sd/START_DATE`and its end date is on or before `ed/END_DATE`.
+- If both dates are the same, all trips happening on that day are deleted.
 - Dates must be in `YYYY-MM-DD` format.
 
 Examples:
