@@ -62,6 +62,9 @@ TripLog is a **desktop app for managing trips, optimized for use via a Command L
 - Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
+- If a parameter is expected only once but is specified multiple times, only the last occurrence will be used.<br>
+  e.g. `list sort/name sort/start` will sort by start date.
+
 - For commands that do not take parameters (such as `exit` and `clear`), extraneous parameters will be ignored.
   </box>
 
@@ -129,7 +132,7 @@ The **Summary Dashboard** categorizes your trips based on the current date:
 
 Format: `list [sort/KEY]`
 
-- By default, trips are sorted by **start date** in ascending order (earliest first).
+- By default, trips are sorted by the **last active sort order**. If no sort has been previously used, the **start date** in ascending order is used as a fallback.
 - **Tie-breaker**: If multiple trips share the same date or length, they are automatically sorted alphabetically by name.
 - **When sorting by start date (default)**, trips with no start date are shown last.
 - The sort order is **persistent**: adding or editing trips will maintain the last chosen sort order, **even after restarting the application.**
