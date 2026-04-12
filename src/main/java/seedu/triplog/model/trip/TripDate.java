@@ -17,7 +17,8 @@ public class TripDate {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Dates should be in YYYY-MM-DD format and between " + MIN_YEAR
-                    + "-01-01 and " + MAX_YEAR + "-12-31";
+                    + "-01-01 and " + MAX_YEAR + "-12-31."
+                    + " Please ensure it is also an actual date (e.g. Feb is only up till 28).";
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
