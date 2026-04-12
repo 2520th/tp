@@ -97,8 +97,12 @@ ranges are allowed. For example, you can have two trips named "Tokyo", one from
 2026-01-01 to 2026-01-10 and another from 2026-03-01 to 2026-03-10.
 </box>
 
-Format: `add n/DESTINATION_NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
 
+**Mandatory field(s):**
+
+- **`n/NAME`**: Name of the trip destination or location.
+  
 **Optional fields:**
 Since every trip is different, all fields except the name are optional. This allows you to tailor the log to your specific needs. Here are some common ways to use these fields:
 
@@ -109,7 +113,7 @@ Since every trip is different, all fields except the name are optional. This all
 - **`t/TAG`**: Use tags to build your own categorization system. You can group trips by purpose (`t/business`, `t/honeymoon`), region (`t/asia`, `t/europe`), or vibe (`t/relaxing`, `t/adventure`).
 - 
 **Field Constraints:**
-- **`n/DESTINATION_NAME` (Compulsory):** Must start with a letter or number. Can only contain alphanumeric characters, spaces, and common punctuation (`-`, `,`, `.`, `'`, `(`, `)`, `!`). Cannot be blank.
+- **`n/NAME` (Compulsory):** Must start with a letter or number. Can only contain alphanumeric characters, spaces, and common punctuation (`-`, `,`, `.`, `'`, `(`, `)`, `!`). Cannot be blank.
 - **`p/PHONE`:** Must only contain numbers, and should be at least 3 digits long.
 - **`e/EMAIL`:** Must be a valid email format (e.g., `local-part@domain`).
 - **`a/ADDRESS`:** Can take any values, but cannot be blank if the `a/` prefix is used.
