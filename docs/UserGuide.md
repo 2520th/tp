@@ -215,14 +215,18 @@ Press **Enter again** to confirm the deletion, or edit the command to cancel.
 
 </box>
 
-Format:
-`delete INDEX`
-`delete START-END`
-`delete PREFIX/VALUE`
+Format:<br>
+`delete INDEX`<br>
+`delete START-END`<br>
+`delete PREFIX/VALUE`<br>
+`delete sd/START_DATE`<br>
+`delete ed/END_DATE`<br>
 `delete sd/START_DATE ed/END_DATE`
 
 - Only one delete mode may be used at a time (e.g. `delete 1 t/family` is invalid).
 - The command operates on the currently displayed trip list.
+- If `sd/` or `ed/` is used alone, TripLog performs exact single-date matching.
+- If both `sd/` and `ed/` are provided together, TripLog interprets it as date-range deletion instead.
 
 #### Delete by index
 

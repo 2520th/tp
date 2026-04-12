@@ -557,38 +557,30 @@ testers are expected to do more *exploratory* testing.
 ### Deleting a trip
 
 1. Deleting a trip using index
-
     1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
-
     2. Test case: `delete 1`  
        Expected: A preview of the first trip is shown. No trip is deleted yet.
-
     3. Test case: Press Enter again with `delete 1`  
        Expected: First trip is deleted from the list. Details of the deleted trip shown in the status message.
 
 2. Cancelling deletion
-
     1. Test case: `delete 1`, then modify the command instead of confirming  
        Expected: No trip is deleted.
 
 3. Invalid index
-
     1. Test case: `delete 0`  
        Expected: No trip is deleted. Error message shown.
 
 4. Deleting a range of trips
-
     1. Test case: `delete 1-3`  
        Expected: Preview of trips 1 to 3 is shown.  
        After confirmation, all three trips are deleted.
 
 5. Deleting by field
-
     1. Test case: `delete n/Tokyo`  
        Expected: All trips with name "Tokyo" are previewed, then deleted after confirmation.
 
 6. Deleting by date range
-
     1. Test case: `delete sd/2026-03-01 ed/2026-05-10`  
        Expected: Trips matching the specified date range are previewed, then deleted after confirmation.
 
