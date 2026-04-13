@@ -8,6 +8,7 @@ import static seedu.triplog.testutil.TypicalTrips.BENSON;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -145,5 +146,30 @@ public class JsonAdaptedTripTest {
         assertNull(modelTrip.getAddress());
         assertNull(modelTrip.getStartDate());
         assertNull(modelTrip.getEndDate());
+    }
+
+    @Test
+    public void toModelType_duplicateTags_throwsIllegalValueException() {
+        // EP: duplicate tags in persisted data
+        List<JsonAdaptedTag> duplicateTags = new ArrayList<>(VALID_TAGS);
+        duplicateTags.add(new JsonAdaptedTag("friends"));
+        duplicateTags.add(new JsonAdaptedTag("friends"));
+        JsonAdaptedTrip trip = new JsonAdaptedTrip(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                duplicateTags, VALID_START_DATE, VALID_END_DATE);
+        assertThrows(IllegalValueException.class, JsonAdaptedTrip.DUPLICATE_TAG_MESSAGE_FORMAT, trip::toModelType);
+    }
+
+    @Test
+    public void constructor_tripSourceWithNullOptionalFields_setsNullStrings() throws Exception {
+        // EP: Trip source constructor with all optional fields null
+        Trip minimalTrip = new Trip(new Name("Minimal"), null, null, null, Set.of(), null, null);
+        JsonAdaptedTrip adapted = new JsonAdaptedTrip(minimalTrip);
+        Trip result = adapted.toModelType();
+
+        assertNull(result.getPhone());
+        assertNull(result.getEmail());
+        assertNull(result.getAddress());
+        assertNull(result.getStartDate());
+        assertNull(result.getEndDate());
     }
 }

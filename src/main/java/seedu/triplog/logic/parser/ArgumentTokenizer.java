@@ -3,6 +3,7 @@ package seedu.triplog.logic.parser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +27,25 @@ public class ArgumentTokenizer {
     public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
         List<PrefixPosition> positions = findAllPrefixPositions(argsString, prefixes);
         return extractArguments(argsString, positions);
+    }
+
+    /**
+     * Checks if the arguments string contains any unknown prefixes not in the given list of prefixes.
+     *
+     * @param argsString Arguments string of the form: {@code preamble <prefix>value <prefix>value ...}
+     * @param knownPrefixes Prefixes that are recognised for the command
+     * @return           List of unknown prefix strings found in the arguments string
+     */
+    public static List<String> extractUnknownPrefixes(String argsString, Prefix... knownPrefixes) {
+        Set<String> known = Arrays.stream(knownPrefixes).map(Prefix::getPrefix).collect(Collectors.toSet());
+        List<String> unknown = new ArrayList<>();
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("(?<=\\s)(\\w+/)").matcher(argsString);
+        while (m.find()) {
+            if (!known.contains(m.group(1))) {
+                unknown.add(m.group(1));
+            }
+        }
+        return unknown;
     }
 
     /**

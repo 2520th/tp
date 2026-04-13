@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.triplog.testutil.TypicalTrips.ALICE;
 
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.triplog.model.tag.Tag;
+import seedu.triplog.testutil.TripBuilder;
 
 public class TripMatchesDeletePredicateTest {
 
@@ -345,5 +347,147 @@ public class TripMatchesDeletePredicateTest {
                 new Name("Seoul"), null, null, null, null, null, Set.of());
 
         assertNotEquals(first.hashCode(), second.hashCode());
+    }
+
+    @Test
+    public void constructor_nullTags_treatedAsEmptySet() {
+        // EP: null tags — covers the true branch of the ternary
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null, null, null, null);
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void test_phoneMatch_returnsTrue() {
+        // EP: phone matches exactly
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, new Phone("91234567"), null, null, null, null, Set.of());
+
+        Trip trip = new TripBuilder(ALICE).withPhone("91234567").build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void test_dateRangeTripNullStartDate_returnsFalse() {
+        // EP: trip has null start date — date range check returns false
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-03-01"),
+                new TripDate("2026-03-10"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).withStart(null).withEnd("2026-03-05").build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void test_dateRangeTripNullEndDate_returnsFalse() {
+        // EP: trip has null end date — date range check returns false
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-03-01"),
+                new TripDate("2026-03-10"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).withStart("2026-03-02").withEnd(null).build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void test_singleDayRangeTripNoOverlap_returnsFalse() {
+        // EP: startDate == endDate, trip does not overlap the single day
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-15"),
+                new TripDate("2026-04-15"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void test_singleDayRangeTripOverlaps_returnsTrue() {
+        // EP: startDate == endDate, trip overlaps the single day
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-05"),
+                new TripDate("2026-04-05"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void test_singleDayRangeTripStartAfterSingleDay_returnsFalse() {
+        // EP: startDate == endDate, trip starts after the single day
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-05"),
+                new TripDate("2026-04-05"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).withStart("2026-04-06").withEnd("2026-04-10").build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void constructor_nonNullTags_matchingTagReturnsTrue() {
+        // EP: non-null tags — covers the false branch of the ternary
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null, null, null, Set.of(new Tag("friends")));
+
+        Trip trip = new TripBuilder(ALICE).withTags("friends").build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void test_phoneNull_returnsTrue() {
+        // EP: phone == null in predicate — covers phone null branch
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null, null, null, Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void test_singleDayRangeTripEndBeforeSingleDay_returnsFalse() {
+        // EP: single-day range, trip ends before the single day — covers isBefore false branch
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-15"),
+                new TripDate("2026-04-15"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void test_dateRangeTripOnlyStartNull_returnsFalse() {
+        // EP: trip start date is null but end date is not — covers || true branch
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-01"),
+                new TripDate("2026-04-10"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).withStart(null).build();
+
+        assertFalse(predicate.test(trip));
     }
 }

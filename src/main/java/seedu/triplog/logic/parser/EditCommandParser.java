@@ -2,6 +2,7 @@ package seedu.triplog.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_PREFIXES;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
@@ -12,6 +13,7 @@ import static seedu.triplog.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +35,18 @@ public class EditCommandParser implements Parser<EditCommand> {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
+        List<String> unknownPrefixes = ArgumentTokenizer.extractUnknownPrefixes(args,
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_ADDRESS,
+                PREFIX_TAG,
+                PREFIX_START_DATE,
+                PREFIX_END_DATE);
+        if (!unknownPrefixes.isEmpty()) {
+            throw new ParseException(MESSAGE_UNKNOWN_PREFIXES);
+        }
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL,
                                            PREFIX_ADDRESS, PREFIX_TAG, PREFIX_START_DATE, PREFIX_END_DATE);

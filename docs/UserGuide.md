@@ -77,7 +77,7 @@ Format: `help [COMMAND]`
 - Without arguments, `help` opens a help window showing syntax for all commands.
 - With a command name, `help COMMAND` displays the usage for that specific command inline in the result display (no window opens).
 
-Screenshot of the help window below: 
+Screenshot of the help window below:
 
 <img src="images/helpMessage.png" width="850" />
 
@@ -107,6 +107,7 @@ Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE
 
 - Dates must be in `YYYY-MM-DD` format.
 - `START_DATE` must be earlier than or equal to `END_DATE`.
+- **Note:** Upon successful addition, any active filters (e.g. from the `filter` command) will be cleared to show the full trip list and update the Summary Dashboard.
 
 <box type="tip" seamless>
 
@@ -164,9 +165,11 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed
 - Edits the trip at the specified `INDEX`. The index refers to the index number shown in the displayed trip list. The index **must be a positive integer** 1, 2, 3, …​
 - At least one of the optional fields must be provided.
 - Existing values will be updated to the input values.
+- **Phone:** Phone numbers should only contain numbers, and must be between 3 and 15 digits long.
 - **Dates:** If you edit only the `sd/START_DATE` or `ed/END_DATE`, TripLog ensures the new date range remains valid (start date $\le$ end date).
 - **Tags:** When editing tags, the existing tags of the trip will be removed (i.e., replacement, not addition).
 - You can remove all the trip’s tags by typing `t/` without specifying any tags after it.
+- **Note:** Upon successful editing, any active filters will be cleared to show the full trip list and update the Summary Dashboard.
 
 Examples:
 
@@ -181,9 +184,10 @@ Tags an existing trip in the TripLog with the given keyword.
 Format: `tag INDEX TAG`
 
 * Tags the trip with the keyword `TAG` at the specified `INDEX`. The index refers to the index number shown in the displayed trip list. The index **must be a positive integer** 1, 2, 3, …​
-* Tags must be alphanumeric (A-Z, 0-9).
+* Tags must be alphanumeric (A-Z, 0-9) and may contain spaces.
 * Duplicate tags will not be added.
 * Duplicate tags are case-insensitive. e.g. `Hotel` and `HOTEL` are considered duplicates.
+* If the loaded .json file contains duplicate tags, data is considered corrupted and the save will not be loaded.
 
 Examples:
 * `tag 1 scenic beauty` Tags the 1st trip with `scenic beauty`.
@@ -357,8 +361,8 @@ Furthermore, certain edits can cause the TripLog to behave in unexpected ways (e
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous TripLog home folder.
+**Q**: How do I transfer my data to another computer?<br>
+**A**: Install the app on the other computer. Then, locate the `triplog.json` file in the `data` folder of your original TripLog directory and use it to overwrite the default `triplog.json` file created on the new computer.
 
 ---
 
@@ -373,10 +377,13 @@ Furthermore, certain edits can cause the TripLog to behave in unexpected ways (e
 
 | Action     | Format, Examples                                                                                                                                                         |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Add** | `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 sd/2026-01-01 t/friend` |
-| **Clear** | `clear`                                                                                                                                   |
+| **Add** | `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​` <br> e.g., `add n/Tokyo p/91234567 sd/2026-01-01 t/vacation`                       |
+| **Clear** | `clear`                                                                                                                                                                  |
 | **Delete** | `delete INDEX`<br>`delete START-END`<br>`delete PREFIX/VALUE`<br>`delete sd/START_DATE ed/END_DATE`<br> e.g., `delete 3`, `delete 1-3`, `delete t/family`, `delete sd/2026-03-01 ed/2026-05-10` |
-| **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com` |
+| **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`<br> At least one field must be provided.<br> e.g., `edit 2 n/Osaka e/hotel@example.com` |
+| **Exit** | `exit`                                                                                                                                                                   |
+| **Filter** | `filter sd/START_DATE ed/END_DATE`<br> `START_DATE` must not be after `END_DATE`.<br> e.g., `filter sd/2026-05-01 ed/2026-07-31`                                         |
 | **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Tokyo Osaka`                                                                                                              |
-| **List** | `list [sort/KEY]` <br> e.g., `list sort/name`                                                                                                                            |                                                                                                                                                                 |
 | **Help** | `help [COMMAND]`<br> e.g., `help add`                                                                                                                                    |
+| **List** | `list [sort/KEY]` <br> e.g., `list sort/name`                                                                                                                            |
+| **Tag** | `tag INDEX TAG`<br> e.g., `tag 1 adventure`                                                                                                                              |
