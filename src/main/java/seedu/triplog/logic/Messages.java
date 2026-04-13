@@ -18,8 +18,6 @@ public class Messages {
     public static final String MESSAGE_TRIPS_LISTED_OVERVIEW = "%1$d trips listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
-    public static final String MESSAGE_MISSING_INDEX =
-        "Error: Please specify the index of the trip to delete. Usage: delete <index>";
     public static final String MESSAGE_INVALID_INDEX_FORMAT = "Error: Index must be a positive integer.";
 
     /**
