@@ -57,7 +57,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* implements its functionality using a concrete `{Component Name}Manager} class (which follows the corresponding API `interface` mentioned in the previous point.
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -323,8 +323,8 @@ The `TripLogParser` routes `help` to `HelpCommand`:
 **Value proposition**:
 
 - Productivity: Enable Travelers to quickly record and retrieve travel experiences in a fast, distraction-free CLI. Record and search trips without switching apps or dealing with cluttered interfaces.
-- Organization: Tag and jot quick notes about the destinations. Organize entries with tags for easy filtering and retrieval later.
-- Simplicity: Lightweight solution and bypass slow, feature-heavy mobile travel apps. No installation of heavy software; runs directly in the terminal with minimal setup.
+- Organization: Tag and organize destinations. Organize entries with tags for easy filtering and retrieval later.
+- Simplicity: Lightweight solution that bypasses slow, feature-heavy mobile travel apps. No installation of heavy software; runs directly in the terminal with minimal setup.
 - Privacy: Fully local application with no cloud communication. No risk of data leakage or slow network latency.
 
 ### User stories
@@ -337,7 +337,7 @@ Priorities: Essential (must have) MVP, High (expected to have) - `* * *`, Medium
 | `MVP`    | software user             | delete wrong entries                                             | my travel log remains accurate and clean                     |
 | `MVP`    | traveler                  | tag trips based on category                                      | be aware of the activity/purpose of each trip quickly        |
 | `MVP`    | traveler                  | search my entries / logs for tags                                | see whether i have done a specific activity in that region   |
-| `* * *`  | traveler                  | update the description of a trip entry                           | efficiently correct typos or add more detail to a trip       |
+| `* * *`  | traveler                  | update the address of a trip entry                               | efficiently correct typos or add more detail to a trip location|
 | `* * *`  | traveler                  | list all trips sorted by various criteria (name, date, duration) | view my travel history according to my current needs         |
 | `* * *`  | traveler                  | see a summary dashboard of my trips                              | get a high-level view of my travel status                    |
 | `* * *`  | new user                  | use a generic help command to recover the syntax of the commands | use the CLI without the need to memorise all instructions    |
@@ -346,7 +346,7 @@ Priorities: Essential (must have) MVP, High (expected to have) - `* * *`, Medium
 | `* * *`  | traveler                  | record multiple cities in one trip                               | log complex itineraries                                      |
 | `* *`    | traveler                  | mark a trip as "Completed"                                       | distinguish between upcoming plans and past trips            |
 | `* *`    | returning traveler        | mark activities in a region as missing or haven't tried yet      | search for it and pick up the experience in an upcoming plan |
-| `* *`    | traveler                  | attach short personal notes to a trip                            | remember meaningful experiences beyond basic facts           |
+| `* *`    | traveler                  | attach an address to a trip                                      | remember where to go exactly                                 |
 | `*`      | photographer traveler     | link to photos in the local file system                          | retrieve relevant photos quickly                             |
 | `*`      | budget-conscious traveler | track the expenses at each destination                           | analyze the budget and plan accurately next time             |
 
