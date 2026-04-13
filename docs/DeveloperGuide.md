@@ -186,7 +186,7 @@ The `delete` command removes trip(s) from the currently displayed trip list. It 
 
 The parsing of the command is handled by `DeleteCommandParser`, which determines which of the four deletion modes is being used based on input format and validates that only one mode is specified per command.
 
-Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. 
+Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**.
 For field-match and date-range deletion, matching is handled by `TripMatchesDeletePredicate`:
 * field-match deletion checks one specified prefix at a time (e.g. `n/`, `p/`, `t/`, `sd/`)
 * date-range deletion (`sd/` and `ed/`) works as follows:
@@ -349,6 +349,79 @@ Priorities: Essential (must have) MVP, High (expected to have) - `* * *`, Medium
 | `* *`    | traveler                  | attach short personal notes to a trip                            | remember meaningful experiences beyond basic facts           |
 | `*`      | photographer traveler     | link to photos in the local file system                          | retrieve relevant photos quickly                             |
 | `*`      | budget-conscious traveler | track the expenses at each destination                           | analyze the budget and plan accurately next time             |
+
+### Use cases
+
+(For all use cases below, the **System** is `TripLog` and the **Actor** is the `user`, unless specified otherwise)
+
+**Use case: UC1 - Add a trip**
+
+**MSS**
+
+1.  User requests to add a trip.
+2.  TripLog adds the trip.
+3.  TripLog shows the updated trip list.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The command format is invalid.
+    * 1a1. TripLog shows an error message.
+    * Use case resumes at step 1.
+
+* 1b. The trip details provided are invalid (e.g., end date before start date).
+    * 1b1. TripLog shows an error message.
+    * Use case resumes at step 1.
+
+* 1c. The trip is a duplicate of an existing entry.
+    * 1c1. TripLog shows an error message.
+    * Use case resumes at step 1.
+
+**Use case: UC2 - Delete a trip**
+
+**MSS**
+
+1.  User requests to list trips.
+2.  TripLog shows a list of trips.
+3.  User requests to delete a specific trip in the list.
+4.  TripLog shows a preview of the trip to be deleted and asks for confirmation.
+5.  User confirms the deletion.
+6.  TripLog deletes the trip.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+    * Use case ends.
+
+* 3a. The index provided is invalid.
+    * 3a1. TripLog shows an error message.
+    * Use case resumes at step 3.
+
+* 5a. User edits the command instead of confirming.
+    * 5a1. TripLog cancels the deletion.
+    * Use case ends.
+
+**Use case: UC3 - Filter trips by date**
+
+**MSS**
+
+1.  User requests to filter trips by a date range.
+2.  TripLog updates the displayed list with trips satisfying the criteria.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. The date range format is invalid.
+    * 1a1. TripLog shows an error message.
+    * Use case resumes at step 1.
+
+* 1b. No trips match the criteria.
+    * 1b1. TripLog shows an empty list.
+    * Use case ends.
 
 ### Non-Functional Requirements
 
