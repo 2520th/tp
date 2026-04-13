@@ -186,7 +186,7 @@ The `delete` command removes trip(s) from the currently displayed trip list. It 
 
 The parsing of the command is handled by `DeleteCommandParser`, which determines which of the four deletion modes is being used based on input format and validates that only one mode is specified per command.
 
-Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. 
+Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**.
 For field-match and date-range deletion, matching is handled by `TripMatchesDeletePredicate`:
 * field-match deletion checks one specified prefix at a time (e.g. `n/`, `p/`, `t/`, `sd/`)
 * date-range deletion (`sd/` and `ed/`) works as follows:
@@ -468,6 +468,11 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `add sd/2026-06-01 ed/2026-06-10`
        Expected: Error message indicating invalid command format. No trip is added.
 
+8. Adding a trip while list is filtered
+    1. Prerequisites: Use `filter` to hide some existing trips.
+    2. Test case: `add n/New Hidden Trip sd/2021-01-01`
+       Expected: The list and summary automatically reset to show all trips, including the new entry.
+
 ### Editing a trip
 
 1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
@@ -502,6 +507,11 @@ testers are expected to do more *exploratory* testing.
 8. No fields provided
     1. Test case: `edit 1`
        Expected: Error message indicating at least one field must be provided.
+
+9. Editing a trip while list is filtered
+    1. Prerequisites: Use `filter` to hide some existing trips.
+    2. Test case: `edit 1 n/Renamed Trip`
+       Expected: The list and summary automatically reset to show all trips, including the updated entry.
 
 ### Listing, Sorting, and Statistics
 
