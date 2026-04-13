@@ -23,6 +23,7 @@ import seedu.triplog.model.trip.TripDate;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_DUPLICATE_TAG = "Duplicate tags are not allowed: ";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -119,7 +120,9 @@ public class ParserUtil {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
-            tagSet.add(parseTag(tagName));
+            if (!tagSet.add(parseTag(tagName))) {
+                throw new ParseException(MESSAGE_DUPLICATE_TAG + tagName);
+            }
         }
         return tagSet;
     }
