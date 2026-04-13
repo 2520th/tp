@@ -151,5 +151,4 @@ class JsonAdaptedTrip {
         return new Trip(modelName, modelPhone, modelEmail, modelAddress, modelTags,
                 modelStartDate, modelEndDate);
     }
-
 }
