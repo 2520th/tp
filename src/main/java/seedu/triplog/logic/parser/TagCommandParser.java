@@ -1,6 +1,7 @@
 package seedu.triplog.logic.parser;
 
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.Messages.MESSAGE_INVALID_INDEX_FORMAT;
 
 import seedu.triplog.commons.core.index.Index;
 import seedu.triplog.logic.commands.TagCommand;
@@ -35,8 +36,7 @@ public class TagCommandParser implements Parser<TagCommand> {
             Index index = ParserUtil.parseIndex(parts[0]);
             return new TagCommand(index, tag);
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_INDEX_FORMAT));
         }
     }
 }
