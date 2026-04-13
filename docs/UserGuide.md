@@ -184,6 +184,7 @@ Format: `tag INDEX TAG`
 * Tags must be alphanumeric (A-Z, 0-9) and may contain spaces.
 * Duplicate tags will not be added.
 * Duplicate tags are case-insensitive. e.g. `Hotel` and `HOTEL` are considered duplicates.
+* If the loaded .json file contains duplicate tags, data is considered corrupted and the save will not be loaded.
 
 Examples:
 * `tag 1 scenic beauty` Tags the 1st trip with `scenic beauty`.
