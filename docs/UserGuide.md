@@ -165,6 +165,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed
 - Edits the trip at the specified `INDEX`. The index refers to the index number shown in the displayed trip list. The index **must be a positive integer** 1, 2, 3, …​
 - At least one of the optional fields must be provided.
 - Existing values will be updated to the input values.
+- **Phone:** Phone numbers should only contain numbers, and must be between 3 and 15 digits long.
 - **Dates:** If you edit only the `sd/START_DATE` or `ed/END_DATE`, TripLog ensures the new date range remains valid (start date $\le$ end date).
 - **Tags:** When editing tags, the existing tags of the trip will be removed (i.e., replacement, not addition).
 - You can remove all the trip’s tags by typing `t/` without specifying any tags after it.
