@@ -11,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
+import org.testfx.util.WaitForAsyncUtils;
 
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -163,5 +165,12 @@ public class HelpWindowTest {
         assertTrue(CommandUsage.LIST_USAGE.contains("list"));
         assertTrue(CommandUsage.CLEAR_USAGE.contains("clear"));
         assertTrue(CommandUsage.EXIT_USAGE.contains("exit"));
+    }
+
+    // EP: focus() does not throw when window is not iconified
+    @Test
+    public void focus_doesNotThrow() {
+        Platform.runLater(() -> helpWindow.focus());
+        WaitForAsyncUtils.waitForFxEvents();
     }
 }

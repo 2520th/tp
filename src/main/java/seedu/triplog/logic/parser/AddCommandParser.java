@@ -1,6 +1,7 @@
 package seedu.triplog.logic.parser;
 
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_PREFIXES;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
@@ -9,6 +10,7 @@ import static seedu.triplog.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_START_DATE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -35,6 +37,18 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
+        List<String> unknownPrefixes = ArgumentTokenizer.extractUnknownPrefixes(args,
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_ADDRESS,
+                PREFIX_TAG,
+                PREFIX_START_DATE,
+                PREFIX_END_DATE);
+        if (!unknownPrefixes.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_UNKNOWN_PREFIXES));
+        }
+
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(
                     args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
