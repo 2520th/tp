@@ -405,4 +405,43 @@ public class TripMatchesDeletePredicateTest {
 
         assertFalse(predicate.test(trip));
     }
+
+    @Test
+    public void test_singleDayRangeTripNoOverlap_returnsFalse() {
+        // EP: startDate == endDate, trip does not overlap the single day
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-15"),
+                new TripDate("2026-04-15"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertFalse(predicate.test(trip));
+    }
+
+    @Test
+    public void test_singleDayRangeTripOverlaps_returnsTrue() {
+        // EP: startDate == endDate, trip overlaps the single day
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null,
+                new TripDate("2026-04-05"),
+                new TripDate("2026-04-05"),
+                Set.of());
+
+        Trip trip = new TripBuilder(ALICE).build();
+
+        assertTrue(predicate.test(trip));
+    }
+
+    @Test
+    public void constructor_nonNullTags_matchingTagReturnsTrue() {
+        // EP: non-null tags — covers the false branch of the ternary
+        TripMatchesDeletePredicate predicate = new TripMatchesDeletePredicate(
+                null, null, null, null, null, null, Set.of(new Tag("friends")));
+
+        Trip trip = new TripBuilder(ALICE).withTags("friends").build();
+
+        assertTrue(predicate.test(trip));
+    }
 }
