@@ -61,6 +61,102 @@ public class CommandBoxTest {
     }
 
     @Test
+    public void handleCommandEntered_deletepreviewDirectInput_failureStyleApplied() throws Exception {
+        // EP: user types "deletepreview 1" directly — should be rejected as unknown command
+        Platform.runLater(() -> commandTextField.setText("deletepreview 1"));
+        WaitForAsyncUtils.waitForFxEvents();
+
+        invokeHandleCommandEntered();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertTrue(commandTextField.getStyle().contains("#ff4d4d"),
+                "Style should contain error color: " + commandTextField.getStyle());
+    }
+
+    @Test
+    public void handleCommandEntered_deletepreviewUppercase_failureStyleApplied() throws Exception {
+        // EP: uppercase DELETEPREVIEW is also rejected as unknown command
+        Platform.runLater(() -> commandTextField.setText("DELETEPREVIEW 1"));
+        WaitForAsyncUtils.waitForFxEvents();
+
+        invokeHandleCommandEntered();
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertTrue(commandTextField.getStyle().contains("#ff4d4d"),
+                "Style should contain error color: " + commandTextField.getStyle());
+    }
+
+    @Test
+    public void handleCommandEntered_uppercaseDelete_previewShownTextNotCleared() throws Exception {
+        // EP: uppercase DELETE command (first enter - preview phase)
+        AtomicInteger previewCount = new AtomicInteger(0);
+
+        CommandBox deleteBox = new CommandBox(commandText -> {
+            if (commandText.equalsIgnoreCase("deletepreview 1")) {
+                previewCount.incrementAndGet();
+                return new CommandResult("Preview: 1 trip will be deleted.");
+            }
+            if (commandText.equalsIgnoreCase("delete 1")) {
+                return new CommandResult("Deleted 1 trip.");
+            }
+            throw new ParseException("Failure Message");
+        });
+
+        TextField field = (TextField) deleteBox.getRoot().lookup("#commandTextField");
+
+        Platform.runLater(() -> field.setText("DELETE 1"));
+        WaitForAsyncUtils.waitForFxEvents();
+
+        invokeHandle(deleteBox);
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertEquals("DELETE 1", field.getText(),
+                "First Enter on uppercase DELETE should show preview and keep text.");
+        assertEquals(1, previewCount.get(),
+                "Preview command should be triggered exactly once.");
+        assertTrue(field.getStyle().contains("#00ffcc"),
+                "Style should contain success color: " + field.getStyle());
+    }
+
+    @Test
+    public void handleCommandEntered_uppercaseDeleteSecondEnter_confirmsAndClearsText() throws Exception {
+        // EP: uppercase DELETE command (second enter - confirmation phase)
+        AtomicInteger deleteCount = new AtomicInteger(0);
+
+        CommandBox deleteBox = new CommandBox(commandText -> {
+            if (commandText.equalsIgnoreCase("deletepreview 1")) {
+                return new CommandResult("Preview: 1 trip will be deleted.");
+            }
+            if (commandText.equalsIgnoreCase("delete 1")) {
+                deleteCount.incrementAndGet();
+                return new CommandResult("Deleted 1 trip.");
+            }
+            throw new ParseException("Failure Message");
+        });
+
+        TextField field = (TextField) deleteBox.getRoot().lookup("#commandTextField");
+
+        Platform.runLater(() -> field.setText("DELETE 1"));
+        WaitForAsyncUtils.waitForFxEvents();
+
+        // First Enter -> preview
+        invokeHandle(deleteBox);
+        WaitForAsyncUtils.waitForFxEvents();
+        assertEquals("DELETE 1", field.getText());
+
+        // Second Enter -> actual delete
+        invokeHandle(deleteBox);
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertEquals("", field.getText(),
+                "Second Enter on uppercase DELETE should confirm and clear text.");
+        assertEquals(1, deleteCount.get(),
+                "Actual delete should happen exactly once.");
+        assertTrue(field.getStyle().contains("#00ffcc"),
+                "Style should contain success color: " + field.getStyle());
+    }
+
+    @Test
     public void handleCommandEntered_failure_styleAppliedAndResets() throws Exception {
         // EP: command that fails parsing or execution
         // 1. Trigger Failure
