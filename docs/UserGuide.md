@@ -377,13 +377,13 @@ Furthermore, certain edits can cause the TripLog to behave in unexpected ways (e
 
 | Action     | Format, Examples                                                                                                                                                         |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Add** | `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 sd/2026-01-01 t/friend` |
-| **Clear** | `clear`                                                                                                                                   |
+| **Add** | `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​` <br> e.g., `add n/Tokyo p/91234567 sd/2026-01-01 t/vacation`                       |
+| **Clear** | `clear`                                                                                                                                                                  |
 | **Delete** | `delete INDEX`<br>`delete START-END`<br>`delete PREFIX/VALUE`<br>`delete sd/START_DATE ed/END_DATE`<br> e.g., `delete 3`, `delete 1-3`, `delete t/family`, `delete sd/2026-03-01 ed/2026-05-10` |
-| **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/DATE] [ed/DATE] [t/TAG]…​`<br> At least one field must be provided.<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com` |
-| **Exit** | `exit` |
-| **Filter** | `filter sd/START_DATE ed/END_DATE`<br> `START_DATE` must not be after `END_DATE`.<br> e.g., `filter sd/2026-05-01 ed/2026-07-31` |
+| **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`<br> At least one field must be provided.<br> e.g., `edit 2 n/Osaka e/hotel@example.com` |
+| **Exit** | `exit`                                                                                                                                                                   |
+| **Filter** | `filter sd/START_DATE ed/END_DATE`<br> `START_DATE` must not be after `END_DATE`.<br> e.g., `filter sd/2026-05-01 ed/2026-07-31`                                         |
 | **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find Tokyo Osaka`                                                                                                              |
-| **List** | `list [sort/KEY]` <br> e.g., `list sort/name`                                                                                                                            |
-| **Tag** | `tag INDEX TAG`<br> e.g., `tag 1 adventure` |
 | **Help** | `help [COMMAND]`<br> e.g., `help add`                                                                                                                                    |
+| **List** | `list [sort/KEY]` <br> e.g., `list sort/name`                                                                                                                            |
+| **Tag** | `tag INDEX TAG`<br> e.g., `tag 1 adventure`                                                                                                                              |
