@@ -1,6 +1,7 @@
 package seedu.triplog.logic.parser;
 
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.Messages.MESSAGE_INVALID_INDEX_FORMAT;
 import static seedu.triplog.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.triplog.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.triplog.testutil.TypicalIndexes.INDEX_FIRST_TRIP;
@@ -43,7 +44,7 @@ public class TagCommandParserTest {
 
     @Test
     public void parse_invalidIndex_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_INDEX_FORMAT);
 
         // zero index
         assertParseFailure(parser, "0 leisure", expectedMessage);

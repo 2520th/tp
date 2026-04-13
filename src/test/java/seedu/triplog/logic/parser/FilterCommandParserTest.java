@@ -2,8 +2,13 @@ package seedu.triplog.logic.parser;
 
 import static seedu.triplog.logic.Messages.MESSAGE_DUPLICATE_FIELDS;
 import static seedu.triplog.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_END_DATE;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.triplog.logic.parser.CliSyntax.PREFIX_START_DATE;
+import static seedu.triplog.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.triplog.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.triplog.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -65,6 +70,73 @@ public class FilterCommandParserTest {
     @Test
     public void parse_preamblePresent_failure() {
         String userInput = "randomText "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unexpectedNamePrefix_failure() {
+        String userInput = " "
+                + PREFIX_NAME + "Holiday "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unexpectedPhonePrefix_failure() {
+        String userInput = " "
+                + PREFIX_PHONE + "12345678 "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unexpectedEmailPrefix_failure() {
+        String userInput = " "
+                + PREFIX_EMAIL + "test@email.com "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unexpectedAddressPrefix_failure() {
+        String userInput = " "
+                + PREFIX_ADDRESS + "Somewhere "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_unexpectedTagPrefix_failure() {
+        String userInput = " "
+                + PREFIX_TAG + "fun "
+                + PREFIX_START_DATE + "2026-01-01 "
+                + PREFIX_END_DATE + "2026-03-01";
+
+        assertParseFailure(parser, userInput,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_multipleUnexpectedPrefixes_failure() {
+        String userInput = " "
+                + PREFIX_NAME + "Trip "
+                + PREFIX_TAG + "fun "
                 + PREFIX_START_DATE + "2026-01-01 "
                 + PREFIX_END_DATE + "2026-03-01";
 

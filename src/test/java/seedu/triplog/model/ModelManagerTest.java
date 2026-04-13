@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -165,5 +166,91 @@ public class ModelManagerTest {
         UserPrefs diffSortPrefs = new UserPrefs();
         diffSortPrefs.setLastSortDescription(ListCommand.SORT_DESC_NAME);
         assertFalse(modelManager.equals(new ModelManager(tripLog, diffSortPrefs)));
+    }
+
+    @Test
+    public void updateFilteredTripList_filterOnly_appliesFilterPredicate() {
+        modelManager.addTrip(ALICE);
+        modelManager.addTrip(BENSON);
+
+        Predicate<Trip> filterPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        modelManager.updateFilteredTripList(filterPredicate, true);
+
+        assertEquals(1, modelManager.getFilteredTripList().size());
+        assertEquals(ALICE, modelManager.getFilteredTripList().get(0));
+    }
+
+    @Test
+    public void updateFilteredTripList_findOnly_appliesFindPredicate() {
+        modelManager.addTrip(ALICE);
+        modelManager.addTrip(BENSON);
+
+        Predicate<Trip> findPredicate =
+                trip -> trip.getName().fullName.equals(BENSON.getName().fullName);
+
+        modelManager.updateFilteredTripList(findPredicate, false);
+
+        assertEquals(1, modelManager.getFilteredTripList().size());
+        assertEquals(BENSON, modelManager.getFilteredTripList().get(0));
+    }
+
+    @Test
+    public void updateFilteredTripList_filterThenFind_combinesPredicates() {
+        modelManager.addTrip(ALICE);
+        modelManager.addTrip(BENSON);
+
+        Predicate<Trip> filterPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        Predicate<Trip> findPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        modelManager.updateFilteredTripList(filterPredicate, true);
+        modelManager.updateFilteredTripList(findPredicate, false);
+
+        assertEquals(1, modelManager.getFilteredTripList().size());
+        assertEquals(ALICE, modelManager.getFilteredTripList().get(0));
+    }
+
+    @Test
+    public void updateFilteredTripList_filterThenFind_noMatch() {
+        modelManager.addTrip(ALICE);
+        modelManager.addTrip(BENSON);
+
+        Predicate<Trip> filterPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        Predicate<Trip> findPredicate =
+                trip -> trip.getName().fullName.equals(BENSON.getName().fullName);
+
+        modelManager.updateFilteredTripList(filterPredicate, true);
+        modelManager.updateFilteredTripList(findPredicate, false);
+
+        assertTrue(modelManager.getFilteredTripList().isEmpty());
+    }
+
+    @Test
+    public void updateFilteredTripList_findThenFilter_combinesPredicates() {
+        modelManager.addTrip(ALICE);
+        modelManager.addTrip(BENSON);
+
+        Predicate<Trip> findPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        Predicate<Trip> filterPredicate =
+                trip -> trip.getName().fullName.equals(ALICE.getName().fullName);
+
+        modelManager.updateFilteredTripList(findPredicate, false);
+        modelManager.updateFilteredTripList(filterPredicate, true);
+
+        assertEquals(1, modelManager.getFilteredTripList().size());
+        assertEquals(ALICE, modelManager.getFilteredTripList().get(0));
+    }
+
+    @Test
+    public void updateFilteredTripList_nullPredicate_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.updateFilteredTripList(null, true));
     }
 }

@@ -25,6 +25,8 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Trip> filteredTrips;
     private final SortedList<Trip> sortedTrips;
+    private Predicate<Trip> filterPredicate;
+    private Predicate<Trip> findPredicate;
 
     /**
      * Initializes a ModelManager with the given tripLog, userPrefs and initial comparator.
@@ -145,6 +147,25 @@ public class ModelManager implements Model {
     public void updateFilteredTripList(Predicate<Trip> predicate) {
         requireNonNull(predicate);
         filteredTrips.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredTripList(Predicate<Trip> predicate, boolean isFilter) {
+        requireNonNull(predicate);
+        if (isFilter) {
+            filterPredicate = predicate;
+            if (findPredicate == null) {
+                filteredTrips.setPredicate(filterPredicate);
+                return;
+            }
+        } else {
+            findPredicate = predicate;
+            if (filterPredicate == null) {
+                filteredTrips.setPredicate(findPredicate);
+                return;
+            }
+        }
+        filteredTrips.setPredicate(filterPredicate.and(findPredicate));
     }
 
     @Override

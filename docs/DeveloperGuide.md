@@ -217,7 +217,7 @@ The following sequence diagram illustrates the process of tagging a trip:
 
 ### Filtering Trips by Date: Filter Command
 
-The `filter` command allows user to filter by date range. It enforces both `sd/` and `ed/` present in the query, but accepts trips with null `sd/` and `ed/` fields. `sd/` >= `query sd/` must be present to pass the filter, `ed/` is optional but must be <= `query ed/` to pass the filter.
+The `filter` command allows user to filter by date range. It enforces both `sd/` and `ed/` present in the query. Actual trip's `sd/` must be present (i.e. non-null) and >= query `sd/` to pass the filter condition, actual trip `ed/` is optional but must be <= query `ed/` to pass the filter condition.
 
 The following sequence diagram illustrates the process of filtering a trip:
 
@@ -550,16 +550,12 @@ testers are expected to do more *exploratory* testing.
 ### Launch and shutdown
 
 1. Initial launch
-
     1. Download the jar file and copy into an empty folder
-
-    2. Open a terminal, navigate to the folder, and run the command `java -jar triplog.jar`.
-       Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    2. Open a terminal, navigate to the folder, and run the command `java -jar triplog.jar`.<br>
+       Expected: Shows the GUI with a set of sample trips. The window size may not be optimum.
 
 2. Saving window preferences
-
     1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
     2. Re-launch the app by running the command `java -jar triplog.jar` in a terminal.<br>
        Expected: The most recent window size and location is retained.
 
@@ -567,48 +563,48 @@ testers are expected to do more *exploratory* testing.
 
 1. Testing command word variations
     1. Prerequisites: App launched with sample data.
-    2. Test case: `ADD n/Paris`
+    2. Test case: `ADD n/Paris`<br>
        Expected: Trip to Paris is added (case-insensitive for command word).
-    3. Test case: `lIsT`
+    3. Test case: `lIsT`<br>
        Expected: Trip list is displayed normally.
-    4. Test case: `EXIT`
+    4. Test case: `EXIT`<br>
        Expected: Application shuts down.
 
 ### Adding a trip
 
 1. Adding a trip with only the required field
-    1. Test case: `add n/Tokyo`
+    1. Test case: `add n/Tokyo`<br>
        Expected: Trip with name "Tokyo" is added. All other fields show as blank/absent.
 
 2. Adding a trip with all fields
-    1. Test case: `add n/Osaka p/91234567 e/trip@mail.com a/Dotonbori sd/2026-06-01 ed/2026-06-10 t/food t/travel`
+    1. Test case: `add n/Osaka p/91234567 e/trip@mail.com a/Dotonbori sd/2026-06-01 ed/2026-06-10 t/food t/travel`<br>
        Expected: Trip is added with all fields populated and both tags shown.
 
 3. Adding a trip with optional fields omitted
-    1. Test case: `add n/Kyoto sd/2026-07-01 ed/2026-07-10`
+    1. Test case: `add n/Kyoto sd/2026-07-01 ed/2026-07-10`<br>
        Expected: Trip is added. Phone, email, and address are absent.
 
 4. Invalid date order
-    1. Test case: `add n/Seoul sd/2026-12-31 ed/2026-01-01`
+    1. Test case: `add n/Seoul sd/2026-12-31 ed/2026-01-01`<br>
        Expected: Error message indicating start date cannot be after end date. No trip is added.
 
 5. Duplicate trip (same name, overlapping dates)
     1. Prerequisites: A trip named "Tokyo" with dates 2026-06-01 to 2026-06-10 already exists.
-    2. Test case: `add n/Tokyo sd/2026-06-05 ed/2026-06-15`
+    2. Test case: `add n/Tokyo sd/2026-06-05 ed/2026-06-15`<br>
        Expected: Error message indicating duplicate trip. No trip is added.
 
 6. Same name, non-overlapping dates (allowed)
     1. Prerequisites: A trip named "Tokyo" with dates 2026-06-01 to 2026-06-10 already exists.
-    2. Test case: `add n/Tokyo sd/2026-09-01 ed/2026-09-10`
+    2. Test case: `add n/Tokyo sd/2026-09-01 ed/2026-09-10`<br>
        Expected: Trip is added successfully. Both "Tokyo" trips coexist.
 
 7. Missing name
-    1. Test case: `add sd/2026-06-01 ed/2026-06-10`
+    1. Test case: `add sd/2026-06-01 ed/2026-06-10`<br>
        Expected: Error message indicating invalid command format. No trip is added.
 
 8. Adding a trip while list is filtered
     1. Prerequisites: Use `filter` to hide some existing trips.
-    2. Test case: `add n/New Hidden Trip sd/2021-01-01`
+    2. Test case: `add n/New Hidden Trip sd/2021-01-01`<br>
        Expected: The list and summary automatically reset to show all trips, including the new entry.
 
 ### Editing a trip
@@ -616,39 +612,39 @@ testers are expected to do more *exploratory* testing.
 1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
 
 2. Editing a single field
-    1. Test case: `edit 1 n/New Destination Name`
+    1. Test case: `edit 1 n/New Destination Name`<br>
        Expected: Only the name of the first trip is updated. All other fields remain unchanged.
 
 3. Editing dates (valid range)
     1. Prerequisites: Trip 1 has dates 2026-01-01 to 2026-01-10.
-    2. Test case: `edit 1 sd/2026-01-05`
+    2. Test case: `edit 1 sd/2026-01-05`<br>
        Expected: Start date updated to Jan 5th. End date remains Jan 10th.
 
 4. Editing dates (invalid range)
     1. Prerequisites: Trip 1 has start date 2026-01-01 and end date 2026-01-10.
-    2. Test case: `edit 1 ed/2025-12-31`
+    2. Test case: `edit 1 ed/2025-12-31`<br>
        Expected: Error message indicating start date cannot be after end date. No changes made.
 
 5. No changes from original values
-    1. Test case: `edit 1 n/Original Name` (where trip 1 already has "Original Name")
+    1. Test case: `edit 1 n/Original Name` (where trip 1 already has "Original Name")<br>
        Expected: Error message indicating edited fields are the same as the original. No changes made.
 
 6. Creating a duplicate via edit
     1. Prerequisites: Trip 1 is "Tokyo" (2026-01-01 to 2026-01-10). Trip 2 is "Osaka" (same dates).
-    2. Test case: `edit 2 n/Tokyo`
+    2. Test case: `edit 2 n/Tokyo`<br>
        Expected: Error message indicating the trip already exists (duplicate). No changes made.
 
 7. Clearing tags
-    1. Test case: `edit 1 t/`
+    1. Test case: `edit 1 t/`<br>
        Expected: All tags are removed from the first trip.
 
 8. No fields provided
-    1. Test case: `edit 1`
+    1. Test case: `edit 1`<br>
        Expected: Error message indicating at least one field must be provided.
 
 9. Editing a trip while list is filtered
     1. Prerequisites: Use `filter` to hide some existing trips.
-    2. Test case: `edit 1 n/Renamed Trip`
+    2. Test case: `edit 1 n/Renamed Trip`<br>
        Expected: The list and summary automatically reset to show all trips, including the updated entry.
 
 ### Listing, Sorting, and Statistics
@@ -669,14 +665,14 @@ testers are expected to do more *exploratory* testing.
        Expected: Error message "Invalid sort key! Supported keys: name, start, end, len".
 
 3. Testing Persistence
-    1. Test case: Execute `list sort/name`, then `add n/B-Destination`.
+    1. Test case: Execute `list sort/name`, then `add n/B-Destination`.<br>
        Expected: The new trip is added and automatically positioned in alphabetical order.
 
 4. Testing Startup Summary and Persistence
     1. Prerequisites: App contains trips with various dates.
-    2. Test case: Open the application.
+    2. Test case: Open the application.<br>
        Expected: The Result Display immediately shows a summary dashboard and the last used sort order without entering any commands.
-    3. Test case: Sort the list using `list sort/name`, exit the application, and re-launch.
+    3. Test case: Sort the list using `list sort/name`, exit the application, and re-launch.<br>
        Expected: The summary dashboard and the list itself remain sorted by name alphabetically.
 
 ### Tagging a trip
@@ -684,13 +680,13 @@ testers are expected to do more *exploratory* testing.
 1. Tagging a trip using index
     1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
 
-    2. Test case: `tag 1 scenic beauty`
+    2. Test case: `tag 1 scenic beauty`<br>
        Expected: First trip is tagged with `scenic beauty`. Details of the tagged trip shown in the status message.
 
 2. Duplicate tag (case insensitive)
     1. Prerequisites: A trip named "Hotel California" with tag "hotel" already exists.
 
-    2. Test case: `tag 1 HOTEL`
+    2. Test case: `tag 1 HOTEL`<br>
        Expected: Error message indicating duplicate tag. No tag is added.
 
 ### Locating trips by name
@@ -708,30 +704,29 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a trip using index
     1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
-    2. Test case: `delete 1`  
+    2. Test case: `delete 1`<br>
        Expected: A preview of the first trip is shown. No trip is deleted yet.
-    3. Test case: Press Enter again with `delete 1`  
+    3. Test case: Press Enter again with `delete 1`<br>
        Expected: First trip is deleted from the list. Details of the deleted trip shown in the status message.
 
 2. Cancelling deletion
-    1. Test case: `delete 1`, then modify the command instead of confirming  
+    1. Test case: `delete 1`, then modify the command instead of confirming<br>
        Expected: No trip is deleted.
 
 3. Invalid index
-    1. Test case: `delete 0`  
+    1. Test case: `delete 0`<br>
        Expected: No trip is deleted. Error message shown.
 
 4. Deleting a range of trips
-    1. Test case: `delete 1-3`  
-       Expected: Preview of trips 1 to 3 is shown.  
-       After confirmation, all three trips are deleted.
+    1. Test case: `delete 1-3`<br>
+       Expected: Preview of trips 1 to 3 is shown. After confirmation, all three trips are deleted.
 
 5. Deleting by field
-    1. Test case: `delete n/Tokyo`  
+    1. Test case: `delete n/Tokyo`<br>
        Expected: All trips with name "Tokyo" are previewed, then deleted after confirmation.
 
 6. Deleting by date range
-    1. Test case: `delete sd/2026-03-01 ed/2026-05-10`  
+    1. Test case: `delete sd/2026-03-01 ed/2026-05-10`<br>
        Expected: Trips matching the specified date range are previewed, then deleted after confirmation.
 
 ### Saving data

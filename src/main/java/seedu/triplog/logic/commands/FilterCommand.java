@@ -26,7 +26,7 @@ public class FilterCommand extends Command {
             + PREFIX_START_DATE + "2026-01-01 "
             + PREFIX_END_DATE + "2026-03-01 ";
 
-    public static final String MESSAGE_SUCCESS = "Found the following trips:";
+    public static final String MESSAGE_SUCCESS = "Found the following trips from ";
     public static final String MESSAGE_NO_TRIPS_FOUND = "No trips found with the given date range.";
     public static final String MESSAGE_START_AFTER_END = "Start date should not be after end date.";
 
@@ -51,9 +51,14 @@ public class FilterCommand extends Command {
                 && trip.getStartDate().value.isAfter(startDate.value.minusDays(1))
                 && (trip.getEndDate() == null
                 ? trip.getStartDate().value.isBefore(endDate.value.plusDays(1))
-                : trip.getEndDate().value.isBefore(endDate.value.plusDays(1))));
+                : trip.getEndDate().value.isBefore(endDate.value.plusDays(1))),
+                true);
 
-        return new CommandResult(model.getFilteredTripList().isEmpty() ? MESSAGE_NO_TRIPS_FOUND : MESSAGE_SUCCESS);
+        if (model.getFilteredTripList().isEmpty()) {
+            return new CommandResult(MESSAGE_NO_TRIPS_FOUND);
+        } else {
+            return new CommandResult(String.format("%s%s to %s:", MESSAGE_SUCCESS, startDate, endDate));
+        }
     }
 
     @Override

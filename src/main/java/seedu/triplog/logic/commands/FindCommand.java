@@ -29,7 +29,7 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredTripList(predicate);
+        model.updateFilteredTripList(predicate, false);
         return new CommandResult(
                 String.format(Messages.MESSAGE_TRIPS_LISTED_OVERVIEW, model.getFilteredTripList().size()));
     }

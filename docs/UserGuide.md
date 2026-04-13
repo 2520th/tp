@@ -97,16 +97,34 @@ Adds a trip to the log.
 
 <box type="info" seamless>
 
-**Duplicate detection:** A trip is considered a duplicate if it has the same name and
-overlapping dates as an existing trip. Trips with the same name but non-overlapping date
+**Duplicate detection:** A trip is considered a duplicate if it has the same destination name and
+overlapping dates as an existing trip. Trips with the same destination name but non-overlapping date
 ranges are allowed. For example, you can have two trips named "Tokyo", one from
 2026-01-01 to 2026-01-10 and another from 2026-03-01 to 2026-03-10.
 </box>
 
 Format: `add n/NAME [p/PHONE] [e/EMAIL] [a/ADDRESS] [sd/START_DATE] [ed/END_DATE] [t/TAG]…​`
 
-- Dates must be in `YYYY-MM-DD` format.
-- `START_DATE` must be earlier than or equal to `END_DATE`.
+**Mandatory field(s):**
+
+- **`n/NAME`**: Name of the trip destination or location.
+  
+**Optional fields:**
+Since every trip is different, all fields except the name are optional. This allows you to tailor the log to your specific needs. Here are some common ways to use these fields:
+
+- **`p/PHONE`**: Great for saving the contact number of your hotel reception, a local tour guide, or an emergency contact for that specific destination.
+- **`e/EMAIL`**: Useful for keeping the email address of your accommodation, airline customer support, or travel insurance provider handy.
+- **`a/ADDRESS`**: Perfect for noting down the address of your main hotel, an Airbnb, or the starting point of a booked tour.
+- **`sd/START_DATE` & `ed/END_DATE`**: Helps the TripLog organize your itinerary and generate your Summary Dashboard (Upcoming, Ongoing, Completed). If you are just brainstorming a future destination and haven't booked anything yet, you can leave these blank.
+- **`t/TAG`**: Use tags to build your own categorization system. You can group trips by purpose (`t/business`, `t/honeymoon`), region (`t/asia`, `t/europe`), or vibe (`t/relaxing`, `t/adventure`).
+- 
+**Field Constraints:**
+- **`n/NAME` (Compulsory):** Must start with a letter or number. Can only contain alphanumeric characters, spaces, and common punctuation (`-`, `,`, `.`, `'`, `(`, `)`, `!`). Cannot be blank.
+- **`p/PHONE`:** Must only contain numbers, and should be at least 3 digits long.
+- **`e/EMAIL`:** Must be a valid email format (e.g., `local-part@domain.com`).
+- **`a/ADDRESS`:** Can take any values, but cannot be blank if the `a/` prefix is used.
+- **`sd/START_DATE` & `ed/END_DATE`:** Must be valid calendar dates in `YYYY-MM-DD` format. If both are provided, `START_DATE` must be earlier than or equal to `END_DATE`.
+- **`t/TAG`:** Must be strictly alphanumeric and may contain spaces.
 - **Note:** Upon successful addition, any active filters (e.g. from the `filter` command) will be cleared to show the full trip list and update the Summary Dashboard.
 
 <box type="tip" seamless>

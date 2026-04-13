@@ -92,6 +92,8 @@ public interface Model {
      */
     void updateFilteredTripList(Predicate<Trip> predicate);
 
+    void updateFilteredTripList(Predicate<Trip> predicate, boolean isFilter);
+
     /** Returns an unmodifiable view of the sorted trip list */
     ObservableList<Trip> getSortedTripList();
 

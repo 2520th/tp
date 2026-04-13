@@ -203,6 +203,11 @@ public class TagCommandTest {
         }
 
         @Override
+        public void updateFilteredTripList(Predicate<Trip> predicate, boolean isFilter) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Trip> getSortedTripList() {
             throw new AssertionError("This method should not be called.");
         }
