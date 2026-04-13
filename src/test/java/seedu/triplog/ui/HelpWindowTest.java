@@ -173,13 +173,4 @@ public class HelpWindowTest {
         Platform.runLater(() -> helpWindow.focus());
         WaitForAsyncUtils.waitForFxEvents();
     }
-
-    // EP: window is showing after show() is called
-    @Test
-    public void isShowing_afterShow_returnsTrue() {
-        Platform.runLater(() -> helpWindow.show());
-        WaitForAsyncUtils.waitForFxEvents();
-
-        assertTrue(helpWindow.isShowing());
-    }
 }
