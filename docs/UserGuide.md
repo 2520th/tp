@@ -62,6 +62,9 @@ TripLog is a **desktop app for managing trips, optimized for use via a Command L
 - Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE`, `p/PHONE n/NAME` is also acceptable.
 
+- If a parameter is expected only once but is specified multiple times, only the last occurrence will be used.<br>
+  e.g. `list sort/name sort/start` will sort by start date.
+
 - For commands that do not take parameters (such as `exit` and `clear`), extraneous parameters will be ignored.
   </box>
 
@@ -74,13 +77,16 @@ Format: `help [COMMAND]`
 - Without arguments, `help` opens a help window showing syntax for all commands.
 - With a command name, `help COMMAND` displays the usage for that specific command inline in the result display (no window opens).
 
-![help message](images/helpMessage.png)
+Screenshot of the help window below: 
+
+<img src="images/helpMessage.png" width="850" />
 
 Examples:
 - `help` — opens the full help window.
 - `help add` — shows the usage for the `add` command inline.
 - `help delete` — shows the usage for the `delete` command inline.
 
+Notes:
 - The help window can also be opened by pressing **F1** or using the Help menu.
 - The help window can be closed by clicking the 'x' button, or by pressing **Q** or **ESCAPE** while the window is focused.
 - The help window is resizable — drag any edge or corner to adjust its size.
@@ -122,15 +128,15 @@ Shows a list of all trips currently in the log and displays a **Summary Dashboar
 
 The **Summary Dashboard** categorizes your trips based on the current date:
 * **Upcoming**: Trips starting after today.
-* **Ongoing**: Trips currently in progress (today is between start and end).
+* **Ongoing**: Trips currently in progress (today is between start and end, or today is after the start date for trips without an end date).
 * **Completed**: Trips that have already ended.
 * **Planning**: Trips with no start date specified.
 
 Format: `list [sort/KEY]`
 
-- By default, trips are sorted by **start date** in ascending order (earliest first).
+- By default, trips are sorted by the **last active sort order**. If no sort has been previously used, the **start date** in ascending order is used as a fallback.
 - **Tie-breaker**: If multiple trips share the same date or length, they are automatically sorted alphabetically by name.
-- Trips with no start date are shown last.
+- **When sorting by start date (default)**, trips with no start date are shown last.
 - The sort order is **persistent**: adding or editing trips will maintain the last chosen sort order, **even after restarting the application.**
 
 Supported `KEY` values:
@@ -140,7 +146,7 @@ Supported `KEY` values:
 - `len`: Sorts by duration of the trip (longest first).
 
 Examples:
-- `list` — Displays all trips ordered by start date and shows a summary (e.g. `Listed all trips sorted by start date. Summary: 1 Upcoming, 1 Ongoing, 5 Completed, 1 Planning`).
+- `list` — Displays all trips using the last active sort order (or start date by default) and shows a summary (e.g. `Listed all trips sorted by start date. Summary: 1 Upcoming, 1 Ongoing, 5 Completed, 1 Planning`).
 - `list sort/name` — Displays all trips in alphabetical order.
 - `list sort/len` — Displays all trips starting with the longest durations.
 
@@ -182,7 +188,7 @@ Format: `tag INDEX TAG`
 Examples:
 * `tag 1 scenic beauty` Tags the 1st trip with `scenic beauty`.
 * `tag 2 hotel` Tags the 2nd trip with `hotel`.
-
+  ![result for 'tag 2 hotel'.png](images/tag2HotelResult.png)
 
 ### Locating trips by name: `find`
 
@@ -215,14 +221,16 @@ Press **Enter again** to confirm the deletion, or edit the command to cancel.
 
 </box>
 
-Format:
-`delete INDEX`
-`delete START-END`
-`delete PREFIX/VALUE`
+Format:<br>
+`delete INDEX`<br>
+`delete START-END`<br>
+`delete PREFIX/VALUE` (where `PREFIX` is one of `n/`, `p/`, `e/`, `a/`, `sd/`, `ed/`, or `t/`)<br>
 `delete sd/START_DATE ed/END_DATE`
 
 - Only one delete mode may be used at a time (e.g. `delete 1 t/family` is invalid).
 - The command operates on the currently displayed trip list.
+- If `sd/` or `ed/` is used alone, TripLog performs exact single-date matching.
+- If both `sd/` and `ed/` are provided together, TripLog interprets it as date-range deletion instead.
 
 #### Delete by index
 
@@ -272,8 +280,9 @@ Examples:
 
 #### Delete by date range
 
-- Deletes all trips whose start and end dates match the specified range using both `sd/` and `ed/`.
-- Both `sd/START_DATE` and `ed/END_DATE` must be provided.
+- Deletes trips using both `sd/START_DATE` and `ed/END_DATE`.
+- If different start and end dates are given, a trip is deleted only if its start date is on or after `sd/START_DATE`and its end date is on or before `ed/END_DATE`.
+- If both dates are the same, all trips happening on that day are deleted.
 - Dates must be in `YYYY-MM-DD` format.
 
 Examples:
@@ -307,6 +316,16 @@ Examples:
 
 - `filter sd/2026-01-01 ed/2026-03-01` will filter all trips within this period
 
+#### Preview before filter
+
+![Filter Preview](images/bef_filter.png)
+
+Before deleting, TripLog will display a preview of the trips that match the command.
+
+#### After filtering date range 2025-06-08 to 2025-06-10
+
+![Filter Result](images/aft_filter.png)
+
 ### Clearing all entries : `clear`
 
 Clears all entries from the trip log.
@@ -333,10 +352,6 @@ TripLog data are saved automatically as a JSON file `[JAR file location]/data/tr
 If your changes to the data file makes its format invalid, TripLog will show an error message `[!!] Data file error: Corrupted entry detected. Starting fresh.` and start with an empty data file at the next run. This alerts you that your local edits contained errors. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the TripLog to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 ---
 

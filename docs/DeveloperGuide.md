@@ -12,7 +12,7 @@ pageNav: 3
 
 ## **Acknowledgements**
 
-* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://junit.org/junit5/)
+* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://junit.org/junit5/), [TestFX](https://github.com/TestFX/TestFX)
 * Original codebase: [AddressBook-Level3](https://github.com/se-edu/addressbook-level3)
 
 --------------------------------------------------------------------------------------------------------------------
@@ -92,9 +92,9 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1-3")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1-3` Command" />
 
 <box type="info" seamless>
 
@@ -178,18 +178,20 @@ The `edit` command utilizes `Model#hasTripExcluding(Trip, Trip)`. This ensures t
 
 ### Trip Deletion: Delete Command
 
-The `delete` command removes trip(s) from the currently displayed trip list. It supports three deletion modes:
-
+The `delete` command removes trip(s) from the currently displayed trip list. It supports four deletion modes:
 * **Single deletion**: deletes a trip at a given index (e.g. `delete 2`)
 * **Range deletion**: deletes trips within an index range (e.g. `delete 1-3`)
-* **Criteria-based deletion**: deletes trips matching a field (e.g. `delete n/Tokyo`, `delete t/family`, `delete sd/2026-01-01 ed/2026-12-31`)
+* **Field-match deletion**: deletes trips matching a field such as name or tag (e.g. `delete n/Tokyo`, `delete t/family`)
+* **Date-range deletion**: deletes trips within a specified date range (e.g. `delete sd/2026-01-01 ed/2026-12-31`)
 
-The parsing of the command is handled by `DeleteCommandParser`, which determines the deletion mode based on input format and validates that only one mode is used.
+The parsing of the command is handled by `DeleteCommandParser`, which determines which of the four deletion modes is being used based on input format and validates that only one mode is specified per command.
 
-Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. For criteria-based deletion, a `TripMatchesDeletePredicate` is used, where:
-* different fields are combined using AND logic
-* tags are matched using OR logic
-* date ranges (`sd/` and `ed/`) match trips within the specified period
+Deletion is performed by `DeleteCommand`, which operates on the **currently displayed trip list**. 
+For field-match and date-range deletion, matching is handled by `TripMatchesDeletePredicate`:
+* field-match deletion checks one specified prefix at a time (e.g. `n/`, `p/`, `t/`, `sd/`)
+* date-range deletion (`sd/` and `ed/`) works as follows:
+    * different dates → trip start date must be on/after `sd`, and end date must be on/before `ed`
+    * same date → any trip happening on that day matches
 
 To prevent accidental deletion, a **two-step confirmation flow** is implemented in `CommandBox`:
 
@@ -214,6 +216,8 @@ The following sequence diagram illustrates the process of tagging a trip:
 <puml src="diagrams/TagSequenceDiagram.puml" alt="Tag Command Sequence Diagram" />
 
 ### Filtering Trips by Date: Filter Command
+
+The `filter` command allows user to filter by date range. It enforces both `sd/` and `ed/` present in the query, but accepts trips with null `sd/` and `ed/` fields. `sd/` >= `query sd/` must be present to pass the filter, `ed/` is optional but must be <= `query ed/` to pass the filter.
 
 The following sequence diagram illustrates the process of filtering a trip:
 
@@ -362,7 +366,7 @@ Priorities: Essential (must have) MVP, High (expected to have) - `* * *`, Medium
 ### Glossary
 
 - **Mainstream OS**: Windows, Linux, Unix, MacOS
-- **Trip**: Travel entry defined by destination, start date, and end date
+- **Trip**: A travel record identified by a destination name, with optional fields such as start date, end date, address, and tags.
 - **Destination**: Primary location of a trip (e.g "Mount Fuji"), mapped to the Name field
 - **Experience Log**: Descriptive note added to a trip to record activities or reminders
 - **Category Tag**: Label for grouping trips by purpose (e.g work) or region (e.g Japan)
@@ -555,38 +559,30 @@ testers are expected to do more *exploratory* testing.
 ### Deleting a trip
 
 1. Deleting a trip using index
-
     1. Prerequisites: List all trips using the `list` command. Multiple trips in the list.
-
     2. Test case: `delete 1`  
        Expected: A preview of the first trip is shown. No trip is deleted yet.
-
     3. Test case: Press Enter again with `delete 1`  
        Expected: First trip is deleted from the list. Details of the deleted trip shown in the status message.
 
 2. Cancelling deletion
-
     1. Test case: `delete 1`, then modify the command instead of confirming  
        Expected: No trip is deleted.
 
 3. Invalid index
-
     1. Test case: `delete 0`  
        Expected: No trip is deleted. Error message shown.
 
 4. Deleting a range of trips
-
     1. Test case: `delete 1-3`  
        Expected: Preview of trips 1 to 3 is shown.  
        After confirmation, all three trips are deleted.
 
 5. Deleting by field
-
     1. Test case: `delete n/Tokyo`  
        Expected: All trips with name "Tokyo" are previewed, then deleted after confirmation.
 
 6. Deleting by date range
-
     1. Test case: `delete sd/2026-03-01 ed/2026-05-10`  
        Expected: Trips matching the specified date range are previewed, then deleted after confirmation.
 

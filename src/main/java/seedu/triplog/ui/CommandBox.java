@@ -1,4 +1,5 @@
 package seedu.triplog.ui;
+import static seedu.triplog.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -60,12 +61,19 @@ public class CommandBox extends UiPart<Region> {
         }
 
         String trimmedCommandText = commandText.trim();
-        boolean isDeleteCommand = trimmedCommandText.equals("delete")
-                || trimmedCommandText.startsWith("delete ");
+        String lowerTrimmedCommandText = trimmedCommandText.toLowerCase();
+        boolean isDeleteCommand = lowerTrimmedCommandText.equals("delete")
+                || lowerTrimmedCommandText.startsWith("delete ");
         try {
+            boolean isPreviewDeleteCommand = lowerTrimmedCommandText.equals("deletepreview")
+                    || lowerTrimmedCommandText.startsWith("deletepreview ");
+
+            if (isPreviewDeleteCommand) {
+                throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+            }
             if (isDeleteCommand) {
                 // Second Enter on the exact same delete command -> confirm actual deletion
-                if (deletePendingConfirmation && commandText.equals(lastDeleteCommand)) {
+                if (deletePendingConfirmation && commandText.equalsIgnoreCase(lastDeleteCommand)) {
                     commandExecutor.execute(commandText);
                     commandTextField.setText("");
                     deletePendingConfirmation = false;

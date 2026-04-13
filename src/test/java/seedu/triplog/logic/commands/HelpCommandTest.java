@@ -127,14 +127,14 @@ public class HelpCommandTest {
     // EP: DELETE_USAGE contains the index placeholder
     @Test
     public void deleteUsage_containsIndexPlaceholder() {
-        assertTrue(CommandUsage.DELETE_USAGE.contains("<INDEX>"));
+        assertTrue(CommandUsage.DELETE_USAGE.contains("INDEX"));
     }
 
     // EP: TAG_USAGE contains both index and tag-name placeholders
     @Test
     public void tagUsage_containsIndexAndTagNamePlaceholders() {
-        assertTrue(CommandUsage.TAG_USAGE.contains("<INDEX>"));
-        assertTrue(CommandUsage.TAG_USAGE.contains("<tag-name>"));
+        assertTrue(CommandUsage.TAG_USAGE.contains("INDEX"));
+        assertTrue(CommandUsage.TAG_USAGE.contains("TAG"));
     }
 
     // EP: FOCUSING_HELP_MESSAGE is distinct from SHOWING_HELP_MESSAGE

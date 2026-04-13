@@ -1,5 +1,6 @@
 package seedu.triplog.ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,6 +12,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.framework.junit5.Stop;
 
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import seedu.triplog.commons.core.CommandUsage;
@@ -126,6 +128,26 @@ public class HelpWindowTest {
     @Test
     public void exitNote_mentionsEscapeKey() {
         assertTrue(HelpWindow.EXIT_NOTE.contains("ESCAPE"));
+    }
+
+    // EP: usage string with a newline splits into command and description
+    @Test
+    public void setCommandUsage_withNewline_setsCommandAndDescription() {
+        Label command = new Label();
+        Label description = new Label();
+        HelpWindow.setCommandUsage(command, description, "add n/NAME\n  Records a new trip.");
+        assertEquals("add n/NAME", command.getText());
+        assertEquals("  Records a new trip.", description.getText());
+    }
+
+    // EP: usage string without a newline sets command and leaves description empty
+    @Test
+    public void setCommandUsage_withoutNewline_setsCommandAndEmptyDescription() {
+        Label command = new Label();
+        Label description = new Label();
+        HelpWindow.setCommandUsage(command, description, "exit");
+        assertEquals("exit", command.getText());
+        assertEquals("", description.getText());
     }
 
     // EP: every CommandUsage string contains its respective command keyword
