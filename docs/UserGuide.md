@@ -121,7 +121,7 @@ Since every trip is different, all fields except the name are optional. This all
 **Field Constraints:**
 - **`n/NAME` (Compulsory):** Must start with a letter or number. Can only contain alphanumeric characters, spaces, and common punctuation (`-`, `,`, `.`, `'`, `(`, `)`, `!`). Cannot be blank.
 - **`p/PHONE`:** Must only contain numbers, and should be at least 3 digits long.
-- **`e/EMAIL`:** Must be a valid email format (e.g., `local-part@domain`).
+- **`e/EMAIL`:** Must be a valid email format (e.g., `local-part@domain.com`).
 - **`a/ADDRESS`:** Can take any values, but cannot be blank if the `a/` prefix is used.
 - **`sd/START_DATE` & `ed/END_DATE`:** Must be valid calendar dates in `YYYY-MM-DD` format. If both are provided, `START_DATE` must be earlier than or equal to `END_DATE`.
 - **`t/TAG`:** Must be strictly alphanumeric and may contain spaces.
